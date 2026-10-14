@@ -159,12 +159,6 @@ Row {
             onTriggered: { if (root.appBridge) root.appBridge.activeTab = "frame-interpolation" }
         }
         QQC2.MenuItem {
-            text: qsTranslate("App", "Live")
-            checkable: true
-            checked: root.appBridge && root.appBridge.activeTab === "live"
-            onTriggered: { if (root.appBridge) root.appBridge.activeTab = "live" }
-        }
-        QQC2.MenuItem {
             text: qsTranslate("App", "Settings")
             checkable: true
             checked: root.appBridge && root.appBridge.activeTab === "settings"
@@ -203,7 +197,7 @@ Row {
         onClosed: root.onMenuClosed(processMenu)
         QQC2.MenuItem {
             text: qsTranslate("App", "Start / Render")
-            enabled: root.appBridge ? ((root.appBridge.activeTab === "neural-rendering" || root.appBridge.activeTab === "upscale" || root.appBridge.activeTab === "frame-interpolation") && root.appBridge.operationState === "Idle" && root.appBridge.runtimeState === "Ready" && !root.appBridge.isLiveRunning) : false
+            enabled: root.appBridge ? ((root.appBridge.activeTab === "neural-rendering" || root.appBridge.activeTab === "upscale" || root.appBridge.activeTab === "frame-interpolation") && root.appBridge.operationState === "Idle" && root.appBridge.runtimeState === "Ready") : false
             onTriggered: { if (root.appBridge) root.appBridge.requestActiveBatchExport() }
         }
         QQC2.MenuItem {
@@ -215,12 +209,6 @@ Row {
             text: qsTranslate("App", "Stop")
             enabled: root.appBridge ? root.appBridge.canStop : false
             onTriggered: { if (root.appBridge) root.appBridge.stopActiveBatch() }
-        }
-        Loader { sourceComponent: menuSeparator }
-        QQC2.MenuItem {
-            text: qsTranslate("App", "Stop Live Session")
-            enabled: root.appBridge ? root.appBridge.isLiveRunning : false
-            onTriggered: { if (root.appBridge) root.appBridge.stopLive() }
         }
     }
 

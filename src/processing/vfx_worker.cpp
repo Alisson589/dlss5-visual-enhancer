@@ -1,0 +1,101 @@
+#include "vfx_worker.hpp"
+#include "vfx_native.hpp"
+#include "native_engines.hpp"
+#include "video_still_preview.hpp"
+#include "infrastructure/paths.hpp"
+#include "infrastructure/process.hpp"
+#include "infrastructure/log.hpp"
+#include "media/video_preview.hpp"
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QTemporaryDir>
+#include <QTemporaryFile>
+#include <QTextStream>
+#include <QElapsedTimer>
+#include <QScopeGuard>
+#include <QSaveFile>
+#include <QFileInfo>
+#include <QDir>
+#include <thread>
+#include <mutex>
+
+namespace ve {
+namespace {
+std::mutex diagnosticsMutex;
+QString diagnostics;
+void save(const QString& path,const QJsonObject& data){QFile file(path);if(!file.open(QIODevice::WriteOnly)||file.write(QJsonDocument(data).toJson())<0)throw std::runtime_error("Cannot write VFX worker request.");}
+void call(const QString& file,JobControl& control,const ProgressCallback& progress={}){
+    const auto state=file+".state";
+    const auto writeState=[state](bool paused,bool cancelled){QFile value(state);if(value.open(QIODevice::WriteOnly|QIODevice::Truncate)){value.write(cancelled?"C":paused?"P":"R");value.flush();}};
+    writeState(control.paused(),control.cancelled());control.setStateChanged(writeState);
+    const auto cleanup=qScopeGuard([&]{control.setStateChanged({});});
+    QByteArray pending;
+    const auto result=runProcess(Paths::instance().at("app/VE_CLI.app.exe"),{"--internal-vfx-worker",file},&control,0,{},[&](const QByteArray& data){
+        pending+=data;for(auto end=pending.indexOf('\n');end>=0;end=pending.indexOf('\n')){
+            const auto message=QJsonDocument::fromJson(pending.left(end)).object();pending.remove(0,end+1);
+            if(progress&&message.value("kind")=="progress")progress({message.value("fraction").toDouble(),message.value("message").toString(),message.value("frames").toInteger(),message.value("total").toInteger(),message.value("fps").toDouble()});
+            if(message.value("kind")=="diagnostics"){{std::lock_guard lock(diagnosticsMutex);diagnostics=message.value("text").toString();}info("vfx-worker",message.value("text").toString());}
+        }
+    });
+    if(result.exitCode)throw std::runtime_error(result.error.isEmpty()?"NVIDIA VFX worker exited unexpectedly.":result.error.toStdString());
+}
+QJsonObject base(const QString& kind,const QString& input,const QString& output,const Settings& settings,const QString& preset){
+    if(auto result=settings.exportPreset(preset,"VFX worker");!result)throw std::runtime_error(result.error().toStdString());
+    return {{"protocol",1},{"kind",kind},{"input",input},{"output",output},{"preset",preset}};
+}
+void send(const QJsonObject& object){QTextStream stream(stdout);stream<<QJsonDocument(object).toJson(QJsonDocument::Compact)<<'\n';stream.flush();}
+}
+QString vfxWorkerDiagnostics(){std::lock_guard lock(diagnosticsMutex);return diagnostics;}
+RenderResult renderIsolatedVfx(const RenderRequest& request,JobControl& control,const ProgressCallback& progress){
+    QElapsedTimer elapsed;elapsed.start();
+    if(QFileInfo::exists(request.output))throw std::runtime_error("Output already exists. Choose a different filename.");
+    QTemporaryDir directory(Paths::instance().at("data/temp/app/vfx-worker-XXXXXX"));if(!directory.isValid())throw std::runtime_error("Cannot create VFX worker directory.");
+    const auto rendered=directory.filePath("processed."+QFileInfo(request.output).suffix());
+    auto job=base("render",request.input,rendered,request.settings,directory.filePath("preset.json"));
+    job.insert("workflow",int(request.workflow));job.insert("preview",request.preview);job.insert("start",request.startSeconds);job.insert("seconds",request.seconds);
+    const auto path=directory.filePath("job.json");save(path,job);call(path,control,[&](const Progress& p){if(progress){auto delivery=p;delivery.fraction=std::min(.98,p.fraction);progress(delivery);}});
+    QDir().mkpath(QFileInfo(request.output).absolutePath());
+    QFile source(rendered);QTemporaryFile destination(QFileInfo(request.output).absolutePath()+"/.vfx-delivery-XXXXXX");
+    if(!source.open(QIODevice::ReadOnly)||!destination.open())throw std::runtime_error("Cannot save VFX worker delivery.");
+    while(!source.atEnd()){control.checkpoint();const auto bytes=source.read(8*1024*1024);if(bytes.isEmpty()&&source.error()!=QFileDevice::NoError)throw std::runtime_error("Cannot read VFX worker delivery.");if(destination.write(bytes)!=bytes.size())throw std::runtime_error("Cannot write VFX worker delivery.");}
+    control.checkpoint();destination.close();if(!destination.rename(request.output))throw std::runtime_error("Cannot commit VFX worker delivery; the destination may already exist.");destination.setAutoRemove(false);
+    if(progress)progress({1,"Video complete"});
+    return {request.input,request.output,vfxReport(vfxSettingsForStages(request.settings,request.settings.stages(true))),probeMedia(request.output,&control),elapsed.elapsed()/1000.};
+}
+QImage previewIsolatedVfx(const QString& path,const Settings& settings,const MediaInfo&,double seconds,JobControl& control){
+    QTemporaryDir directory(Paths::instance().at("data/temp/app/vfx-still-worker-XXXXXX"));if(!directory.isValid())throw std::runtime_error("Cannot create VFX preview worker directory.");
+    const auto output=directory.filePath("preview.png");auto job=base("still",path,output,settings,directory.filePath("preset.json"));job.insert("seconds",seconds);
+    const auto file=directory.filePath("job.json");save(file,job);call(file,control);QImage pixels(output);if(pixels.isNull())throw std::runtime_error("VFX preview worker returned no image.");return pixels;
+}
+int runVfxWorker(const QString& path){
+    try{
+        QFile file(path);if(!file.open(QIODevice::ReadOnly))throw std::runtime_error("Cannot read VFX worker request.");
+        const auto job=QJsonDocument::fromJson(file.readAll()).object();if(job.value("protocol").toInt()!=1)throw std::runtime_error("Invalid VFX worker protocol.");
+        const auto scratch=QFileInfo(path).absolutePath()+"/scratch";if(!QDir().mkpath(scratch))throw std::runtime_error("Cannot create VFX worker scratch directory.");qputenv("VE_VFX_WORKER_TMP",scratch.toUtf8());
+        Settings settings;if(auto preset=settings.importPreset(job.value("preset").toString());!preset)throw std::runtime_error(preset.error().toStdString());
+        settings=vfxSettingsForStages(settings,settings.stages(true));
+        if(settings.stages(true).contains("rtx_video_hdr"))
+            NativeEngines::instance().prepare(gpuOrdinal(settings.ai_gpu_uuid),{"rtx_video_hdr"});
+        JobControl control;const auto input=job.value("input").toString(),output=job.value("output").toString();
+        QElapsedTimer poll;poll.start();control.setExternalCheckpoint([&]{
+            if(poll.elapsed()<20)return;
+            const auto started=std::chrono::steady_clock::now();bool paused=false;
+            for(;;){QFile state(path+".state");QByteArray value;if(state.open(QIODevice::ReadOnly))value=state.readAll();state.close();if(value=="C")throw Cancelled{};if(value!="P")break;paused=true;std::this_thread::sleep_for(std::chrono::milliseconds(20));}if(paused)control.accountExternalPause(std::chrono::steady_clock::now()-started);poll.restart();
+        });
+        if(job.value("kind")=="render"){
+            const auto rendered=Pipeline{}.render({input,output,settings,Workflow(job.value("workflow").toInt()),job.value("preview").toBool(),job.value("start").toDouble(),job.value("seconds").toDouble()},control,[](const Progress& p){send({{"kind","progress"},{"fraction",p.fraction},{"message",p.message},{"frames",p.frames},{"total",p.totalFrames},{"fps",p.fps}});});(void)rendered;
+        }else if(job.value("kind")=="still"){
+            auto info=probeMedia(input,&control);const double seconds=job.value("seconds").toDouble();
+            const auto position=quantizePlayhead(seconds*1000,info.fps,info.duration);const auto stages=settings.stages(true);
+            VideoFrameReader reader;auto source=reader.frame(input,info,position,control,false,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu");
+            const bool generated=settings.vfx_frame_generation_enabled;const bool history=stages.contains("dlss_super_resolution");
+            std::vector<TimedImage> temporal;if(history||generated)temporal=reader.temporalContext(input,info,position,source.absoluteSeconds,history?(settings.upscale_dlss_mode=="DLAA"?8:18):0,control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu",generated);
+            PreviewFrameCache cache;VideoStillPreview preview;auto pixels=preview.process(source.pixels,settings,info,stages,cache,source.identity,control,temporal,generated?seconds:-1);
+            if(info.hdr||stages.contains("rtx_video_hdr")){auto colors=info;colors.hdr=true;if(stages.contains("rtx_video_hdr")){colors.primaries="bt2020";colors.transfer="smpte2084";}pixels=toneMapVideoPreview(pixels,colors,control,settings.ffmpeg_device);}
+            pixels=vfxDisplayAspect(pixels,info);if(!pixels.save(output,"PNG"))throw std::runtime_error("Cannot save VFX worker preview.");
+        }else throw std::runtime_error("Unknown VFX worker operation.");
+        send({{"kind","diagnostics"},{"text",VideoEffects::diagnostics()}});return 0;
+    }catch(const std::exception& error){send({{"kind","diagnostics"},{"text",VideoEffects::diagnostics()}});QTextStream(stderr)<<error.what()<<'\n';return 1;}
+}
+}

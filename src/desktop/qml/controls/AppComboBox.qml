@@ -9,7 +9,6 @@ Item {
     property var model: []
     property var currentValue: undefined
     property int currentIndex: -1
-    property bool enabled: true
     property int comboHeight: Theme.controlHeight
     // Drop-up mode for combos docked at the window bottom (e.g. the FI
     // action-bar length picker): the list opens above the box instead of

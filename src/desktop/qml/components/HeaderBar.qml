@@ -60,20 +60,20 @@ Rectangle {
             && windowRef.minBtnRect.height > 0 && windowRef.maxBtnRect.height > 0
             && windowRef.closeBtnRect.height > 0 && windowRef.navTabsRect.height > 0
     }
-    onWidthChanged: updateChromeRects()
+    onWidthChanged: Qt.callLater(updateChromeRects)
     Component.onCompleted: Qt.callLater(updateChromeRects)
     Connections {
         target: rightArea
-        function onWidthChanged() { root.updateChromeRects() }
+        function onWidthChanged() { Qt.callLater(root.updateChromeRects) }
     }
     Connections {
         target: navTabs
-        function onWidthChanged() { root.updateChromeRects() }
+        function onWidthChanged() { Qt.callLater(root.updateChromeRects) }
     }
     Connections {
         target: windowRef
-        function onHeightChanged() { root.updateChromeRects() }
-        function onWidthChanged() { root.updateChromeRects() }
+        function onHeightChanged() { Qt.callLater(root.updateChromeRects) }
+        function onWidthChanged() { Qt.callLater(root.updateChromeRects) }
         // Maximize/restore settles geometry asynchronously; refresh once the
         // state lands so the native filter never aims at pre-toggle rects.
         function onVisibilityChanged() { Qt.callLater(root.updateChromeRects) }
@@ -83,14 +83,14 @@ Rectangle {
         id: brand; z: 2
         anchors.left: parent.left; anchors.leftMargin: 12; anchors.verticalCenter: parent.verticalCenter; spacing: 8
         Image {
-            source: Qt.resolvedUrl("../../../../native (dev)/assets/icon.png")
+            source: Qt.resolvedUrl("../../../branding/icon.png")
             sourceSize: Qt.size(112, 112)
             width: 28; height: 28
             fillMode: Image.PreserveAspectFit
             smooth: true
             anchors.verticalCenter: parent.verticalCenter
         }
-        Text { text: "Visual Enhancer"; font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeTitle; font.weight: Font.Normal; color: Theme.textPrimary; anchors.verticalCenter: parent.verticalCenter }
+        Text { visible: root.width >= 700; text: "Visual Enhancer"; font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeTitle; font.weight: Font.Normal; color: Theme.textPrimary; anchors.verticalCenter: parent.verticalCenter }
     }
 
     Row {
@@ -110,14 +110,26 @@ Rectangle {
             // receives it — so a click arriving here always means the OS did
             // NOT claim it (mapping miss) and minimizing is the right action.
             // maxBtn/closeBtn keep the guard (toggle/close double-delivery).
-            AppIconButton { id: minBtn; iconName: "minimize"; showTooltip: false; onClicked: { if (windowRef) windowRef.showMinimized() } }
+            AppIconButton { id: minBtn; objectName: "windowMinimizeButton"; iconName: "minimize"; showTooltip: false; onClicked: { if (windowRef) windowRef.showMinimized() } }
             AppIconButton {
                 id: maxBtn
+                objectName: "windowMaximizeButton"
                 iconName: windowRef && (windowRef.visibility === Window.Maximized || windowRef.visibility === Window.FullScreen) ? "restore_window" : "maximize"
                 showTooltip: false
+                nativeHovered: root.nativeChrome && windowRef.nativeHoveredButton === "maximize"
                 onClicked: { if (root.nativeChrome) return; root.toggleMaximize() }
             }
-            AppIconButton { id: closeBtn; iconName: "close"; showTooltip: false; hoverColor: Theme.danger; onClicked: { if (root.nativeChrome) return; if (windowRef) windowRef.close() } }
+            AppIconButton {
+                id: closeBtn
+                objectName: "windowCloseButton"
+                iconName: "close"
+                showTooltip: false
+                hoverBackgroundColor: Theme.danger
+                hoverBorderColor: Theme.danger
+                pressedBackgroundColor: Theme.dangerPressed
+                nativeHovered: root.nativeChrome && windowRef.nativeHoveredButton === "close"
+                onClicked: { if (root.nativeChrome) return; if (windowRef) windowRef.close() }
+            }
         }
     }
 
@@ -130,7 +142,6 @@ Rectangle {
         spacing: 4
         readonly property var tabs: [
             { id:"neural-rendering", full:qsTranslate("App", "Neural Rendering"), short:qsTranslate("App", "Neural"), icon:"neural_rendering" },
-            { id:"live", full:qsTranslate("App", "Live"), short:qsTranslate("App", "Live"), icon:"live_video" },
             { id:"settings", full:qsTranslate("App", "Settings"), short:qsTranslate("App", "Settings"), icon:"settings" },
             { id:"help", full:qsTranslate("App", "Help"), short:qsTranslate("App", "Help"), icon:"help" }
         ]

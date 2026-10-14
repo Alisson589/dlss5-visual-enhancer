@@ -58,7 +58,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 с</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>Налаштування %1 скинуто.</translation>
     </message>
@@ -68,7 +67,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 кадрів джерела</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>Рендеринг, перегляд, сканування або сеанс наживо ще триває. Скасувати й вийти?</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>Рендеринг, попередній перегляд або сканування ще триває. Скасувати та вийти?</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Додати папку</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>Спочатку додайте та виберіть файл.</translation>
     </message>
@@ -179,7 +176,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>Усі файли (*.*)</translation>
@@ -199,17 +195,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Усі медіафайли (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>Усі налаштування скинуто.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>Аналіз кольорів %1…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>Аналіз кольорів входу та еталона…</translation>
     </message>
@@ -228,7 +221,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Applied to processing</source>
       <translation>Застосовано до обробки</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Авто: Фіксовані кадри</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>Автокорекцію кольору застосовано. Можна уточнити кожен повзунок.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>Автокорекцію кольору скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>Помилка автокорекції кольору: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>Автокорекцію пропущено через зміну входу або параметрів кольору.</translation>
     </message>
@@ -284,7 +272,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>Автоматична маска</translation>
     </message>
@@ -302,22 +289,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Черга пакетної обробки</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>Скасовано: %1 завершених, %2 невдалих/пропущених.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>Обробку завершено: %1 завершених.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>Помилка обробки: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>Обробку зупинено користувачем.</translation>
     </message>
@@ -340,53 +323,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>Огляд</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>Буферизація... Зачекайте.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>Кеш-пам’ять (ковзний кеш 10 ГБ)</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>Скасувати</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>Скасувати запуск наживо</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>Запит скасування; зупинка одразу після запуску…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>Скасовано</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>Скасування запуску сеансу…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>Скасування поточної обробки…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>Скасування перегляду…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>Не вдалося почати обробку: %1</translation>
     </message>
@@ -416,12 +370,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Виберіть еталонне зображення</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>Виберіть наявне еталонне зображення.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>Виберіть наявне еталонне зображення.</translation>
     </message>
@@ -471,7 +419,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Очистити відео</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>Буфер обміну не містить зображень чи файлів.</translation>
     </message>
@@ -509,7 +456,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Color Match</source>
       <translation>Узгодження кольорів</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Завершено за %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>Завершено з попередженнями: %1 завершених, %2 невдалих.</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>Налаштуйте обладнання, попередній перегляд, компонування та переносні пресети.</translation>
@@ -563,7 +507,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Перетворити SDR на HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>Скопійовано до буфера обміну.</translation>
     </message>
@@ -572,13 +515,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Копія</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>Не вдалося показати у Провіднику: %1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>Поточне зображення</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>Ефекти DLSS: %1</translation>
     </message>
@@ -636,11 +573,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G Рушій</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>ПРОПУЩЕНО</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Типовий</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>Завантаження скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>Завантаження завершено. Сканування…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>Завантаження зображення з мережі…</translation>
     </message>
@@ -670,11 +599,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>Перетягніть медіафайли сюди</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>КОДУВАННЯ</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Рушій</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>Введіть дійсний URL (Twitch, YouTube, HLS тощо).</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
@@ -731,19 +650,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вийти</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>Вийти з повного екрана</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>Вийти з зосередженого перегляду</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>Розгорнути</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Параметри експорту</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>Помилка експорту: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>Пресет '%1' експортовано до %2</translation>
     </message>
@@ -807,7 +712,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Exposure</source>
       <translation>Експозиція</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>Скидання відновлює параметри DLSS, масштабування, інтерполяції, GPU, маски й кодування. Розмір і положення вікна залишаються параметрами робочого столу.</translation>
@@ -823,7 +727,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Файл</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>Файл більше не існує: %1</translation>
     </message>
@@ -858,11 +761,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Інтерполяція кадрів</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>Повний екран</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>Повний екран</translation>
@@ -886,7 +784,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Grain Amount</source>
       <translation>Інтенсивність зерна</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>HDR Насиченість</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>Тривалість сегмента HLS</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вхід</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>Очікування</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>Очікування. Вкажіть джерело та почніть сеанс наживо.</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>Зображення</translation>
     </message>
@@ -1010,7 +892,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Імпортувати пресет JSON</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>Помилка імпорту: %1</translation>
     </message>
@@ -1020,7 +901,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Імпортувати...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>Пресет '%1' успішно імпортовано.</translation>
     </message>
@@ -1029,7 +909,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Початкові параметри</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>Ініціалізація середовища…</translation>
     </message>
@@ -1044,12 +923,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вхідне зображення</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>Сканування скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>Помилка сканування: %1</translation>
     </message>
@@ -1068,12 +945,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Інтерполювати відео</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>Некоректні параметри сеансу: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>Некоректний параметр: %1</translation>
     </message>
@@ -1093,16 +964,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Перебіг завдання</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>РУШІЙ В ОЧІКУВАННІ</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>ТРАНСЛЯЦІЯ АКТИВНА</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>Файл LUT (.cube)</translation>
@@ -1118,12 +979,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Інтенсивність LUT</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>Експорт LUT скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>Помилка експорту LUT: %1</translation>
     </message>
@@ -1138,54 +997,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Світло</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>Наживо</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>Ефекти DLSS наживо</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>Масштаб наживо</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>Помилка сеансу наживо: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>Сеанс наживо недоступний під час іншої операції.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>Сеанс наживо працює.</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>Сеанс наживо розпочато.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>Сеанс наживо зупинено.</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>Завантажити маску керування...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>Завантаження медіа…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Завантаження перегляду...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>Завантаження... Зачекайте.</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>Локально</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>Інтенсивність локальної структури</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>Інтенсивність локальних тонів</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>Локальний відеофайл</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Низька</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV: %1 пропущено, %2 буферизацій, синхронізація A/V %3 мс</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>Обслуговування та типові параметри</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>Узгодити кольори</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>Узгодити кольори з</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>Максимальна</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>Максимальна роздільність входу</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Виміряна частота вхідних кадрів на поточному етапі</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>Завантаження медіа скасовано.</translation>
     </message>
@@ -1280,7 +1063,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Середня</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>Метадані для %1 недоступні.</translation>
     </message>
@@ -1320,7 +1102,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>Вимкнути звук</translation>
     </message>
@@ -1330,22 +1111,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>NO OUTPUT</source>
       <translation>НЕМАЄ ВИХОДУ</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR Інтенсивність</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>NR Проходи</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>NR Стиль</translation>
     </message>
@@ -1376,17 +1153,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Ні</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>Файл для очищення не вибрано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>Файл для показу у Провіднику не вибрано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>У черзі немає файлів для обробки.</translation>
     </message>
@@ -1404,18 +1178,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>Вихід</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>Онлайн</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>URL онлайн-трансляції</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Відкрити папку джерела</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>Відкрито папку для %1.</translation>
     </message>
@@ -1474,7 +1241,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Формат виходу</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>Вихід недоступний: %1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Проходи</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>Помилка вставлення: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>Призупинити</translation>
     </message>
@@ -1541,23 +1304,15 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Відтворити</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>Буфер відтворення</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>Швидкість відтворення</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>Список відтворення: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>Введіть назву пресета.</translation>
     </message>
@@ -1575,7 +1330,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Параметри та конфігурація системи</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>Підготовка пакетної обробки…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Попередній перегляд</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>Перегляд скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>Перегляд завершено%1.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>Помилка налаштування перегляду: %1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Переглянути файл</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>Перегляд недоступний під час іншої операції.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>Перегляд замінено новими параметрами.</translation>
     </message>
@@ -1684,18 +1433,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Якість кодування: визначається кодеком</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>Під час операції зміни черги недоступні.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>БУФЕРИЗАЦІЯ</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>Готово.</translation>
     </message>
@@ -1721,7 +1457,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Перегляд у реальному часі</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>Отримано %1 → Вхід %2 → Вихід %3 (%4)</translation>
     </message>
@@ -1731,22 +1466,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Еталонне зображення</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>Неможливо застосувати узгодження під час операції.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>Узгодження пропущено через зміну входу або параметрів.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>Узгодження з еталоном скасовано.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>Помилка узгодження з еталоном: %1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Рендерити відео</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>Рендеринг перегляду%1…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>Скинути</translation>
@@ -1822,34 +1551,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Скинути параметри Масштабування</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>Визначення джерела та запуск сеансу…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>Визначення джерела...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>Відновити</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>Продовжити</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>Помилка ініціалізації: %1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>ДЖЕРЕЛО</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Зберігати результати в папці виходу програми.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUT збережено до %1</translation>
     </message>
@@ -1892,7 +1598,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Збережено та перевірено</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>Збереження LUT %1³…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Метод масштабування</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>Сканування вибраних джерел…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>Виберіть Застосувати LUT для узгодження кольорів еталона.</translation>
     </message>
@@ -1969,38 +1672,26 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вибрати вхідні медіа</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>Вибрати відео MP4/MKV...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>Виберіть вкладку обробки перед експортом.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>Виберіть дійсний локальний відеофайл (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>Виберіть дійсний локальний відеофайл.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>Виберіть зображення або відео перед автокорекцією.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>Виберіть вхід і дочекайтеся завершення операції перед узгодженням.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>Виберіть вхідне зображення або відео перед вибором еталона.</translation>
     </message>
@@ -2010,19 +1701,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вибрати...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>Вибране еталонне зображення</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>Під час операції зміни вибору недоступні.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>Параметр збережено; зміна діятиме після наступного запуску.</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Sharpness</source>
       <translation>Різкість</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>Режим розміру</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>Інтенсивність структури шкіри</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Джерело (оригінал)</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>Якість джерела</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>Джерело: %1 fps, Guide: %2 мс, DLSS: %3 мс, Кодування: %4 мс</translation>
     </message>
@@ -2131,11 +1799,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Почати / Рендерити</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>Почати сеанс наживо</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>Запуск...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Зупинити</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>Зупинити сеанс наживо</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>Помилка зупинки: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>Зупиніть операцію перед зміною параметрів.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>Зупиніть операцію перед імпортом.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>Зупиніть операцію перед скиданням.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>Зупиніть операцію перед початком обробки.</translation>
     </message>
@@ -2194,25 +1845,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Зупинено.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>Зупинка сеансу наживо…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>Зупинка сеансу...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>Зупинка...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>Джерело трансляції</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Підтримати на Patreon</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>Перемкнуто в режим %1. %2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>Ціль %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>Цільовий FPS</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Tonal Response</source>
       <translation>Тональний відгук</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>Ультра</translation>
@@ -2299,12 +1925,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>Увімкнути звук</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>Оновлення перегляду…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Масштабувати зображення</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>Для масштабування відео потрібен VSR або RTX Video HDR.</translation>
     </message>
@@ -2359,11 +1982,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Відеофайли</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>Відеофайли (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>Відеофайли (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вигляд</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>Гучн. %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>Гучність</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>Зменшити гучність</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>Збільшити гучність</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Очікування початку</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>Помилка завантаження зображення: %1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>Так</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>URL YouTube, Twitch або HLS/RTMP...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Зображення</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>с</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>Відео</translation>
     </message>
@@ -2507,18 +2099,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS і RTX є торговельними марками NVIDIA Corporation.</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>Швидкий без втрат</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>Швидке стиснення</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>Швидке стиснення 8-бітного RGB без субдискретизації кольору. Для HDR використовується Швидкий без втрат. Моделі працюють по черзі.</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Startup %1 s · switch %2 s</source>
       <translation>Запуск %1 с · перемикання %2 с</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>Кеш-пам’ять (ковзний кеш)</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>Розмір кешу</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 ГБ (Типовий)</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>Початкова точність</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>Стиснений RGB (8 біт)</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>Маска керування замінює автоматичну маску. Канали RGB керують інтенсивністю, тоном і структурою.</translation>
     </message>
@@ -2712,10 +2276,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Software codecs</source>
       <translation>Програмні кодеки</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>Вибір якості джерела діє для сторінок YouTube/Twitch; використовується надане джерело.</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

@@ -9,13 +9,14 @@ import "controls"
 
 Window {
     id: appWindow
-    // Python applies the saved rectangle once before creating the native
-    // window. Live geometry bindings would undo OS resizing and snapping.
+    // The application applies the saved rectangle before creating the native
+    // window. Continuous geometry bindings would undo OS resizing and snapping.
     width: 1440
     height: 920
-    minimumWidth: 1080
-    minimumHeight: 700
-    // Python reveals the fully prepared window maximized.
+    // Allow half/third-width and quarter-height Windows snap zones.
+    minimumWidth: 500
+    minimumHeight: 330
+    // The application reveals the fully prepared window maximized.
     flags: Qt.Window | Qt.FramelessWindowHint
     title: "Visual Enhancer"
     color: Theme.bgBase
@@ -32,6 +33,8 @@ Window {
     property rect closeBtnRect: Qt.rect(0, 0, 0, 0)
     property rect navTabsRect: Qt.rect(0, 0, 0, 0)
     property bool chromeRectsReady: false
+    property bool nativeChromeActive: false
+    property string nativeHoveredButton: ""
 
     function saveWindowLayout() {
         if (typeof backend !== "undefined" && backend)
@@ -42,53 +45,18 @@ Window {
         saveWindowLayout()
         if (!closeApproved && typeof backend !== "undefined" && backend && backend.operationState !== "Idle") {
             close.accepted = false
-            // The Live video is a native child window that paints above the
-            // whole Qt Quick scene (including modal popups). Hide it before
-            // opening the prompt so the dialog is clickable; the session
-            // keeps running and re-shows from cached geometry on cancel.
-            try {
-                if (backend.mpvEmbed) backend.mpvEmbed.setDialogOpen(true)
-            } catch (e) {}
             closeDialog.open()
+        } else {
+            // Native decoder and GPU cleanup may outlast the close event.
+            // Remove the window immediately once the close is accepted.
+            appWindow.hide()
         }
-    }
-
-    onVisibilityChanged: {
-        // A fullscreen Live video is a separate top-level window: if the
-        // app is minimized/hidden it would strand the video on screen
-        // with its program gone from the taskbar. Dock it back first.
-        try {
-            if ((visibility === Window.Minimized || visibility === Window.Hidden)
-                    && typeof backend !== "undefined" && backend && backend.mpvEmbed && backend.mpvEmbed.fullscreen)
-                backend.mpvEmbed.toggleFullscreen()
-        } catch (e) {}
     }
 
     Shortcut {
         sequence: "F11"
         onActivated: {
-            // A fullscreen Live video owns the screen: F11 first hands the
-            // screen back to the app instead of fighting over window state.
-            try {
-                if (typeof backend !== "undefined" && backend && backend.mpvEmbed && backend.mpvEmbed.fullscreen) {
-                    backend.mpvEmbed.toggleFullscreen()
-                    return
-                }
-            } catch (e) {}
             if (appWindow.visibility === Window.FullScreen) appWindow.showNormal(); else appWindow.showFullScreen()
-        }
-    }
-    // The native Live video covers the transport bar in fullscreen, so the
-    // mouse cannot reach "Exit Full" — Esc is the way out (mpv convention).
-    // Guarded by `enabled` so a disabled Shortcut never steals Esc from
-    // text editors, combo popups, or dialogs while not fullscreen.
-    Shortcut {
-        sequence: "Escape"
-        enabled: typeof backend !== "undefined" && backend && backend.mpvEmbed && backend.mpvEmbed.fullscreen ? true : false
-        onActivated: {
-            if (typeof backend === "undefined" || !backend || !backend.mpvEmbed) return
-            if (!backend.mpvEmbed.fullscreen) return
-            backend.mpvEmbed.toggleFullscreen()
         }
     }
     Shortcut {
@@ -97,26 +65,12 @@ Window {
     }
 
     // Global editing shortcuts below must never steal keys from text
-    // editors (stream URL, preset name, path fields all use TextInput).
+    // editors (preset name and path fields use TextInput).
     // NOTE: guards live in `enabled` (not only in onActivated) so a
     // disabled Shortcut never consumes the key — TextInput keeps native
     // Ctrl+V / Delete / Space behavior while editing.
     readonly property bool isTextEditing: activeFocusItem instanceof TextInput || activeFocusItem instanceof TextEdit
     readonly property bool isBatchTab: typeof backend !== "undefined" && backend ? backend.activeTab === "neural-rendering" : false
-    readonly property bool isLiveTab: typeof backend !== "undefined" && backend ? backend.activeTab === "live" : false
-    // True when keyboard focus sits on any tab-focusable control (custom
-    // AppButton/Switch/CheckBox/ComboBox/Slider/IconButton expose
-    // activeFocusOnTab:true and consume Space themselves). Mouse clicks
-    // never move keyboard focus there, so mouse users keep Space-pause.
-    readonly property bool isInteractiveFocused: {
-        var f = activeFocusItem
-        if (!f) return false
-        if (f instanceof TextInput || f instanceof TextEdit) return true
-        try {
-            if (f.activeFocusOnTab === true) return true
-        } catch (e) {}
-        return false
-    }
 
     function textEditingFocused() {
         return appWindow.isTextEditing
@@ -144,20 +98,6 @@ Window {
             if (typeof backend !== "undefined" && backend) backend.clearActiveQueue()
         }
     }
-    // Space: pause/resume in the Live tab only. Suppressed while a text
-    // field or any keyboard-focused control owns Space (native activation
-    // wins, avoiding a double toggle on custom App* buttons); mouse users
-    // are unaffected (clicking never moves keyboard focus).
-    Shortcut {
-        sequence: "Space"
-        enabled: appWindow.isLiveTab && !appWindow.isInteractiveFocused
-        onActivated: {
-            if (typeof backend === "undefined" || !backend) return
-            if (backend.activeTab !== "live") return
-            if (appWindow.isInteractiveFocused) return
-            if (backend.mpvEmbed && backend.isLiveRunning) backend.mpvEmbed.togglePause()
-        }
-    }
 
     Column {
         anchors.fill: parent
@@ -174,15 +114,27 @@ Window {
                     if (typeof backend === "undefined" || !backend) return 0
                     var tab = backend.activeTab
                     if (tab === "neural-rendering") return 0
-                    if (tab === "live") return 1
-                    if (tab === "settings") return 2
-                    if (tab === "help") return 3
+                    if (tab === "settings") return 1
+                    if (tab === "help") return 2
                     return 0
                 }
                 NeuralRenderingView { appBridge: typeof backend !== "undefined" ? backend : null }
-                LiveView { appBridge: typeof backend !== "undefined" ? backend : null }
-                SettingsView { appBridge: typeof backend !== "undefined" ? backend : null }
-                AboutView { appBridge: typeof backend !== "undefined" ? backend : null }
+                Loader {
+                    property bool visited: false
+                    readonly property bool selected: StackLayout.isCurrentItem
+                    active: visited
+                    onSelectedChanged: { if (selected) visited = true }
+                    Component.onCompleted: { if (selected) visited = true }
+                    sourceComponent: SettingsView { appBridge: typeof backend !== "undefined" ? backend : null }
+                }
+                Loader {
+                    property bool visited: false
+                    readonly property bool selected: StackLayout.isCurrentItem
+                    active: visited
+                    onSelectedChanged: { if (selected) visited = true }
+                    Component.onCompleted: { if (selected) visited = true }
+                    sourceComponent: AboutView { appBridge: typeof backend !== "undefined" ? backend : null }
+                }
             }
         }
     }
@@ -247,24 +199,12 @@ Window {
             bottomPadding: 4
         }
         contentItem: Text {
-            text: qsTranslate("App", "A render, preview, scan, or Live session is still active. Cancel it and exit?")
+            text: qsTranslate("App", "A render, preview, or scan is still active. Cancel it and exit?")
             color: Theme.textPrimary; font.family: Theme.fontFamily; wrapMode: Text.WordWrap; width: 360
         }
         // Borderless: the previous border.color (light gray) read as a
         // white outline around the whole box against the dark surface.
         background: Rectangle { color: Theme.bgSurface; border.width: 0; radius: Theme.radiusLarge }
-        onAboutToShow: {
-            try {
-                if (typeof backend !== "undefined" && backend && backend.mpvEmbed) backend.mpvEmbed.setDialogOpen(true)
-            } catch (e) {}
-        }
-        onClosed: {
-            // Cancelled (No / Escape / X): restore the Live video if its tab
-            // is visible; the controller re-shows from cached geometry.
-            try {
-                if (typeof backend !== "undefined" && backend && backend.mpvEmbed) backend.mpvEmbed.setDialogOpen(false)
-            } catch (e) {}
-        }
         onAccepted: { appWindow.closeApproved = true; appWindow.close() }
     }
 }

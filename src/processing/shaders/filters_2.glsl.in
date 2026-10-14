@@ -1,0 +1,12 @@
+
+    vec2 p = outpos * ratio - 0.5, support = max(ratio, vec2(1.0));
+    vec4 sum = vec4(0.0); float total = 0.0;
+    for(int y=int(ceil(p.y-4.0*support.y)); y<=int(floor(p.y+4.0*support.y)); y++) {
+        float wy=lanczos((float(y)-p.y)/support.y);
+        for(int x=int(ceil(p.x-4.0*support.x)); x<=int(floor(p.x+4.0*support.x)); x++) {
+            float w=wy*lanczos((float(x)-p.x)/support.x);
+            sum+=pixel(ivec2(x,y))*w; total+=w;
+        }
+    }
+    return clamp(sum/max(total,1e-20),0.0,1.0);
+}

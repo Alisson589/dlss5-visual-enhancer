@@ -31,49 +31,8 @@ Column {
         text: root.autoFixedText
     }
 
-    AppComboBox {
-        width: parent.width
-        label: qsTranslate("App", "Method")
-        model: root.isImage ? (appBridge ? appBridge.coloringModeChoices : [])
-                            : [{label: qsTranslate("App", "Apply LUT"), value: "LUT"}]
-            currentValue: root.isImage ? (appBridge ? appBridge.coloringMode : "LUT") : "LUT"
-        onActivated: value => {
-            if (value === "LUT") root.lutPanel = "Color Adjustment"
-            if (appBridge && root.isImage) appBridge.coloringMode = value
-        }
-    }
-
     Column {
         width: parent.width
-        spacing: 12
-        visible: root.isImage && appBridge && appBridge.coloringMode === "Color Match"
-
-        AppComboBox {
-            width: parent.width
-            label: qsTranslate("App", "Match Colors From")
-            model: appBridge ? appBridge.colorMatchSourceChoices : []
-            currentValue: appBridge ? appBridge.colorMatchSource : "Input Image"
-            onActivated: value => { if (appBridge) appBridge.colorMatchSource = value }
-        }
-
-        AppFilePicker {
-            width: parent.width
-            visible: appBridge && appBridge.colorMatchSource === "Selected Image"
-            label: qsTranslate("App", "Selected Reference Image")
-            placeholderText: qsTranslate("App", "Choose a reference image")
-            selectedPath: appBridge ? appBridge.colorMatchReference : ""
-            nameFilters: [qsTranslate("App", "Images (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)"),
-                          qsTranslate("App", "All Files (*.*)")]
-            onPathChanged: path => {
-                if (appBridge) appBridge.setColorMatchReference(path)
-                Qt.callLater(syncPath)
-            }
-        }
-    }
-
-    Column {
-        width: parent.width
-        visible: !root.isImage || (appBridge && appBridge.coloringMode === "LUT")
         spacing: 12
 
         AppSegmentedControl {

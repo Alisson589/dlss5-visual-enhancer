@@ -58,7 +58,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 秒</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>%1 设置已重置。</translation>
     </message>
@@ -68,7 +67,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 个源帧</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>渲染、预览、扫描或实时会话仍在进行。取消并退出？</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>渲染、预览或扫描仍在进行中。是否取消并退出？</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>添加文件夹</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>请先添加并选择文件。</translation>
     </message>
@@ -179,7 +176,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>所有文件 (*.*)</translation>
@@ -199,17 +195,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>所有媒体文件 (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>所有设置已恢复出厂默认值。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>正在分析 %1 色彩…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>正在分析输入及参考色彩…</translation>
     </message>
@@ -228,7 +221,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Applied to processing</source>
       <translation>已应用于处理</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>自动：固定帧</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>自动色彩调整已应用。您可以微调每个滑块。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>自动色彩调整已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>自动色彩调整失败：%1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>输入或色彩设置已更改，已跳过自动色彩调整。</translation>
     </message>
@@ -284,7 +272,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>自动蒙版</translation>
     </message>
@@ -302,22 +289,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>批处理队列</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>批处理已取消：%1 个完成，%2 个失败/跳过。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>批处理完成：%1 个已完成。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>批处理失败：%1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>用户已停止批处理。</translation>
     </message>
@@ -340,53 +323,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>浏览</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>正在缓冲... 请稍候。</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>缓存空间（滚动缓存 10 GB）</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>取消</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>取消实时启动</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>已请求取消，将在实时启动完成后停止…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>已取消</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>正在取消实时启动…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>正在取消当前批处理…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>正在取消预览…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>无法开始批处理：%1</translation>
     </message>
@@ -416,12 +370,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>选择参考图像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>请选择已存在的参考图像。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>请选择已存在的参考图像。</translation>
     </message>
@@ -471,7 +419,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>清除视频</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>剪贴板中没有可粘贴的图像或文件。</translation>
     </message>
@@ -509,7 +456,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Color Match</source>
       <translation>色彩匹配</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>完成耗时 %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>完成但有警告：%1 个完成，%2 个失败。</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>配置硬件分配、预览行为、窗口布局和可移植的设置预设。</translation>
@@ -563,7 +507,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>将 SDR 转换为 HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>已复制到剪贴板。</translation>
     </message>
@@ -572,13 +515,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>复制</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>无法在资源管理器中显示：%1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>当前图像</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>DLSS 效果：%1</translation>
     </message>
@@ -636,11 +573,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G 引擎</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>丢帧</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>默认</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>下载已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>下载完成。正在扫描…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>正在下载网络图像…</translation>
     </message>
@@ -670,11 +599,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>将媒体文件拖放到此处</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>编码</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>引擎</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>请输入有效的在线 URL（Twitch、YouTube、HLS 等）。</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>错误</translation>
     </message>
@@ -731,19 +650,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>退出</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>退出全屏</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>退出聚焦预览</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>展开</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>导出设置</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>导出失败：%1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>预设“%1”已导出到 %2</translation>
     </message>
@@ -807,7 +712,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Exposure</source>
       <translation>曝光</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>恢复出厂设置将重置 DLSS、放大、插帧、GPU、蒙版及编码设置。窗口大小和位置保留为桌面偏好。</translation>
@@ -823,7 +727,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>文件</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>文件已不存在：%1</translation>
     </message>
@@ -858,11 +761,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>插帧</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>全屏</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>全屏</translation>
@@ -886,7 +784,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Grain Amount</source>
       <translation>颗粒强度</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>HDR 饱和度</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>HLS 分段时长</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>输入</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>等待中</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>空闲。输入源并开始实时会话。</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>图像</translation>
     </message>
@@ -1010,7 +892,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>导入 JSON 预设</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>导入失败：%1</translation>
     </message>
@@ -1020,7 +901,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>导入...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>预设“%1”导入成功。</translation>
     </message>
@@ -1029,7 +909,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>初始设置</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>正在初始化运行环境…</translation>
     </message>
@@ -1044,12 +923,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>输入图像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>输入扫描已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>输入扫描失败：%1</translation>
     </message>
@@ -1068,12 +945,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>视频插帧</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>实时配置无效：%1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>无效设置：%1</translation>
     </message>
@@ -1093,16 +964,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>任务进度</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>实时引擎待机</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>实时流已启动</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>LUT 文件 (.cube)</translation>
@@ -1118,12 +979,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>LUT 强度</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>LUT 导出已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>LUT 导出失败：%1</translation>
     </message>
@@ -1138,54 +997,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>光线</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>实时</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>实时 DLSS 效果</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>实时缩放</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>实时会话失败：%1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>其他操作进行时无法使用实时会话。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>实时会话运行中。</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>实时会话已启动。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>实时会话已停止。</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>加载控制遮罩...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>正在加载媒体…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>正在加载预览...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>正在加载... 请稍候。</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>本地</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>局部结构强度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>局部色调强度</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>本地视频文件</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>低</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV：%1 个丢帧，%2 次重新缓冲，A/V 同步 %3 ms</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>维护与默认设置</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>匹配色彩</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>匹配色彩来源</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>最高</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>最大输入分辨率</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>当前阶段测得的每秒输入帧数</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>媒体加载已取消。</translation>
     </message>
@@ -1280,7 +1063,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>中</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>%1 的元数据不可用。</translation>
     </message>
@@ -1320,7 +1102,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>静音</translation>
     </message>
@@ -1330,22 +1111,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>NO OUTPUT</source>
       <translation>无输出</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR 强度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>NR 处理次数</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>NR 风格</translation>
     </message>
@@ -1376,17 +1153,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>否</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>未选择要清除的文件。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>未选择要在资源管理器中显示的文件。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>队列中没有可处理的文件。</translation>
     </message>
@@ -1404,18 +1178,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>输出</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>在线</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>在线流媒体 URL</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>打开源文件夹</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>已打开 %1 所在文件夹。</translation>
     </message>
@@ -1474,7 +1241,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>输出格式</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>输出不可用：%1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>处理次数</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>粘贴失败：%1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>暂停</translation>
     </message>
@@ -1541,23 +1304,15 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>播放</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>播放缓冲</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>播放速度</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>播放列表：%1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>请输入预设名称。</translation>
     </message>
@@ -1575,7 +1330,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>偏好设置与系统配置</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>正在准备批处理…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>预览</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>预览已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>预览完成%1。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>预览配置错误：%1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>预览文件</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>其他操作进行时无法预览。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>预览已被新设置替代。</translation>
     </message>
@@ -1684,18 +1433,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>编码质量：由编码器固定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>操作进行时无法更改队列。</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>重新缓冲</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>就绪。</translation>
     </message>
@@ -1721,7 +1457,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>实时预览</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>接收 %1 → 输入 %2 → 输出 %3（%4）</translation>
     </message>
@@ -1731,22 +1466,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>参考图像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>当前操作进行时无法应用参考匹配。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>输入或色彩设置已更改，已跳过参考匹配。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>参考匹配已取消。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>参考匹配失败：%1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>渲染视频</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>正在渲染预览%1…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>重置</translation>
@@ -1822,34 +1551,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>重置 放大 设置</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>正在解析源并启动实时处理…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>正在解析源...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>还原</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>继续</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>运行环境初始化失败：%1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>源</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>将结果保存在程序的输出文件夹中。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUT 已保存到 %1</translation>
     </message>
@@ -1892,7 +1598,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>已保存并验证</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>正在保存 %1³ LUT…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>缩放方法</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>正在扫描选定输入…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>选择“应用 LUT”以通过色彩调整匹配参考。</translation>
     </message>
@@ -1969,38 +1672,26 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>选择输入媒体</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>选择 MP4/MKV 视频...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>导出前请选择批处理选项卡。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>请选择有效的本地视频文件 (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>请选择有效的本地视频文件。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>使用自动色彩调整前请选择图像或视频。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>请选择输入并等待当前操作完成，再匹配色彩。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>选择参考前请先选择输入图像或视频。</translation>
     </message>
@@ -2010,19 +1701,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>选择...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>选定的参考图像</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>操作进行时无法更改选择。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>设置已保存，将在下次启动实时会话时生效。</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Sharpness</source>
       <translation>锐度</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>尺寸模式</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>皮肤结构强度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>源（原始）</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>源质量</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>源：%1 fps，Guide：%2 ms，DLSS：%3 ms，编码：%4 ms</translation>
     </message>
@@ -2131,11 +1799,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>开始 / 渲染</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>开始实时会话</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>正在启动...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>停止实时会话</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>停止错误：%1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>请先停止当前操作，再更改处理设置。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>请先停止当前操作，再导入预设。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>请先停止当前操作，再重置设置。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>请先停止当前操作，再开始批处理。</translation>
     </message>
@@ -2194,25 +1845,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>已停止。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>正在停止实时会话…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>正在停止实时会话...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>正在停止...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>流媒体源</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>在 Patreon 上支持</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>已切换至 %1 模式。%2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>目标 %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>目标帧率</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Tonal Response</source>
       <translation>色调响应</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>超高</translation>
@@ -2299,12 +1925,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>取消静音</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>正在更新实时预览…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>放大图像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>放大视频需要启用 VSR 或 RTX Video HDR。</translation>
     </message>
@@ -2359,11 +1982,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>视频文件</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>视频文件 (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>视频文件 (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>视图</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>音量 %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>音量</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>降低音量</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>提高音量</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>等待开始</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>网络图像下载失败：%1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>是</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>YouTube、Twitch 或 HLS/RTMP URL...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>图像</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>秒</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>视频</translation>
     </message>
@@ -2507,18 +2099,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk。NVIDIA、DLSS 和 RTX 是 NVIDIA Corporation 的商标。</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>快速无损</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>快速压缩</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>快速8位RGB压缩，不进行色度抽样。HDR使用快速无损。模型依次运行。</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Startup %1 s · switch %2 s</source>
       <translation>启动 %1 秒 · 切换 %2 秒</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>缓存空间（滚动缓存）</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>缓存大小</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 GB（默认）</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>原生精度</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>压缩 RGB（8 位）</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>控制蒙版会替代自动蒙版。RGB 通道控制强度、色调和结构。</translation>
     </message>
@@ -2712,10 +2276,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Software codecs</source>
       <translation>软件编解码器</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>源画质选择适用于 YouTube/Twitch 页面；当前使用提供的源。</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

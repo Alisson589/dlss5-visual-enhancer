@@ -1,0 +1,189 @@
+[CmdletBinding()]
+param(
+    [ValidateSet('Debug', 'Release', 'RelWithDebInfo')][string]$Configuration = 'Release',
+    [string]$QtRoot,
+    [string]$BuildDir = 'out',
+    [string]$Destination,
+    [string]$NativeBuildRoot,
+    [string]$CertificateThumbprint,
+    [string]$TimestampServer = 'http://timestamp.digicert.com',
+    [switch]$MachineCertificateStore
+)
+$ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Toolchain.ps1')
+$projectRoot = Split-Path -Parent $PSScriptRoot
+$workspaceRoot = Split-Path -Parent $projectRoot
+$resolvedQt = Resolve-VeQtRoot $QtRoot
+$resolvedBuild = Resolve-VePath $BuildDir $projectRoot
+if (-not $Destination) { $Destination = Join-Path $workspaceRoot 'Visual Enhancer' }
+$resolvedDestination = Resolve-VePath $Destination $projectRoot
+if ($resolvedDestination -eq $projectRoot -or $resolvedDestination -eq $workspaceRoot) {
+    throw 'Deploy to the Visual Enhancer folder or another dedicated application folder.'
+}
+$appDirectory = Join-Path $resolvedDestination 'app'
+$runtimeSource = Join-Path $workspaceRoot 'Visual Enhancer/app'
+$binaryDirectory = Join-Path $resolvedBuild $Configuration
+$deployment = Join-Path $resolvedQt 'bin/windeployqt.exe'
+foreach ($name in @('Visual Enhancer.exe', 'VE_CLI.exe', 'Visual Enhancer.app.exe', 'VE_CLI.app.exe')) {
+    $binary = Join-Path $binaryDirectory $name
+    if (-not (Test-Path -LiteralPath $binary)) { throw "Build $Configuration first: $binary is missing." }
+}
+if (-not (Test-Path -LiteralPath (Join-Path $runtimeSource 'bin/runtime'))) {
+    throw "Required media tools and native engines are missing from $runtimeSource/bin."
+}
+$nativeModules = @{
+    neural_rendering = @('dlssnr', 'neuroframe_engine_neural_rendering.dll')
+    super_resolution = @('dlsssr', 'neuroframe_engine_super_resolution.dll')
+    frame_interpolation = @('dlssg', 'neuroframe_engine_frame_interpolation.dll')
+    rtx_video = @('rtx_video', 'neuroframe_engine_upscaling.dll')
+    video_effects = @('vfx', 'neuroframe_engine_video_effects.dll')
+}
+if ($NativeBuildRoot) {
+    $resolvedNativeBuildRoot = Resolve-VePath $NativeBuildRoot $projectRoot
+    foreach ($feature in $nativeModules.Keys) {
+        $binary = Join-Path $resolvedNativeBuildRoot "$feature/build/$($nativeModules[$feature][1])"
+        if (-not (Test-Path -LiteralPath $binary -PathType Leaf)) { throw "Rebuild native engine first: $binary" }
+    }
+}
+# Copy directory contents explicitly so runtime assets become ordinary files,
+# including any source asset directories backed by junctions.
+function Copy-VeTree([string]$Source, [string]$Target) {
+    if ([IO.Path]::GetFullPath($Source) -eq [IO.Path]::GetFullPath($Target)) { return }
+    New-Item -ItemType Directory -Path $Target -Force | Out-Null
+    foreach ($item in Get-ChildItem -LiteralPath $Source -Force) {
+        $targetItem = Join-Path $Target $item.Name
+        if ($item.PSIsContainer) { Copy-VeTree $item.FullName $targetItem }
+        else { Copy-Item -LiteralPath $item.FullName -Destination $targetItem -Force }
+    }
+}
+New-Item -ItemType Directory -Path $appDirectory -Force | Out-Null
+Copy-VeTree (Join-Path $runtimeSource 'bin') (Join-Path $appDirectory 'bin')
+$vfxModuleRoot = Join-Path $workspaceRoot 'native (dev)/modules/video_effects'
+$vfxBinary = Join-Path $vfxModuleRoot 'build/neuroframe_engine_video_effects.dll'
+if($NativeBuildRoot){$vfxBinary=Join-Path $resolvedNativeBuildRoot 'video_effects/build/neuroframe_engine_video_effects.dll'}
+$vfxRuntime = Join-Path $appDirectory 'bin/runtime/vfx'
+if(Test-Path -LiteralPath $vfxBinary){
+    New-Item -ItemType Directory -Force -Path $vfxRuntime | Out-Null
+    Copy-Item -LiteralPath $vfxBinary -Destination $vfxRuntime -Force
+    & (Join-Path $vfxModuleRoot 'package_runtime.ps1') -Destination $vfxRuntime
+    # NGX plugins shared by RTX Video and VFX must come from the same SDK release.
+    $vfxSdk = Join-Path $workspaceRoot 'native (dev)/external/VFXSDK_windows_1.3.0.0/VideoFX'
+    foreach ($plugin in @(@('nvvfxvideosuperres','nvngx_vsr.dll'),@('nvvfxtruehdr','nvngx_truehdr.dll'))) {
+        Copy-Item -LiteralPath (Join-Path $vfxSdk "features/$($plugin[0])/bin/$($plugin[1])") -Destination (Join-Path $appDirectory "bin/runtime/rtx_video/$($plugin[1])") -Force
+    }
+}elseif(-not(Test-Path -LiteralPath (Join-Path $vfxRuntime 'neuroframe_engine_video_effects.dll'))){throw 'Build the NVIDIA VFX bridge before packaging the application.'}
+if ($NativeBuildRoot) {
+    foreach ($feature in $nativeModules.Keys) {
+        $binary = Join-Path $resolvedNativeBuildRoot "$feature/build/$($nativeModules[$feature][1])"
+        $target = Join-Path $appDirectory "bin/runtime/$($nativeModules[$feature][0])/$($nativeModules[$feature][1])"
+        Copy-Item -LiteralPath $binary -Destination $target -Force
+    }
+}
+foreach ($name in @('LICENSE.txt', 'THIRD-PARTY-NOTICES.txt')) {
+    $source = Join-Path $runtimeSource $name
+    $target = Join-Path $appDirectory $name
+    if ($source -ne $target -and (Test-Path -LiteralPath $source)) {
+        Copy-Item -LiteralPath $source -Destination $target -Force
+    }
+}
+$resources = Join-Path $appDirectory 'resources'
+$brandingDirectory = Join-Path $resources 'branding'
+New-Item -ItemType Directory -Path $brandingDirectory -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $workspaceRoot 'native (dev)/assets/icon.png') -Destination $brandingDirectory -Force
+Copy-VeTree (Join-Path $projectRoot 'src/desktop') (Join-Path $resources 'desktop')
+Copy-VeTree (Join-Path $projectRoot 'src/processing/shaders') (Join-Path $resources 'shaders')
+foreach ($name in @('Visual Enhancer.exe', 'VE_CLI.exe')) {
+    Copy-Item -LiteralPath (Join-Path $binaryDirectory $name) -Destination (Join-Path $resolvedDestination $name) -Force
+}
+foreach ($name in @('Visual Enhancer.app.exe', 'VE_CLI.app.exe')) {
+    Copy-Item -LiteralPath (Join-Path $binaryDirectory $name) -Destination (Join-Path $appDirectory $name) -Force
+}
+$mode = if ($Configuration -eq 'Debug') { '--debug' } else { '--release' }
+$visualStudio = Get-VeVisualStudioInstallation
+$originalVcDirectory = [Environment]::GetEnvironmentVariable('VCINSTALLDIR')
+try {
+    $env:VCINSTALLDIR = (Join-Path $visualStudio.installationPath 'VC') + '\'
+    $deploymentArguments = @($mode, '--compiler-runtime', '--skip-plugin-types', 'qmltooling', '--dir', $appDirectory,
+        '--qmldir', (Join-Path $projectRoot 'src/desktop/qml'),
+        (Join-Path $appDirectory 'Visual Enhancer.app.exe'), (Join-Path $appDirectory 'VE_CLI.app.exe'))
+    Invoke-VeCommand $deployment $deploymentArguments
+} finally { $env:VCINSTALLDIR = $originalVcDirectory }
+$offscreenName = if ($Configuration -eq 'Debug') { 'qoffscreend.dll' } else { 'qoffscreen.dll' }
+$offscreenSource = Join-Path $resolvedQt "plugins/platforms/$offscreenName"
+if (-not (Test-Path -LiteralPath $offscreenSource)) { throw "Missing Qt offscreen plugin: $offscreenSource" }
+$platformDirectory = Join-Path $appDirectory 'platforms'
+New-Item -ItemType Directory -Path $platformDirectory -Force | Out-Null
+# The CLI uses QGuiApplication with the offscreen platform for image processing.
+Copy-Item -LiteralPath $offscreenSource -Destination $platformDirectory -Force
+$redistRoot = Join-Path $visualStudio.installationPath 'VC/Redist/MSVC'
+$redistVersion = Get-ChildItem -LiteralPath $redistRoot -Directory |
+    Where-Object { $_.Name -match '^\d+\.\d+\.\d+$' } |
+    Sort-Object { [version]$_.Name } -Descending | Select-Object -First 1
+if (-not $redistVersion) { throw 'The Visual C++ runtime directory was not found.' }
+$architecturePath = if ($Configuration -eq 'Debug') { 'debug_nonredist/x64' } else { 'x64' }
+$crtDirectory = Get-ChildItem -LiteralPath (Join-Path $redistVersion.FullName $architecturePath) -Directory |
+    Where-Object { $_.Name -match '^Microsoft\.VC\d+\.(Debug)?CRT$' } | Select-Object -First 1
+if (-not $crtDirectory) { throw 'The matching x64 Visual C++ runtime was not found.' }
+Get-ChildItem -LiteralPath $crtDirectory.FullName -File -Filter '*.dll' | ForEach-Object {
+    Copy-Item -LiteralPath $_.FullName -Destination $appDirectory -Force
+}
+# Runtime paths are embedded in the application executables.
+$externalQtConfiguration = Join-Path $resolvedDestination 'qt.conf'
+if (Test-Path -LiteralPath $externalQtConfiguration) { Remove-Item -LiteralPath $externalQtConfiguration -Force }
+# Remove only obsolete application entry files after the replacement executables
+# and their dependencies have been deployed successfully.
+foreach ($name in @('Visual Enhancer.app.dll', 'VE_CLI.app.dll', 'Visual Enhancer.exe', 'VE_CLI.exe', 'qt.conf')) {
+    $obsolete = Join-Path $appDirectory $name
+    if (Test-Path -LiteralPath $obsolete) { Remove-Item -LiteralPath $obsolete -Force }
+}
+# The application fixes its Qt Quick style to Basic. Keep its runtime imports,
+# translations and dialogs, but omit development metadata and unused styles.
+# Validate each target before removing old files from an existing installation.
+function Remove-VePackagedArtifact([string]$RelativePath) {
+    $appRoot = [IO.Path]::GetFullPath($appDirectory).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+    $target = [IO.Path]::GetFullPath((Join-Path $appDirectory $RelativePath))
+    if (-not $target.StartsWith($appRoot, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Packaging cleanup target is outside app/: $RelativePath"
+    }
+    if (Test-Path -LiteralPath $target) {
+        $item = Get-Item -LiteralPath $target -Force
+        if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Packaging cleanup cannot follow a linked directory: $RelativePath"
+        }
+        if ($item.PSIsContainer) {
+            $links = @(Get-ChildItem -LiteralPath $target -Recurse -Force |
+                Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint })
+            if ($links.Count) { throw "Packaging cleanup found a linked directory in $RelativePath" }
+        }
+        Remove-Item -LiteralPath $target -Recurse -Force
+    }
+}
+foreach ($relative in @('release', 'qmltooling', 'vc_redist.x64.exe', 'qml/QtQuick/NativeStyle')) {
+    Remove-VePackagedArtifact $relative
+}
+foreach ($style in @('Fusion', 'Imagine', 'Material', 'Universal', 'FluentWinUI3', 'Windows', 'Native')) {
+    Remove-VePackagedArtifact "qml/QtQuick/Controls/$style"
+    foreach ($suffix in @('.dll', 'd.dll', 'StyleImpl.dll', 'StyleImpld.dll')) {
+        Remove-VePackagedArtifact "Qt6QuickControls2$style$suffix"
+    }
+}
+foreach ($name in @('Qt6QuickNativeStyle.dll', 'Qt6QuickNativeStyled.dll')) {
+    Remove-VePackagedArtifact $name
+}
+foreach ($directory in @('qml', 'resources/desktop/translations')) {
+    Get-ChildItem -LiteralPath (Join-Path $appDirectory $directory) -Recurse -File |
+        Where-Object { $_.Extension -in @('.qmltypes', '.ts') } | ForEach-Object {
+            Remove-VePackagedArtifact ([IO.Path]::GetRelativePath($appDirectory, $_.FullName))
+        }
+}
+foreach ($directory in @('config', 'outputs', 'logs', 'jobs', 'temp')) {
+    New-Item -ItemType Directory -Path (Join-Path $resolvedDestination ('data/' + $directory)) -Force | Out-Null
+}
+if ($CertificateThumbprint) {
+    & (Join-Path $PSScriptRoot 'sign-release.ps1') -PackageRoot $resolvedDestination `
+        -CertificateThumbprint $CertificateThumbprint -TimestampServer $TimestampServer `
+        -MachineCertificateStore:$MachineCertificateStore
+}
+& (Join-Path $PSScriptRoot 'audit-release.ps1') -PackageRoot $resolvedDestination `
+    -RequireSignatures:([bool]$CertificateThumbprint)
+Write-Host "Ready-to-run application: $resolvedDestination"

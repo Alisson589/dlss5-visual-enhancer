@@ -1,0 +1,6 @@
+//!HOOK MAIN
+//!BIND HOOKED
+vec4 pixel(ivec2 d) {
+    vec2 p = clamp(floor(HOOKED_pos * HOOKED_size) + vec2(d), vec2(0.0), HOOKED_size - 1.0);
+    return HOOKED_tex((p + 0.5) / HOOKED_size);
+}

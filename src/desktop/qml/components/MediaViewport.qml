@@ -37,6 +37,15 @@ Rectangle {
     focus: true
 
     readonly property bool hasInput: appBridge ? appBridge.previewInputUrl !== "" : false
+    readonly property string inputSourceUrl: appBridge && appBridge.previewInputIsVideo ? appBridge.previewInputUrl : ""
+    function syncInputSource() {
+        // QMediaPlayer stops and resets position when setSource is called,
+        // even if an unchanged backend URL was merely notified again.
+        if (inputPlayer && inputPlayer.source.toString() !== inputSourceUrl)
+            inputPlayer.source = inputSourceUrl
+    }
+    onInputSourceUrlChanged: syncInputSource()
+    Component.onCompleted: syncInputSource()
     readonly property bool hasOutput: appBridge ? appBridge.hasOutputPreview : false
     readonly property bool isVideo: appBridge ? (appBridge.previewInputIsVideo || appBridge.previewOutputIsVideo) : false
     readonly property bool hasStillVideoOutput: viewport.isVideo && viewport.hasOutput && appBridge && !appBridge.previewOutputIsVideo
@@ -107,6 +116,7 @@ Rectangle {
     readonly property real inputDurationMs: appBridge ? appBridge.sourceDuration * 1000.0 : 0
     readonly property real inputFps: appBridge && appBridge.sourceFps > 0 ? appBridge.sourceFps : 30.0
     readonly property bool inputReady: inputPlayer.duration > 0 && (inputPlayer.mediaStatus === MediaPlayer.LoadedMedia || inputPlayer.mediaStatus === MediaPlayer.BufferedMedia)
+    property bool inputHasFrame: false
     readonly property bool outputReady: viewport.hasOutput && (hasStillVideoOutput || (outputPlayer.duration > 0 && (outputPlayer.mediaStatus === MediaPlayer.LoadedMedia || outputPlayer.mediaStatus === MediaPlayer.BufferedMedia)))
     readonly property bool activeReady: showingOutput && !hasStillVideoOutput ? outputReady : inputReady
     readonly property int sourceWidth: appBridge && appBridge.sourceWidth > 0 ? appBridge.sourceWidth : 1
@@ -167,28 +177,54 @@ Rectangle {
     MediaPlayer {
         id: inputPlayer
         objectName: "inputPlayer"
-        source: viewport.isVideo && appBridge && appBridge.previewInputIsVideo ? appBridge.previewInputUrl : ""
         audioOutput: mediaAudio
         videoOutput: inputSurface
         // Keep the last frame on screen instead of clearing to black at EOS.
         loops: MediaPlayer.Infinite
         property bool primePending: false
-        function resetSourcePosition() {
+        property bool primingFrame: false
+        property bool primingWasMuted: false
+        property real requestedPosition: 0
+        function seekToPosition(target) {
+            requestedPosition = target
+            // A user seek supersedes the queued first-frame reset/prime.
+            finishPriming()
+            if (mediaStatus === MediaPlayer.LoadedMedia || mediaStatus === MediaPlayer.BufferedMedia) {
+                primePending = false
+                position = target
+            }
+        }
+        function finishPriming() {
+            if (!primingFrame)
+                return
             pause()
-            position = 0
+            mediaAudio.muted = primingWasMuted
+            primingFrame = false
+        }
+        function resetSourcePosition() {
+            if (primingFrame)
+                return
+            pause()
+            position = requestedPosition
         }
         function primeFirstFrame() {
             if (!primePending || source.toString() === ""
                     || (mediaStatus !== MediaPlayer.LoadedMedia && mediaStatus !== MediaPlayer.BufferedMedia))
                 return
             primePending = false
-            // Let the backend finish its status notification before changing
-            // decoder state.
+            // Qt 6.12 may cancel the first decode when pause follows play in
+            // the same event. Wait for the actual surface before pausing.
+            primingWasMuted = mediaAudio.muted
+            mediaAudio.muted = true
+            primingFrame = true
+            position = requestedPosition
             play()
-            pause()
-            position = 0
         }
         onSourceChanged: {
+            finishPriming()
+            requestedPosition = 0
+            viewport.inputHasFrame = false
+            inputSurface.clearOutput()
             viewport.playerError = ""
             viewport.peekActive = false
             viewport.peekWasPlaying = false
@@ -207,6 +243,7 @@ Rectangle {
                 // Infinite loops already rewinds; keep position sane for UI.
             }
             if (status === MediaPlayer.InvalidMedia) {
+                finishPriming()
                 viewport.playerError = inputPlayer.errorString !== "" ? inputPlayer.errorString : "Unsupported video format."
             }
         }
@@ -216,6 +253,7 @@ Rectangle {
             console.warn("inputPlayer error:", error, errorString, "source:", source)
         }
         onDurationChanged: (d) => { console.log("inputPlayer duration:", d, "source:", source) }
+        onPlaybackRateChanged: outputPlayer.playbackRate = playbackRate
         // Output mirror: input is the master timeline in every layout; the
         // output follows clamped to its own (usually single-frame) duration.
         // One-directional so no feedback loop is possible. For timed clips the
@@ -224,6 +262,8 @@ Rectangle {
         // spans and the original outside (paused tabs stay manual; peek and
         // 2-Up are never overridden).
         onPositionChanged: (pos) => {
+            if (!primingFrame && appBridge && viewport.isVideo)
+                appBridge.notePlayheadMs(pos)
             if (viewport.hasRangePlayback && viewport.mirrorOutput) {
                 var r = viewport.fiRangeAt(pos / 1000.0)
                 var inputPlaying = inputPlayer.playbackState === MediaPlayer.PlayingState
@@ -316,7 +356,7 @@ Rectangle {
             // Parked: remember the frame so realtime auto-renders (settings
             // tweaks, menu action) preview it instead of frame 1. Independent
             // of mirroring so it also works before any output exists.
-            if (state !== MediaPlayer.PlayingState && appBridge && viewport.isVideo)
+            if (!primingFrame && state !== MediaPlayer.PlayingState && appBridge && viewport.isVideo)
                 appBridge.notePlayheadMs(inputPlayer.position)
             if (!viewport.mirrorOutput) return
             // Output always carries timeline-meaningful footage (for ranges the
@@ -328,6 +368,15 @@ Rectangle {
                 viewport.fiPinTo(viewport.fiRangeAt(viewport.playheadMs / 1000.0))
             if (state === MediaPlayer.PlayingState) outputPlayer.play()
             else outputPlayer.pause()
+        }
+    }
+    Connections {
+        target: inputSurface.videoSink
+        function onVideoFrameChanged() {
+            if (inputSurface.videoSink.videoSize.width > 0 && inputSurface.videoSink.videoSize.height > 0) {
+                viewport.inputHasFrame = true
+                Qt.callLater(inputPlayer.finishPriming)
+            }
         }
     }
         // Dedicated preview-output player (usually a single enhanced frame).
@@ -412,7 +461,8 @@ Rectangle {
                 onActivated: (v) => { viewport.viewMode = v; viewport.forceActiveFocus() }
             }
             AppSegmentedControl {
-                visible: viewport.isVideo && (viewport.hasOutput || viewport.videoTwoUp)
+                objectName: "videoComparisonSelector"
+                visible: viewport.isVideo
                 width: 225
                 model: [{label:qsTranslate("App", "Input"),value:"input"},{label:qsTranslate("App", "Output"),value:"output"},{label:qsTranslate("App", "2-Up"),value:"twoup"}]
                 currentValue: viewport.videoTwoUp ? "twoup" : (viewport.showVideoOutput ? "output" : "input")
@@ -497,7 +547,6 @@ Rectangle {
 
         Row {
             id: zoomTools
-            visible: !viewport.isVideo || viewport.showingTwoUp
             anchors.right: parent.right; anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: toolbar.stacked ? -12 : 0
@@ -537,14 +586,18 @@ Rectangle {
         Image {
             id: videoPoster
             objectName: "videoPoster"
-            anchors.fill: parent
-            visible: viewport.isVideo && !viewport.showingOutput && !viewport.showingTwoUp && !viewport.inputReady
+            width: parent.width; height: parent.height
+            transformOrigin: Item.TopLeft
+            scale: viewport.zoomFactor
+            x: (parent.width - width * scale) / 2 + viewport.panX
+            y: (parent.height - height * scale) / 2 + viewport.panY
+            visible: viewport.isVideo && !viewport.showingOutput && !viewport.showingTwoUp && !viewport.inputHasFrame
             source: appBridge ? appBridge.previewPosterUrl : ""
             fillMode: Image.PreserveAspectFit; cache: false; asynchronous: true; smooth: true
         }
 
         // Each player keeps the same output while its clipped pane changes
-        // size. In 2-Up, both surfaces share the same zoom and pan.
+        // size. Input, Output and 2-Up share the same zoom and pan.
         Item {
             id: inputVideoPane
             objectName: "inputVideoPane"
@@ -555,11 +608,12 @@ Rectangle {
             VideoOutput {
                 id: inputSurface
                 objectName: "inputSurface"
+                endOfStreamPolicy: VideoOutput.KeepLastFrame
                 width: parent.width; height: parent.height
                 transformOrigin: Item.TopLeft
-                scale: viewport.showingTwoUp ? viewport.zoomFactor : 1.0
-                x: (parent.width - width * scale) / 2 + (viewport.showingTwoUp ? viewport.panX : 0)
-                y: (parent.height - height * scale) / 2 + (viewport.showingTwoUp ? viewport.panY : 0)
+                scale: viewport.zoomFactor
+                x: (parent.width - width * scale) / 2 + viewport.panX
+                y: (parent.height - height * scale) / 2 + viewport.panY
                 fillMode: VideoOutput.PreserveAspectFit
             }
         }
@@ -583,24 +637,25 @@ Rectangle {
             }
             VideoOutput {
                 id: outputSurface
+                endOfStreamPolicy: VideoOutput.KeepLastFrame
                 objectName: "outputSurface"
                 visible: appBridge && appBridge.previewOutputIsVideo
                 width: parent.width; height: parent.height
                 transformOrigin: Item.TopLeft
-                scale: viewport.showingTwoUp ? viewport.zoomFactor : 1.0
-                x: (parent.width - width * scale) / 2 + (viewport.showingTwoUp ? viewport.panX : 0)
-                y: (parent.height - height * scale) / 2 + (viewport.showingTwoUp ? viewport.panY : 0)
+                scale: viewport.zoomFactor
+                x: (parent.width - width * scale) / 2 + viewport.panX
+                y: (parent.height - height * scale) / 2 + viewport.panY
                 fillMode: VideoOutput.PreserveAspectFit
             }
-            Image {
+            PreviewImage {
                 objectName: "outputStillFrame"
                 visible: viewport.hasStillVideoOutput
                 source: visible && appBridge ? appBridge.previewOutputUrl : ""
                 width: parent.stillFrameRect.width; height: parent.stillFrameRect.height
                 transformOrigin: Item.TopLeft
-                scale: viewport.showingTwoUp ? viewport.zoomFactor : 1.0
-                x: (parent.width - parent.width * scale) / 2 + parent.stillFrameRect.x * scale + (viewport.showingTwoUp ? viewport.panX : 0)
-                y: (parent.height - parent.height * scale) / 2 + parent.stillFrameRect.y * scale + (viewport.showingTwoUp ? viewport.panY : 0)
+                scale: viewport.zoomFactor
+                x: (parent.width - parent.width * scale) / 2 + parent.stillFrameRect.x * scale + viewport.panX
+                y: (parent.height - parent.height * scale) / 2 + parent.stillFrameRect.y * scale + viewport.panY
                 // AspectFit rounds its internal letterbox offset. Stretch an
                 // already fitted item so its fractional position is retained,
                 // matching VideoOutput instead of jumping on an Input/Output swap.
@@ -677,6 +732,7 @@ Rectangle {
             onEnabledChanged: { if (!enabled) endPeek(true) }
             onReleased: endPeek(true)
             onCanceled: endPeek(true)
+            onWheel: (wheel) => { viewport.changeZoom(wheel.angleDelta.y > 0 ? 1.12 : 0.89); wheel.accepted = true }
         }
 
         // Peek badge + highlight while held.
@@ -729,7 +785,7 @@ Rectangle {
 
                 Image {
                     anchors.fill: parent
-                    source: appBridge ? appBridge.previewInputUrl : ""
+                    source: appBridge && !viewport.isVideo ? appBridge.previewInputUrl : ""
                     fillMode: Image.Stretch; cache: false; asynchronous: true; smooth: true
                 }
 
@@ -740,9 +796,9 @@ Rectangle {
                     Item {
                         x: parent.width * (appBridge ? appBridge.splitPosition : 0.5)
                         width: parent.width - x; height: parent.height; clip: true
-                        Image {
+                        PreviewImage {
                             x: -parent.x; width: mediaFrame.width; height: mediaFrame.height
-                            source: appBridge ? appBridge.previewOutputUrl : ""
+                            source: appBridge && !viewport.isVideo ? appBridge.previewOutputUrl : ""
                             fillMode: Image.Stretch; cache: false; smooth: true
                         }
                     }
@@ -768,11 +824,11 @@ Rectangle {
                     }
                 }
 
-                Image {
+                PreviewImage {
                     objectName: "singleOutputImage"
                     anchors.fill: parent
                     visible: viewport.hasOutput && viewport.viewMode === "single" && !viewport.originalPeekHeld
-                    source: appBridge ? appBridge.previewOutputUrl : ""
+                    source: appBridge && !viewport.isVideo ? appBridge.previewOutputUrl : ""
                     fillMode: Image.Stretch; cache: false; smooth: true
                 }
             }
@@ -807,20 +863,20 @@ Rectangle {
                     transformOrigin: Item.TopLeft; scale: viewport.zoomFactor
                     x: 4 + (parent.width - 8 - width * scale) / 2 + viewport.panX
                     y: 4 + (parent.height - 8 - height * scale) / 2 + viewport.panY
-                    source: appBridge ? appBridge.previewInputUrl : ""; fillMode: Image.PreserveAspectFit; cache: false
+                    source: appBridge && !viewport.isVideo ? appBridge.previewInputUrl : ""; fillMode: Image.PreserveAspectFit; cache: false
                 }
                 AppBadge { anchors.left: parent.left; anchors.top: parent.top; anchors.margins: 10; text: qsTranslate("App", "INPUT") }
             }
             Rectangle {
                 width: (parent.width - 4) / 2; height: parent.height; color: Theme.bgBase
                 clip: true
-                Image {
+                PreviewImage {
                     objectName: "outputComparisonImage"
                     width: parent.width - 8; height: parent.height - 8
                     transformOrigin: Item.TopLeft; scale: viewport.zoomFactor
                     x: 4 + (parent.width - 8 - width * scale) / 2 + viewport.panX
                     y: 4 + (parent.height - 8 - height * scale) / 2 + viewport.panY
-                    source: appBridge ? appBridge.previewOutputUrl : ""; fillMode: Image.PreserveAspectFit; cache: false
+                    source: appBridge && !viewport.isVideo ? appBridge.previewOutputUrl : ""; fillMode: Image.PreserveAspectFit; cache: false
                 }
                 AppBadge { anchors.left: parent.left; anchors.top: parent.top; anchors.margins: 10; text: viewport.hasOutput ? qsTranslate("App", "OUTPUT") : qsTranslate("App", "NO OUTPUT"); variant: viewport.hasOutput ? "accent" : "neutral" }
             }
@@ -830,7 +886,9 @@ Rectangle {
             id: comparisonPanArea
             objectName: "comparisonPanArea"
             anchors.fill: parent; z: 1
-            visible: viewport.twoUpLayout
+            // Single-video views retain left-button peek above this layer;
+            // middle-button panning and wheel zoom remain available below it.
+            visible: viewport.isVideo || viewport.twoUpLayout
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
             cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
             property real pressX: 0; property real pressY: 0
@@ -886,9 +944,9 @@ Rectangle {
         fallbackFrameRate: viewport.inputFps
         // Green pre-rendered FI and Upscale clip spans.
         renderedRanges: viewport.hasRangePlayback ? viewport.renderedPreviewRanges : []
-        onUserScrubbed: (posMs) => {
+        onUserScrubbed: (posMs, dragging) => {
             appBridge.notePlayheadMs(posMs)
-            if (viewport.scrubRefreshEligible) appBridge.schedulePreviewAt(posMs)
+            if (viewport.scrubRefreshEligible) appBridge.schedulePreviewAt(posMs, dragging)
         }
     }
 
@@ -901,8 +959,7 @@ Rectangle {
             if (!appBridge) return ""
             if (appBridge.runtimeState === "Failed") return "error"
             if (appBridge.previewBusy || appBridge.isProcessing
-                    || appBridge.runtimeState === "Initializing"
-                    || appBridge.operationState === "LiveRunning") return "processing"
+                    || appBridge.runtimeState === "Initializing") return "processing"
             if (appBridge.previewError !== "" || inputPlayer.mediaStatus === MediaPlayer.InvalidMedia
                     || (appBridge.previewOutputIsVideo && outputPlayer.mediaStatus === MediaPlayer.InvalidMedia)) return "error"
             return viewport.hasInput ? "ready" : ""

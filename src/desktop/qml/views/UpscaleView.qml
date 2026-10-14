@@ -423,6 +423,11 @@ model: appBridge ? appBridge.vsrQualityChoices : []
                                         onActivated: (v) => { if (appBridge) appBridge.upscaleQuality = v }
                                     }
 
+                                    EncodingQualityHint {
+                                        width: parent.width
+                                        visible: !appBridge || appBridge.fixedQualityCodecs.indexOf(appBridge.upscaleCodec) < 0
+                                        quality: appBridge ? appBridge.upscaleQuality : "Auto (Default)"
+                                    }
                                     Text {
                                         visible: appBridge && appBridge.fixedQualityCodecs.indexOf(appBridge.upscaleCodec) >= 0
                                         text: qsTranslate("App", "Quality: Fixed by codec")
@@ -527,7 +532,7 @@ model: appBridge ? appBridge.vsrQualityChoices : []
                             variant: appBridge && appBridge.canStop ? "danger" : "primary"
                             width: parent.width
                             buttonHeight: 34
-                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready" && !appBridge.isLiveRunning)) : false
+                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready")) : false
                             onClicked: {
                                 if (appBridge) {
                                     if (appBridge.canStop) appBridge.stopActiveBatch()

@@ -58,7 +58,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1秒</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>%1の設定を初期値に戻しました。</translation>
     </message>
@@ -68,7 +67,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ソース%1フレーム</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>レンダリング、プレビュー、スキャン、またはライブセッションが実行中です。キャンセルして終了しますか？</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>レンダリング、プレビュー、またはスキャンが実行中です。キャンセルして終了しますか？</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>フォルダーを追加</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>まずファイルを追加して選択してください。</translation>
     </message>
@@ -179,7 +176,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>すべてのファイル (*.*)</translation>
@@ -199,17 +195,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>すべてのメディアファイル (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>すべての設定を初期値に戻しました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>%1の色を解析中…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>入力と参照の色を解析中…</translation>
     </message>
@@ -228,7 +221,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Applied to processing</source>
       <translation>処理に適用済み</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>自動：固定フレーム</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>自動カラー調整を適用しました。各スライダーで微調整できます。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>自動カラー調整をキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>自動カラー調整失敗: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>入力またはカラー設定が変更されたため、自動調整をスキップしました。</translation>
     </message>
@@ -284,7 +272,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>自動マスク</translation>
     </message>
@@ -302,22 +289,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>バッチキュー</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>バッチをキャンセル: %1件完了、%2件失敗/スキップ。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>バッチ完了: %1件完了。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>バッチ失敗: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>ユーザーがバッチを停止しました。</translation>
     </message>
@@ -340,53 +323,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>参照</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>バッファー中... お待ちください。</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>キャッシュメモリ（ローリングキャッシュ 10 GB）</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>キャンセル</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>ライブの開始をキャンセル</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>キャンセル要求済み。ライブ開始後すぐに停止します…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>キャンセル済み</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>ライブの開始をキャンセル中…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>現在のバッチをキャンセル中…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>プレビューをキャンセル中…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>バッチを開始できません: %1</translation>
     </message>
@@ -416,12 +370,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>参照画像を選択</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>存在する参照画像を選択してください。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>存在する参照画像を選択してください。</translation>
     </message>
@@ -471,7 +419,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>動画を消去</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>クリップボードに画像やファイルがありません。</translation>
     </message>
@@ -509,7 +456,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Color Match</source>
       <translation>カラーマッチ</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>所要時間: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>警告付きで完了: %1件完了、%2件失敗。</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>ハードウェアの割り当て、プレビュー、画面レイアウト、共有可能なプリセットを設定します。</translation>
@@ -563,7 +507,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>SDRをHDRに変換</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>クリップボードにコピーしました。</translation>
     </message>
@@ -572,13 +515,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>コピー</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>エクスプローラーで表示できません: %1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>現在の画像</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>DLSSエフェクト: %1</translation>
     </message>
@@ -636,11 +573,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G エンジン</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>ドロップ</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>既定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>ダウンロードをキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>ダウンロード完了。スキャン中…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>ウェブ画像をダウンロード中…</translation>
     </message>
@@ -670,11 +599,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>メディアファイルをここにドロップ</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>エンコード</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>エンジン</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>有効なオンラインURL (Twitch、YouTube、HLSなど) を入力してください。</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -731,19 +650,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>終了</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>全画面を終了</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>集中プレビューを終了</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>拡大</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>エクスポート設定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>エクスポート失敗: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>プリセット '%1' を %2 にエクスポートしました</translation>
     </message>
@@ -807,7 +712,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Exposure</source>
       <translation>露出</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>DLSS、アップスケール、補間、GPU、マスク、エンコードの設定を初期値に戻します。ウィンドウのサイズと位置はデスクトップ設定として保持されます。</translation>
@@ -823,7 +727,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ファイル</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>ファイルが存在しません: %1</translation>
     </message>
@@ -858,11 +761,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>フレーム補間</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>全画面</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>全画面</translation>
@@ -886,7 +784,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Grain Amount</source>
       <translation>粒状感の強さ</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>HDR 彩度</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>HLSセグメントの長さ</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>入力</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>待機中</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>待機中。ソースを入力してライブを開始してください。</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>画像</translation>
     </message>
@@ -1010,7 +892,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>JSONプリセットをインポート</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>インポート失敗: %1</translation>
     </message>
@@ -1020,7 +901,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>インポート...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>プリセット '%1' をインポートしました。</translation>
     </message>
@@ -1029,7 +909,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>初期設定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>ランタイムを初期化中…</translation>
     </message>
@@ -1044,12 +923,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>入力画像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>入力スキャンをキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>入力スキャン失敗: %1</translation>
     </message>
@@ -1068,12 +945,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>動画のフレームを補間</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>無効なライブ設定: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>無効な設定: %1</translation>
     </message>
@@ -1093,16 +964,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ジョブの進捗</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>ライブエンジン待機中</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>ライブストリーム動作中</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>LUTファイル (.cube)</translation>
@@ -1118,12 +979,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>LUT強度</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>LUTのエクスポートをキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>LUTエクスポート失敗: %1</translation>
     </message>
@@ -1138,54 +997,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>明るさ</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>ライブ</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>ライブDLSSエフェクト</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>ライブ倍率</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>ライブ失敗: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>別の処理中はライブを使用できません。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>ライブセッション実行中。</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>ライブセッションを開始しました。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>ライブセッションを停止しました。</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>制御マスクを読み込み...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>メディアを読み込み中…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>プレビューを読み込み中...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>読み込み中... お待ちください。</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>ローカル</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>局所構造の強度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>局所トーンの強度</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>ローカル動画ファイル</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>低</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV: ドロップ%1、再バッファー%2、A/V同期%3 ms</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>メンテナンスと初期設定</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>色を合わせる</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>カラーマッチの参照元</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>最大</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>最大入力解像度</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>現在のステージで測定した入力フレーム毎秒</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>メディアの読み込みをキャンセルしました。</translation>
     </message>
@@ -1280,7 +1063,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>中</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>%1のメタデータは取得できません。</translation>
     </message>
@@ -1320,7 +1102,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>ミュート</translation>
     </message>
@@ -1330,22 +1111,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>NO OUTPUT</source>
       <translation>出力なし</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR 強度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>NR パス数</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>NR スタイル</translation>
     </message>
@@ -1376,17 +1153,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>いいえ</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>消去するファイルが選択されていません。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>エクスプローラーで表示するファイルが未選択です。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>処理するファイルがキューにありません。</translation>
     </message>
@@ -1404,18 +1178,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>出力</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>オンライン</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>オンラインストリームURL</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>元のフォルダーを開く</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>%1を含むフォルダーを開きました。</translation>
     </message>
@@ -1474,7 +1241,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>出力形式</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>出力利用不可: %1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>パス数</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>貼り付け失敗: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>一時停止</translation>
     </message>
@@ -1541,23 +1304,15 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>再生</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>再生バッファー</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>再生速度</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>プレイリスト: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>プリセット名を入力してください。</translation>
     </message>
@@ -1575,7 +1330,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>環境設定とシステム設定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>バッチ処理を準備中…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>プレビュー</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>プレビューをキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>プレビュー完了%1。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>プレビュー設定エラー: %1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ファイルをプレビュー</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>別の処理中はプレビューできません。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>新しい設定によりプレビューが更新されました。</translation>
     </message>
@@ -1684,18 +1433,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>エンコード品質: コーデックにより固定</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>処理中はキューを変更できません。</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>再バッファー</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>準備完了。</translation>
     </message>
@@ -1721,7 +1457,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>リアルタイムプレビュー</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>受信 %1 → 入力 %2 → 出力 %3 (%4)</translation>
     </message>
@@ -1731,22 +1466,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>参照画像</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>現在の処理中は参照のカラーマッチを適用できません。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>入力またはカラー設定が変更されたため、参照のカラーマッチをスキップしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>参照のカラーマッチをキャンセルしました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>参照のカラーマッチ失敗: %1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>動画をレンダリング</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>プレビュー%1をレンダリング中…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>リセット</translation>
@@ -1822,34 +1551,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>アップスケールの設定をリセット</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>ソースを解決してライブを開始中…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>ソースを解決中...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>元に戻す</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>再開</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>ランタイム初期化失敗: %1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>ソース</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>結果をプログラムの出力フォルダーに保存します。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUTを %1 に保存しました</translation>
     </message>
@@ -1892,7 +1598,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>保存・検証済み</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>%1³ LUTを保存中…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>スケーリング方式</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>選択した入力をスキャン中…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>カラー調整で参照に合わせるには、LUTを適用を選択してください。</translation>
     </message>
@@ -1969,38 +1672,26 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>入力メディアを選択</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>MP4/MKV動画を選択...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>エクスポート前にバッチ処理タブを選択してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>有効なローカル動画ファイルを選択してください (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>有効なローカル動画ファイルを選択してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>自動カラー調整の前に画像または動画を選択してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>入力を選択し、現在の処理が完了してから色を合わせてください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>参照を選ぶ前に入力画像または動画を選択してください。</translation>
     </message>
@@ -2010,19 +1701,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>選択...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>選択した参照画像</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>処理中は選択を変更できません。</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>設定を保存しました。次回のライブ開始時に適用されます。</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Sharpness</source>
       <translation>シャープネス</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>サイズ設定モード</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>肌の構造の強度</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ソース (オリジナル)</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>ソース品質</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>ソース: %1 fps、ガイド: %2 ms、DLSS: %3 ms、エンコード: %4 ms</translation>
     </message>
@@ -2131,11 +1799,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>開始 / レンダリング</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>ライブセッションを開始</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>開始中...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>ライブセッションを停止</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>停止エラー: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>設定を変更する前に現在の処理を停止してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>プリセットをインポートする前に処理を停止してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>設定をリセットする前に処理を停止してください。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>バッチを開始する前に処理を停止してください。</translation>
     </message>
@@ -2194,25 +1845,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>停止しました。</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>ライブセッションを停止中…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>ライブを停止中...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>停止中...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>ストリームソース</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Patreonで支援</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>%1モードに切り替えました。%2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>目標 %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>目標FPS</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Tonal Response</source>
       <translation>階調応答</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>最高</translation>
@@ -2299,12 +1925,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>ミュート解除</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>リアルタイムプレビューを更新中…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>画像をアップスケール</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>動画アップスケールにはVSRまたはRTX Video HDRを有効にする必要があります。</translation>
     </message>
@@ -2359,11 +1982,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>動画ファイル</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>動画ファイル (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>動画ファイル (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>表示</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>音量 %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>音量</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>音量を下げる</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>音量を上げる</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>開始待ち</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>ウェブ画像のダウンロード失敗: %1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>はい</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>YouTube、Twitch、HLS/RTMPのURL...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>画像</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>秒</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>動画</translation>
     </message>
@@ -2507,18 +2099,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk。NVIDIA、DLSS、RTXはNVIDIA Corporationの商標です。</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>高速ロスレス</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>高速圧縮</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>色のサブサンプリングを行わない高速8ビットRGB圧縮。HDRでは高速ロスレスを使用します。モデルは1つずつ実行されます。</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Startup %1 s · switch %2 s</source>
       <translation>起動 %1 秒 · 切り替え %2 秒</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>キャッシュメモリ（ローリングキャッシュ）</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>キャッシュサイズ</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 GB（既定）</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>ネイティブ精度</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>圧縮 RGB（8ビット）</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>コントロールマスクは自動マスクに代わって使用されます。RGBチャンネルで強度、トーン、構造を制御します。</translation>
     </message>
@@ -2712,10 +2276,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Software codecs</source>
       <translation>ソフトウェアコーデック</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>ソース品質の選択はYouTube／Twitchのページに適用されます。指定されたソースを使用します。</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

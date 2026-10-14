@@ -58,7 +58,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>%1 s</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>Les paramètres %1 ont été réinitialisés.</translation>
     </message>
@@ -68,7 +67,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>%1 images source</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>Un rendu, aperçu, scan ou flux est toujours actif. Annuler et quitter ?</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>Un rendu, un aperçu ou une analyse est encore en cours. Annuler et quitter ?</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Ajouter un dossier</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>Ajoutez et sélectionnez d’abord un fichier.</translation>
     </message>
@@ -179,7 +176,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>Tous les fichiers (*.*)</translation>
@@ -199,17 +195,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Tous les médias (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>Tous les paramètres ont été réinitialisés.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>Analyse des couleurs de %1…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>Analyse des couleurs d’entrée et de référence…</translation>
     </message>
@@ -228,7 +221,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Applied to processing</source>
       <translation>Appliqué au traitement</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Auto : Images fixes</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>Corrections automatiques appliquées. Vous pouvez affiner chaque curseur.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>Couleur automatique annulée.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>Échec de la couleur automatique : %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>Couleur automatique ignorée car l’entrée ou les paramètres ont changé.</translation>
     </message>
@@ -284,7 +272,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>Masque automatique</translation>
     </message>
@@ -302,22 +289,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>File de traitement</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>Lot annulé : %1 réussis, %2 échecs/ignorés.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>Lot terminé : %1 réussis.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>Échec du lot : %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>Lot arrêté par l’utilisateur.</translation>
     </message>
@@ -340,53 +323,24 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Browse</source>
       <translation>Parcourir</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>Mise en tampon... Veuillez patienter.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>Mémoire cache (cache tournant de 10 Go)</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>Annuler</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>Annuler le démarrage en direct</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>Annulation demandée ; arrêt dès la fin du démarrage…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>Annulé</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>Annulation du démarrage en direct…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>Annulation du lot actuel…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>Annulation de l’aperçu…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>Impossible de démarrer le lot : %1</translation>
     </message>
@@ -416,12 +370,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Choisir une image de référence</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>Choisissez une image de référence existante.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>Choisissez une image de référence existante.</translation>
     </message>
@@ -471,7 +419,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Effacer la vidéo</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>Le presse-papiers ne contient ni image ni fichier.</translation>
     </message>
@@ -509,7 +456,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Color Match</source>
       <translation>Correspondance des couleurs</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Terminé en %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>Terminé avec avertissements : %1 réussis, %2 échecs.</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>Configurez le matériel, l’aperçu, la disposition et les préréglages portables.</translation>
@@ -563,7 +507,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Convertir SDR en HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>Copié dans le presse-papiers.</translation>
     </message>
@@ -572,13 +515,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Copier</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>Affichage dans l’Explorateur impossible : %1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>Image actuelle</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>Effets DLSS : %1</translation>
     </message>
@@ -636,11 +573,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G Moteur</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>PERDUES</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Par défaut</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>Téléchargement annulé.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>Téléchargement terminé. Analyse…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>Téléchargement de l’image web…</translation>
     </message>
@@ -670,11 +599,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>Glissez vos fichiers multimédias ici</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>ENCODAGE</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Moteur</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>Saisissez une URL valide (Twitch, YouTube, HLS, etc.).</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
@@ -731,19 +650,9 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Quitter</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>Quitter le plein écran</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>Quitter l’aperçu agrandi</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>Agrandir</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Paramètres d’exportation</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>Échec de l’exportation : %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>Préréglage '%1' exporté vers %2</translation>
     </message>
@@ -807,7 +712,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Exposure</source>
       <translation>Exposition</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>La réinitialisation restaure les paramètres DLSS, d’agrandissement, d’interpolation, de GPU, de masque et d’encodage. La géométrie de fenêtre reste une préférence du bureau.</translation>
@@ -823,7 +727,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Fichier</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>Le fichier n’existe plus : %1</translation>
     </message>
@@ -858,11 +761,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Interpolation d’images</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>Plein écran</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>Plein écran</translation>
@@ -886,7 +784,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Grain Amount</source>
       <translation>Intensité du grain</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>Saturation HDR</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>Durée des segments HLS</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Entrée</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>En attente</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>En attente. Saisissez une source et démarrez la session.</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>Image</translation>
     </message>
@@ -1010,7 +892,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Importer un préréglage JSON</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>Échec de l’importation : %1</translation>
     </message>
@@ -1020,7 +901,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Importer...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>Préréglage '%1' importé.</translation>
     </message>
@@ -1029,7 +909,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Paramètres initiaux</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>Initialisation de l’environnement…</translation>
     </message>
@@ -1044,12 +923,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Image d’entrée</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>Analyse des entrées annulée.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>Échec de l’analyse : %1</translation>
     </message>
@@ -1068,12 +945,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Interpoler les vidéos</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>Configuration du direct invalide : %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>Paramètre invalide : %1</translation>
     </message>
@@ -1093,16 +964,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Progression de la tâche</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>MOTEUR EN ATTENTE</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>FLUX EN DIRECT ACTIF</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>Fichier LUT (.cube)</translation>
@@ -1118,12 +979,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Intensité de la LUT</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>Exportation LUT annulée.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>Échec de l’exportation LUT : %1</translation>
     </message>
@@ -1138,54 +997,12 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Lumière</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>En direct</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>Effets DLSS en direct</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>Échelle en direct</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>Échec du direct : %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>Le direct est indisponible pendant une autre opération.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>Session en direct active.</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>Session en direct démarrée.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>Session en direct arrêtée.</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>Charger un masque de contrôle...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>Chargement des médias…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Chargement de l’aperçu...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>Chargement... Veuillez patienter.</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>Local</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>Intensité de structure locale</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>Intensité des tons locaux</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>Fichier vidéo local</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Faible</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV : %1 perdues, %2 remises en tampon, synchro A/V %3 ms</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>Maintenance et valeurs par défaut</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>Faire correspondre les couleurs</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>Reprendre les couleurs de</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>Maximale</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>Résolution d’entrée maximale</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Images d’entrée par seconde mesurées à cette étape</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>Chargement des médias annulé.</translation>
     </message>
@@ -1280,7 +1063,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Moyenne</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>Métadonnées indisponibles pour %1.</translation>
     </message>
@@ -1320,7 +1102,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>Couper le son</translation>
     </message>
@@ -1330,22 +1111,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>NO OUTPUT</source>
       <translation>AUCUNE SORTIE</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR Intensité</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>Passes NR</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>Style NR</translation>
     </message>
@@ -1376,17 +1153,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Non</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>Aucun fichier sélectionné à effacer.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>Aucun fichier à afficher dans l’Explorateur.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>Aucun fichier dans la file.</translation>
     </message>
@@ -1404,18 +1178,12 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>Sortie</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>En ligne</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>URL du flux en ligne</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Ouvrir le dossier source</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>Dossier de %1 ouvert.</translation>
     </message>
@@ -1474,7 +1241,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Format de sortie</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>Sortie indisponible : %1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Passes</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>Échec du collage : %1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>Pause</translation>
     </message>
@@ -1541,23 +1304,15 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Lire</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>Tampon de lecture</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>Vitesse de lecture</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>Liste de lecture : %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>Saisissez un nom de préréglage.</translation>
     </message>
@@ -1575,7 +1330,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Préférences et configuration système</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>Préparation du traitement par lots…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Aperçu</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>Aperçu annulé.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>Aperçu terminé%1.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>Erreur de configuration de l’aperçu : %1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Aperçu du fichier</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>Aperçu indisponible pendant une autre opération.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>Aperçu remplacé par les nouveaux paramètres.</translation>
     </message>
@@ -1684,18 +1433,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Qualité d’encodage : fixée par le codec</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>La file ne peut pas être modifiée pendant une opération.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>REMISE EN TAMPON</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>Prêt.</translation>
     </message>
@@ -1721,7 +1457,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Aperçu en temps réel</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>Reçu %1 → Entrée %2 → Sortie %3 (%4)</translation>
     </message>
@@ -1731,22 +1466,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Image de référence</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>Impossible d’appliquer la correspondance pendant l’opération.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>Correspondance ignorée car l’entrée ou les paramètres ont changé.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>Correspondance de référence annulée.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>Échec de la correspondance : %1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Traiter les vidéos</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>Rendu de l’aperçu%1…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>Réinitialiser</translation>
@@ -1822,34 +1551,12 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Réinitialiser les paramètres Agrandir</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>Résolution de la source et démarrage du direct…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>Résolution de la source...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>Restaurer</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>Reprendre</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>Échec de l’initialisation : %1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>SOURCE</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Enregistrer les résultats dans le dossier de sortie du programme.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUT enregistrée dans %1</translation>
     </message>
@@ -1892,7 +1598,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Enregistré et vérifié</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>Enregistrement de la LUT %1³…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Méthode de mise à l’échelle</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>Analyse des entrées sélectionnées…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>Choisissez Appliquer la LUT pour reprendre les couleurs de la référence.</translation>
     </message>
@@ -1969,38 +1672,26 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Sélectionner les médias d’entrée</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>Sélectionner une vidéo MP4/MKV...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>Sélectionnez un onglet de traitement avant l’exportation.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>Sélectionnez une vidéo locale valide (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>Sélectionnez une vidéo locale valide.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>Sélectionnez une image ou vidéo avant la couleur automatique.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>Sélectionnez une entrée et attendez la fin de l’opération.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>Sélectionnez une entrée avant de choisir une référence.</translation>
     </message>
@@ -2010,19 +1701,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Sélectionner...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>Image de référence sélectionnée</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>La sélection ne peut pas être modifiée pendant une opération.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>Paramètre enregistré ; appliqué au prochain démarrage du direct.</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Sharpness</source>
       <translation>Netteté</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>Mode de dimensionnement</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>Intensité de structure de peau</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Source (original)</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>Qualité de la source</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>Source : %1 fps, Guide : %2 ms, DLSS : %3 ms, Encodage : %4 ms</translation>
     </message>
@@ -2131,11 +1799,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Démarrer / Traiter</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>Démarrer la session en direct</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>Démarrage...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Arrêter</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>Arrêter la session en direct</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>Erreur d’arrêt : %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>Arrêtez l’opération avant de modifier les paramètres.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>Arrêtez l’opération avant d’importer un préréglage.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>Arrêtez l’opération avant la réinitialisation.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>Arrêtez l’opération avant de démarrer un lot.</translation>
     </message>
@@ -2194,25 +1845,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Arrêté.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>Arrêt de la session en direct…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>Arrêt de la session...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>Arrêt...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>Source du flux</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Soutenir sur Patreon</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>Passage au mode %1. %2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>Cible %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>FPS cible</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Tonal Response</source>
       <translation>Réponse tonale</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>Ultra</translation>
@@ -2299,12 +1925,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>Activer le son</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>Actualisation de l’aperçu…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Agrandir les images</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>L’agrandissement vidéo nécessite VSR ou RTX Video HDR actif.</translation>
     </message>
@@ -2359,11 +1982,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Fichiers vidéo</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>Fichiers vidéo (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>Fichiers vidéo (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Affichage</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>Vol. %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>Volume</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>Baisser le volume</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>Augmenter le volume</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>En attente de démarrage</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>Échec du téléchargement de l’image : %1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>Oui</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>URL YouTube, Twitch ou HLS/RTMP...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Image</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>s</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>Vidéo</translation>
     </message>
@@ -2507,18 +2099,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS et RTX sont des marques de NVIDIA Corporation.</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>Rapide sans perte</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>Compression rapide</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>Compression RGB rapide sur 8 bits sans sous-échantillonnage des couleurs. Le HDR utilise Rapide sans perte. Les modèles s’exécutent un par un.</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Startup %1 s · switch %2 s</source>
       <translation>Démarrage %1 s · transition %2 s</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>Mémoire cache (cache tournant)</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>Taille du cache</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 Go (Par défaut)</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>Précision native</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>RGB compressé (8 bits)</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>Le masque de contrôle remplace le masque automatique. Les canaux RGB contrôlent l’intensité, la tonalité et la structure.</translation>
     </message>
@@ -2712,10 +2276,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Software codecs</source>
       <translation>Codecs logiciels</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>Le choix de la qualité s’applique aux pages YouTube/Twitch ; la source fournie est utilisée.</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

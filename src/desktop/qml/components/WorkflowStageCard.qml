@@ -115,6 +115,8 @@ Item {
 
         DragHandler {
             id: dragger
+            // Buttons own their presses; only the title is a drag handle.
+            parent: titleText
             target: null
             acceptedButtons: Qt.LeftButton
             yAxis.enabled: true

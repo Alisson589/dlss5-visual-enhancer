@@ -8,7 +8,6 @@ Item {
     property string placeholderText: ""
     property string selectedPath: ""
     property bool selectFolder: false
-    property bool enabled: true
     property var nameFilters: [qsTranslate("App", "All Files (*.*)")]
     signal pathChanged(string path)
 

@@ -12,6 +12,12 @@ Item {
     property int buttonSize: 28
     property color activeColor: Theme.textSecondary
     property color hoverColor: Theme.textPrimary
+    property color hoverBackgroundColor: Theme.bgHover
+    property color hoverBorderColor: Theme.borderSubtle
+    property color pressedBackgroundColor: Theme.bgPressed
+    // Native title-bar hit testing bypasses MouseArea hover delivery.
+    property bool nativeHovered: false
+    readonly property bool hovered: enabled && (nativeHovered || mouseArea.containsMouse)
 
     signal clicked()
 
@@ -33,8 +39,8 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius: Theme.radiusSmall
-        color: mouseArea.pressed ? Theme.bgPressed : (mouseArea.containsMouse ? Theme.bgHover : "transparent")
-        border.color: control.activeFocus ? Theme.accent : (mouseArea.containsMouse ? Theme.borderSubtle : "transparent")
+        color: mouseArea.pressed ? control.pressedBackgroundColor : (control.hovered ? control.hoverBackgroundColor : "transparent")
+        border.color: control.activeFocus ? Theme.accent : (control.hovered ? control.hoverBorderColor : "transparent")
         border.width: 1
         Behavior on color { ColorAnimation { duration: Theme.animFast } }
     }
@@ -43,7 +49,7 @@ Item {
         anchors.centerIn: parent
         iconName: control.iconName
         iconSize: control.iconSize
-        color: mouseArea.containsMouse ? control.hoverColor : control.activeColor
+        color: control.hovered ? control.hoverColor : control.activeColor
     }
 
     MouseArea {
@@ -57,7 +63,7 @@ Item {
     // Popup tooltips live in the window overlay, above clipped queue views.
     QQC2.ToolTip {
         id: tip
-        visible: control.showTooltip && mouseArea.containsMouse && control.tooltipText !== ""
+        visible: control.showTooltip && control.hovered && control.tooltipText !== ""
         x: (control.width - width) / 2
         y: -height - 6
         text: control.tooltipText

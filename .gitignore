@@ -1,0 +1,6 @@
+out/
+out-*/
+CMakeUserPresets.json
+*.user
+*.pdb
+*.ilk

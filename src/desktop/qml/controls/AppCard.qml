@@ -10,6 +10,7 @@ Item {
     default property alias content: contentContainer.data
 
     implicitWidth: 320
+    clip: true
     implicitHeight: header.height + (collapsed ? 0 : (contentContainer.childrenRect.height + 24))
 
     Rectangle {
@@ -60,6 +61,7 @@ Item {
 
             MouseArea {
                 id: headerMouse
+                objectName: "cardHeaderMouse"
                 anchors.fill: parent
                 hoverEnabled: card.collapsible
                 cursorShape: card.collapsible ? Qt.PointingHandCursor : Qt.ArrowCursor
@@ -86,7 +88,10 @@ Item {
         // Content Area
         Item {
             id: contentContainer
-            visible: !card.collapsed
+            // Keep positioners measured while collapsed. Hiding their ancestor
+            // invalidates every nested Column and rebuilds the export layout.
+            // The card clips the body below its collapsed header instead.
+            enabled: !card.collapsed
             anchors.top: header.bottom
             anchors.topMargin: 12
             anchors.left: parent.left

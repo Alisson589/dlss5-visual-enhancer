@@ -7,7 +7,6 @@ Item {
     property string label: ""
     property string placeholderText: ""
     property string text: ""
-    property bool enabled: true
     property int fieldHeight: Theme.controlHeight
     property bool readOnly: false
     property bool commitOnEveryEdit: true

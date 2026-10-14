@@ -58,7 +58,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 सेकंड</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>%1 सेटिंग्स रीसेट कर दी गईं।</translation>
     </message>
@@ -68,7 +67,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 स्रोत फ़्रेम</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>रेंडर, पूर्वावलोकन, स्कैन या लाइव सत्र चालू है। इसे रद्द करके बाहर निकलें?</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>रेंडर, प्रीव्यू या स्कैन अभी भी चल रहा है। इसे रद्द करके बाहर निकलें?</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>फ़ोल्डर जोड़ें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>पहले फ़ाइल जोड़ें और चुनें।</translation>
     </message>
@@ -179,7 +176,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>सभी फ़ाइलें (*.*)</translation>
@@ -199,17 +195,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>सभी मीडिया फ़ाइलें (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>सभी सेटिंग्स रीसेट कर दी गईं।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>%1 के रंग का विश्लेषण…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>इनपुट और संदर्भ रंगों का विश्लेषण…</translation>
     </message>
@@ -228,7 +221,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Applied to processing</source>
       <translation>प्रोसेसिंग पर लागू</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>ऑटो: निश्चित फ़्रेम</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>स्वचालित रंग समायोजन लागू हुए। हर स्लाइडर बदल सकते हैं।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>स्वचालित रंग रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>स्वचालित रंग विफल: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>इनपुट या रंग सेटिंग्स बदलने से स्वचालित रंग छोड़ा गया।</translation>
     </message>
@@ -284,7 +272,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>स्वचालित मास्क</translation>
     </message>
@@ -302,22 +289,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>बैच कतार</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>बैच रद्द: %1 पूर्ण, %2 विफल/छोड़े।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>बैच पूरा: %1 पूर्ण।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>बैच विफल: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>उपयोगकर्ता ने बैच रोका।</translation>
     </message>
@@ -340,53 +323,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>ब्राउज़</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>बफ़र हो रहा है... कृपया प्रतीक्षा करें।</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>कैश मेमोरी (रोलिंग कैश 10 GB)</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>रद्द करें</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>लाइव शुरुआत रद्द करें</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>रद्द का अनुरोध; लाइव शुरू होते ही रोका जाएगा…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>रद्द</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>लाइव शुरुआत रद्द हो रही है…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>मौजूदा बैच रद्द हो रहा है…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>पूर्वावलोकन रद्द हो रहा है…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>बैच शुरू नहीं हो सकता: %1</translation>
     </message>
@@ -416,12 +370,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>संदर्भ छवि चुनें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>मौजूदा संदर्भ छवि चुनें।</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>मौजूदा संदर्भ छवि चुनें।</translation>
     </message>
@@ -471,7 +419,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>वीडियो हटाएँ</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>क्लिपबोर्ड में कोई छवि या फ़ाइल नहीं है।</translation>
     </message>
@@ -509,7 +456,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Color Match</source>
       <translation>रंग मिलान</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 में पूरा हुआ</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>चेतावनियों के साथ पूरा: %1 पूर्ण, %2 विफल।</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>हार्डवेयर, पूर्वावलोकन, विंडो लेआउट और पोर्टेबल प्रीसेट कॉन्फ़िगर करें।</translation>
@@ -563,7 +507,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>SDR को HDR में बदलें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>क्लिपबोर्ड पर कॉपी किया।</translation>
     </message>
@@ -572,13 +515,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>कॉपी</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>एक्सप्लोरर में नहीं दिखा सके: %1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>वर्तमान छवि</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>DLSS प्रभाव: %1</translation>
     </message>
@@ -636,11 +573,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G इंजन</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>छूटे फ़्रेम</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>डिफ़ॉल्ट</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>डाउनलोड रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>डाउनलोड पूरा। स्कैन हो रहा है…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>वेब छवि डाउनलोड हो रही है…</translation>
     </message>
@@ -670,11 +599,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>मीडिया फ़ाइलें यहाँ छोड़ें</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>एन्कोडिंग</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>इंजन</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>मान्य ऑनलाइन URL डालें (Twitch, YouTube, HLS आदि)।</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>त्रुटि</translation>
     </message>
@@ -731,19 +650,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>बाहर निकलें</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>पूर्ण स्क्रीन से बाहर</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>पूर्वावलोकन फ़ोकस से बाहर</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>विस्तार करें</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>निर्यात सेटिंग्स</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>निर्यात विफल: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>प्रीसेट '%1' को %2 में निर्यात किया</translation>
     </message>
@@ -807,7 +712,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Exposure</source>
       <translation>एक्सपोज़र</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>फ़ैक्टरी रीसेट DLSS, अपस्केलिंग, इंटरपोलेशन, GPU, मास्क और एन्कोडिंग सेटिंग्स बहाल करता है। विंडो का आकार और स्थान डेस्कटॉप प्राथमिकता रहते हैं।</translation>
@@ -823,7 +727,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>फ़ाइल</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>फ़ाइल अब मौजूद नहीं है: %1</translation>
     </message>
@@ -858,11 +761,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>फ़्रेम इंटरपोलेशन</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>पूर्ण स्क्रीन</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>पूर्ण स्क्रीन</translation>
@@ -886,7 +784,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Grain Amount</source>
       <translation>ग्रेन की मात्रा</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>HDR संतृप्ति</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>HLS खंड की अवधि</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>इनपुट</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>प्रतीक्षा</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>निष्क्रिय। स्रोत डालें और लाइव सत्र शुरू करें।</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>छवि</translation>
     </message>
@@ -1010,7 +892,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>JSON प्रीसेट आयात करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>आयात विफल: %1</translation>
     </message>
@@ -1020,7 +901,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>आयात करें...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>प्रीसेट '%1' आयात हो गया।</translation>
     </message>
@@ -1029,7 +909,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>प्रारंभिक सेटिंग्स</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>रनटाइम शुरू हो रहा है…</translation>
     </message>
@@ -1044,12 +923,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>इनपुट छवि</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>इनपुट स्कैन रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>इनपुट स्कैन विफल: %1</translation>
     </message>
@@ -1068,12 +945,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>वीडियो इंटरपोलेट करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>अमान्य लाइव कॉन्फ़िगरेशन: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>अमान्य सेटिंग: %1</translation>
     </message>
@@ -1093,16 +964,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>कार्य प्रगति</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>लाइव इंजन तैयार</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>लाइव स्ट्रीम सक्रिय</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>LUT फ़ाइल (.cube)</translation>
@@ -1118,12 +979,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>LUT तीव्रता</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>LUT निर्यात रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>LUT निर्यात विफल: %1</translation>
     </message>
@@ -1138,54 +997,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>प्रकाश</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>लाइव</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>लाइव DLSS प्रभाव</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>लाइव स्केल</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>लाइव विफल: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>दूसरे कार्य के दौरान लाइव उपलब्ध नहीं है।</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>लाइव सत्र चल रहा है।</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>लाइव सत्र शुरू हुआ।</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>लाइव सत्र रुका।</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>नियंत्रण मास्क लोड करें...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>मीडिया लोड हो रहा है…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>पूर्वावलोकन लोड हो रहा है...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>लोड हो रहा है... कृपया प्रतीक्षा करें।</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>स्थानीय</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>स्थानीय संरचना की तीव्रता</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>स्थानीय टोन की तीव्रता</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>स्थानीय वीडियो फ़ाइल</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>कम</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV: %1 छूटे, %2 रीबफ़र, A/V सिंक %3 ms</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>रखरखाव और डिफ़ॉल्ट</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>रंग मिलाएँ</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>यहाँ से रंग मिलाएँ</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>अधिकतम</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>अधिकतम इनपुट रिज़ॉल्यूशन</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>वर्तमान चरण में मापा गया इनपुट फ़्रेम प्रति सेकंड</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>मीडिया लोडिंग रद्द।</translation>
     </message>
@@ -1280,7 +1063,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>मध्यम</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>%1 के मेटाडेटा उपलब्ध नहीं हैं।</translation>
     </message>
@@ -1320,7 +1102,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>म्यूट करें</translation>
     </message>
@@ -1330,22 +1111,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>NO OUTPUT</source>
       <translation>कोई आउटपुट नहीं</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR तीव्रता</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>NR पास</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>NR शैली</translation>
     </message>
@@ -1376,17 +1153,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>नहीं</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>हटाने के लिए कोई फ़ाइल नहीं चुनी गई।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>एक्सप्लोरर में दिखाने के लिए कोई फ़ाइल नहीं चुनी गई।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>कतार में कोई फ़ाइल नहीं है।</translation>
     </message>
@@ -1404,18 +1178,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>आउटपुट</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>ऑनलाइन</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>ऑनलाइन स्ट्रीम URL</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>स्रोत फ़ोल्डर खोलें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>%1 का फ़ोल्डर खोला।</translation>
     </message>
@@ -1474,7 +1241,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>आउटपुट फ़ॉर्मैट</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>आउटपुट अनुपलब्ध: %1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>पास</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>पेस्ट विफल: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>रोकें</translation>
     </message>
@@ -1541,23 +1304,15 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>चलाएँ</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>प्लेबैक बफ़र</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>प्लेबैक गति</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>प्लेलिस्ट: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>प्रीसेट का नाम डालें।</translation>
     </message>
@@ -1575,7 +1330,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>प्राथमिकताएँ और सिस्टम कॉन्फ़िगरेशन</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>बैच प्रोसेसिंग तैयार हो रही है…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>पूर्वावलोकन</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>पूर्वावलोकन रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>पूर्वावलोकन पूरा%1।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>पूर्वावलोकन कॉन्फ़िगरेशन त्रुटि: %1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>फ़ाइल पूर्वावलोकन</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>दूसरे कार्य के दौरान पूर्वावलोकन उपलब्ध नहीं है।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>नई सेटिंग्स ने पूर्वावलोकन बदल दिया।</translation>
     </message>
@@ -1684,18 +1433,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>एन्कोडिंग गुणवत्ता: कोडेक द्वारा तय</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>कार्य चालू होने पर कतार नहीं बदल सकते।</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>रीबफ़र</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>तैयार।</translation>
     </message>
@@ -1721,7 +1457,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>रीयलटाइम पूर्वावलोकन</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>प्राप्त %1 → इनपुट %2 → आउटपुट %3 (%4)</translation>
     </message>
@@ -1731,22 +1466,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>संदर्भ छवि</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>वर्तमान कार्य के दौरान संदर्भ मिलान लागू नहीं हो सका।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>इनपुट या रंग सेटिंग्स बदलने से संदर्भ मिलान छोड़ा गया।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>संदर्भ मिलान रद्द।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>संदर्भ मिलान विफल: %1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>वीडियो रेंडर करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>पूर्वावलोकन%1 रेंडर हो रहा है…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>रीसेट</translation>
@@ -1822,34 +1551,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>अपस्केल सेटिंग्स रीसेट करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>स्रोत खोजकर लाइव शुरू हो रहा है…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>स्रोत खोजा जा रहा है...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>बहाल करें</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>जारी रखें</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>रनटाइम शुरू नहीं हुआ: %1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>स्रोत</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>परिणाम प्रोग्राम के आउटपुट फ़ोल्डर में सहेजें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUT %1 में सहेजी</translation>
     </message>
@@ -1892,7 +1598,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>सहेजा और सत्यापित</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>%1³ LUT सहेजी जा रही है…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>स्केलिंग विधि</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>चुने हुए इनपुट स्कैन हो रहे हैं…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>रंग समायोजन से संदर्भ मिलाने के लिए LUT लागू करें चुनें।</translation>
     </message>
@@ -1969,38 +1672,26 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>इनपुट मीडिया चुनें</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>MP4/MKV वीडियो चुनें...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>निर्यात से पहले बैच प्रोसेसिंग टैब चुनें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>मान्य स्थानीय वीडियो फ़ाइल चुनें (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>मान्य स्थानीय वीडियो फ़ाइल चुनें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>स्वचालित रंग से पहले छवि या वीडियो चुनें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>इनपुट चुनें और मिलान से पहले वर्तमान कार्य समाप्त होने दें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>संदर्भ चुनने से पहले इनपुट छवि या वीडियो चुनें।</translation>
     </message>
@@ -2010,19 +1701,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>चुनें...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>चुनी हुई संदर्भ छवि</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>कार्य चालू होने पर चयन नहीं बदल सकते।</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>सेटिंग सहेजी; अगली बार लाइव शुरू होने पर लागू होगी।</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Sharpness</source>
       <translation>तीक्ष्णता</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>आकार मोड</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>त्वचा संरचना की तीव्रता</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>स्रोत (मूल)</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>स्रोत गुणवत्ता</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>स्रोत: %1 fps, गाइड: %2 ms, DLSS: %3 ms, एन्कोड: %4 ms</translation>
     </message>
@@ -2131,11 +1799,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>शुरू करें / रेंडर</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>लाइव सत्र शुरू करें</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>शुरू हो रहा है...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>रोकें</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>लाइव सत्र रोकें</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>रोकने में त्रुटि: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>सेटिंग्स बदलने से पहले वर्तमान कार्य रोकें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>आयात से पहले वर्तमान कार्य रोकें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>रीसेट करने से पहले वर्तमान कार्य रोकें।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>बैच शुरू करने से पहले वर्तमान कार्य रोकें।</translation>
     </message>
@@ -2194,25 +1845,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>रुका।</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>लाइव सत्र रोका जा रहा है…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>लाइव रोका जा रहा है...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>रोका जा रहा है...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>स्ट्रीम स्रोत</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Patreon पर समर्थन करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>%1 मोड में बदला। %2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>लक्ष्य %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>लक्षित FPS</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Tonal Response</source>
       <translation>टोनल प्रतिक्रिया</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>अल्ट्रा</translation>
@@ -2299,12 +1925,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>अनम्यूट करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>रीयलटाइम पूर्वावलोकन अपडेट हो रहा है…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>छवियाँ अपस्केल करें</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>वीडियो अपस्केलिंग के लिए VSR या RTX Video HDR सक्षम रहना चाहिए।</translation>
     </message>
@@ -2359,11 +1982,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>वीडियो फ़ाइलें</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>वीडियो फ़ाइलें (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>वीडियो फ़ाइलें (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>दृश्य</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>आवाज़ %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>आवाज़</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>आवाज़ कम करें</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>आवाज़ बढ़ाएँ</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>शुरू होने की प्रतीक्षा</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>वेब छवि डाउनलोड विफल: %1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>हाँ</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>YouTube, Twitch या HLS/RTMP URL...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>छवि</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>सेकंड</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>वीडियो</translation>
     </message>
@@ -2507,18 +2099,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS और RTX, NVIDIA Corporation के ट्रेडमार्क हैं।</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>तेज़ दोषरहित</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>तेज़ संपीड़ित</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>रंग सबसैंपलिंग के बिना तेज़ 8-बिट RGB संपीड़न। HDR के लिए तेज़ दोषरहित विकल्प उपयोग होता है। मॉडल एक समय में एक चलते हैं।</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Startup %1 s · switch %2 s</source>
       <translation>आरंभ %1 सेकंड · बदलाव %2 सेकंड</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>कैश मेमोरी (रोलिंग कैश)</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>कैश का आकार</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 GB (डिफ़ॉल्ट)</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>मूल परिशुद्धता</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>संपीड़ित RGB (8-बिट)</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>कंट्रोल मास्क ऑटोमैटिक मास्क की जगह लेता है। RGB चैनल तीव्रता, टोन और संरचना को नियंत्रित करते हैं।</translation>
     </message>
@@ -2712,10 +2276,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Software codecs</source>
       <translation>सॉफ़्टवेयर कोडेक</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>स्रोत गुणवत्ता का चयन YouTube/Twitch पेजों पर लागू होता है; दिए गए स्रोत का उपयोग किया जा रहा है।</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

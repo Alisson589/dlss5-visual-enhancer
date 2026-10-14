@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/qt/etc">
+        <file alias="qt.conf">runtime_paths.ini</file>
+    </qresource>
+</RCC>

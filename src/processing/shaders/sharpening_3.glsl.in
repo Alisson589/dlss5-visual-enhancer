@@ -1,0 +1,8 @@
+    float scale=1.0-clamp((p[12]-0.45)/(0.9-0.45),0.0,1.0);
+    float strength=scale*@strength_max - strength_min@+@strength_min@;
+    float limit=(scale*@limit_max - limit_min@+@limit_min@)*p[12];
+    float sum=0.0;
+    if(ad) sum+=af*(g0>=g90?usm(p[2],p[7],p[12],p[17],p[22],strength,limit):usm(p[10],p[11],p[12],p[13],p[14],strength,limit));
+    if(dd) sum+=df*(g45>=g135?usm(p[6],0.5*(p[11]+p[7]),p[12],0.5*(p[17]+p[13]),p[18],strength,limit):usm(p[16],0.5*(p[17]+p[11]),p[12],0.5*(p[13]+p[7]),p[8],strength,limit));
+    return vec4(clamp(center.rgb+sum,0.0,1.0),center.a);
+}

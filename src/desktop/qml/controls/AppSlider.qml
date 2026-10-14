@@ -12,7 +12,6 @@ Item {
     property real defaultValue: 0.0
     property int precision: 2
     property string unit: ""
-    property bool enabled: true
     property bool showValueControls: true
 
     signal valueModified(real newValue)

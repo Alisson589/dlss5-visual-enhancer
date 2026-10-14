@@ -90,6 +90,11 @@ Column {
                     appBridge.videoQuality = v;
             }
         }
+        EncodingQualityHint {
+            width: parent.width
+            visible: !appBridge || appBridge.fixedQualityCodecs.indexOf(appBridge.videoCodec) < 0
+            quality: appBridge ? appBridge.videoQuality : "Auto (Default)"
+        }
         Text {
             visible: appBridge && appBridge.fixedQualityCodecs.indexOf(appBridge.videoCodec) >= 0
             text: qsTranslate("App", "Encoding Quality: Fixed by codec")

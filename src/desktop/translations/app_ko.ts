@@ -58,7 +58,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1초</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3206" />
       <source>%1 settings were reset to defaults.</source>
       <translation>%1 설정을 초기화했습니다.</translation>
     </message>
@@ -68,7 +67,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>소스 %1프레임</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1043" />
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
     </message>
@@ -114,8 +112,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="250" />
-      <source>A render, preview, scan, or Live session is still active. Cancel it and exit?</source>
-      <translation>렌더링, 미리 보기, 검색 또는 라이브 세션이 진행 중입니다. 취소하고 종료할까요?</translation>
+      <source>A render, preview, or scan is still active. Cancel it and exit?</source>
+      <translation>렌더링, 미리 보기 또는 스캔이 아직 진행 중입니다. 취소하고 종료하시겠습니까?</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
@@ -143,7 +141,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>폴더 추가</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4571" />
       <source>Add and select a file first to preview.</source>
       <translation>먼저 파일을 추가하고 선택하세요.</translation>
     </message>
@@ -179,7 +176,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="97" />
       <location filename="../qml/components/NeuralModelControls.qml" line="263" />
       <location filename="../qml/controls/AppFilePicker.qml" line="12" />
-      <location filename="../qml/views/LiveView.qml" line="408" />
       <location filename="../qml/views/SettingsView.qml" line="132" />
       <source>All Files (*.*)</source>
       <translation>모든 파일 (*.*)</translation>
@@ -199,17 +195,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>모든 미디어 파일 (*.mp4 *.mkv *.mov *.avi *.webm *.png *.jpg *.jpeg *.webp *.avif *.tiff *.bmp *.cr2 *.nef *.arw *.dng *.heic)</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3135" />
       <source>All settings were reset to factory defaults.</source>
       <translation>모든 설정을 초기화했습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="921" />
       <source>Analyzing %1 color…</source>
       <translation>%1 색상 분석 중…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1039" />
       <source>Analyzing input and reference colors…</source>
       <translation>입력 및 참조 색상 분석 중…</translation>
     </message>
@@ -228,7 +221,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Applied to processing</source>
       <translation>처리에 적용됨</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="38" />
       <source>Apply LUT</source>
@@ -258,22 +250,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>자동: 고정 프레임</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="952" />
       <source>Auto color adjustments applied. You can fine-tune every slider.</source>
       <translation>자동 색상 보정을 적용했습니다. 각 슬라이더를 조정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="965" />
       <source>Auto color cancelled.</source>
       <translation>자동 색상 보정 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="963" />
       <source>Auto color failed: %1</source>
       <translation>자동 색상 보정 실패: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="945" />
       <source>Auto color skipped because the input or color controls changed.</source>
       <translation>입력이나 색상 설정이 변경되어 자동 보정을 건너뛰었습니다.</translation>
     </message>
@@ -284,7 +272,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="95" />
-      <location filename="../qml/views/LiveView.qml" line="523" />
       <source>Automatic Mask</source>
       <translation>자동 마스크</translation>
     </message>
@@ -302,22 +289,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>일괄 처리 대기열</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4142" />
       <source>Batch cancelled: %1 completed, %2 failed/skipped.</source>
       <translation>일괄 처리 취소: %1개 완료, %2개 실패/건너뜀.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4149" />
       <source>Batch complete: %1 completed.</source>
       <translation>일괄 처리 완료: %1개 완료.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4156" />
       <source>Batch failed: %1</source>
       <translation>일괄 처리 실패: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4163" />
       <source>Batch stopped by user.</source>
       <translation>사용자가 일괄 처리를 중지했습니다.</translation>
     </message>
@@ -340,53 +323,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>찾아보기</translation>
     </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="159" />
-      <source>Buffering... Please wait.</source>
-      <translation>버퍼링 중... 잠시 기다려 주세요.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/SettingsView.qml" line="71" />
-      <source>Cache Memory (Rolling Cache 10GB)</source>
-      <translation>캐시 메모리 (롤링 캐시 10 GB)</translation>
-    </message>
-    <message>
+<message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>취소</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Cancel Live Startup</source>
-      <translation>라이브 시작 취소</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4980" />
-      <source>Cancel requested; stopping as soon as Live finishes starting…</source>
-      <translation>취소 요청됨. 라이브 시작이 완료되면 중지합니다…</translation>
     </message>
     <message>
       <source>Cancelled</source>
       <translation>취소됨</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4982" />
-      <source>Cancelling Live startup…</source>
-      <translation>라이브 시작 취소 중…</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4318" />
       <source>Cancelling current batch…</source>
       <translation>현재 일괄 처리 취소 중…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4311" />
       <source>Cancelling preview…</source>
       <translation>미리 보기 취소 중…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4098" />
-      <location filename="../bridge.py" line="4103" />
       <source>Cannot start batch: %1</source>
       <translation>일괄 처리를 시작할 수 없음: %1</translation>
     </message>
@@ -416,12 +370,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>참조 이미지 선택</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="791" />
-      <source>Choose an existing reference image for Match Colors.</source>
-      <translation>존재하는 참조 이미지를 선택하세요.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="1001" />
       <source>Choose an existing reference image.</source>
       <translation>존재하는 참조 이미지를 선택하세요.</translation>
     </message>
@@ -471,7 +419,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>동영상 지우기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5603" />
       <source>Clipboard has no images or files to paste.</source>
       <translation>클립보드에 이미지나 파일이 없습니다.</translation>
     </message>
@@ -509,7 +456,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Color Match</source>
       <translation>색상 일치</translation>
     </message>
-    
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
@@ -531,11 +477,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1에 완료</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4144" />
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>경고와 함께 완료: %1개 완료, %2개 실패.</translation>
     </message>
-    
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
       <translation>하드웨어 할당, 미리 보기, 창 레이아웃 및 휴대 가능한 프리셋을 구성합니다.</translation>
@@ -563,7 +507,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>SDR을 HDR로 변환</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5195" />
       <source>Copied to clipboard.</source>
       <translation>클립보드에 복사했습니다.</translation>
     </message>
@@ -572,13 +515,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>복사</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3724" />
       <source>Could not show in Explorer: %1</source>
       <translation>탐색기에 표시할 수 없음: %1</translation>
-    </message>
-    <message>
-      <source>Current Image</source>
-      <translation>현재 이미지</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -627,7 +565,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS Super Resolution</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5087" />
       <source>DLSS effects: %1</source>
       <translation>DLSS 효과: %1</translation>
     </message>
@@ -636,11 +573,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
       <translation>DLSS-G 엔진</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="279" />
-      <source>DROPPED</source>
-      <translation>드롭</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -652,17 +584,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>기본값</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5487" />
       <source>Download cancelled.</source>
       <translation>다운로드 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5469" />
       <source>Download complete. Scanning…</source>
       <translation>다운로드 완료. 검색 중…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5455" />
       <source>Downloading web image…</source>
       <translation>웹 이미지 다운로드 중…</translation>
     </message>
@@ -670,11 +599,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="61" />
       <source>Drag and drop media files here</source>
       <translation>미디어 파일을 여기에 끌어 놓으세요</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="278" />
-      <source>ENCODE</source>
-      <translation>인코딩</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="165" />
@@ -707,11 +631,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>엔진</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4861" />
-      <source>Enter a valid online URL (Twitch, YouTube, HLS, etc.).</source>
-      <translation>유효한 온라인 URL을 입력하세요 (Twitch, YouTube, HLS 등).</translation>
-    </message>
-    <message>
       <source>Error</source>
       <translation>오류</translation>
     </message>
@@ -731,19 +650,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>종료</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Exit Full</source>
-      <translation>전체 화면 종료</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MediaViewport.qml" line="512" />
       <source>Exit focus preview</source>
       <translation>미리 보기 집중 종료</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Expand</source>
-      <translation>확장</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="112" />
@@ -791,14 +700,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>내보내기 설정</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3224" />
-      <location filename="../bridge.py" line="3244" />
       <source>Export failed: %1</source>
       <translation>내보내기 실패: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3219" />
-      <location filename="../bridge.py" line="3239" />
       <source>Exported preset '%1' to %2</source>
       <translation>프리셋 '%1'을 %2에 내보냈습니다</translation>
     </message>
@@ -807,7 +712,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Exposure</source>
       <translation>노출</translation>
     </message>
-    
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
       <translation>초기화하면 DLSS, 업스케일, 보간, GPU, 마스크 및 인코딩 설정이 복원됩니다. 창 크기와 위치는 데스크톱 환경 설정으로 유지됩니다.</translation>
@@ -823,7 +727,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>파일</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3683" />
       <source>File no longer exists: %1</source>
       <translation>파일이 더 이상 존재하지 않음: %1</translation>
     </message>
@@ -858,11 +761,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>프레임 보간</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="232" />
-      <source>Full Screen</source>
-      <translation>전체 화면</translation>
-    </message>
-    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>전체 화면</translation>
@@ -886,7 +784,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Grain Amount</source>
       <translation>그레인 강도</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/GrainControls.qml" line="50" />
       <source>Grain Seed</source>
@@ -914,11 +811,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
       <translation>HDR 채도</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="431" />
-      <source>HLS Segment Duration</source>
-      <translation>HLS 세그먼트 길이</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -961,16 +853,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>입력</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="324" />
-      <source>Idle.</source>
-      <translation>대기 중</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="347" />
-      <source>Idle. Enter a source and press Start Live.</source>
-      <translation>대기 중. 소스를 입력하고 라이브 세션을 시작하세요.</translation>
-    </message>
-    <message>
       <source>Image</source>
       <translation>이미지</translation>
     </message>
@@ -1010,7 +892,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>JSON 프리셋 가져오기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3281" />
       <source>Import failed: %1</source>
       <translation>가져오기 실패: %1</translation>
     </message>
@@ -1020,7 +901,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>가져오기...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3276" />
       <source>Imported preset '%1' successfully.</source>
       <translation>프리셋 '%1'을 가져왔습니다.</translation>
     </message>
@@ -1029,7 +909,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>초기 설정</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="344" />
       <source>Initializing runtime…</source>
       <translation>런타임 초기화 중…</translation>
     </message>
@@ -1044,12 +923,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>입력 이미지</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3488" />
       <source>Input scan cancelled.</source>
       <translation>입력 검색 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3482" />
       <source>Input scan failed: %1</source>
       <translation>입력 검색 실패: %1</translation>
     </message>
@@ -1068,12 +945,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>동영상 보간</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4914" />
-      <source>Invalid Live configuration: %1</source>
-      <translation>잘못된 라이브 구성: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2142" />
       <source>Invalid setting: %1</source>
       <translation>잘못된 설정: %1</translation>
     </message>
@@ -1093,16 +964,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>작업 진행률</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE ENGINE STANDBY</source>
-      <translation>라이브 엔진 대기</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="92" />
-      <source>LIVE STREAM ACTIVE</source>
-      <translation>라이브 스트림 활성</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>LUT 파일 (.cube)</translation>
@@ -1118,12 +979,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>LUT 강도</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1127" />
       <source>LUT export cancelled.</source>
       <translation>LUT 내보내기 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1126" />
       <source>LUT export failed: %1</source>
       <translation>LUT 내보내기 실패: %1</translation>
     </message>
@@ -1138,54 +997,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>밝기</translation>
     </message>
     <message>
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/HeaderBar.qml" line="133" />
-      <location filename="../qml/components/MenuStrip.qml" line="162" />
-      <source>Live</source>
-      <translation>라이브</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="463" />
-      <source>Live DLSS Effects</source>
-      <translation>라이브 DLSS 효과</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="529" />
-      <source>Live Scale</source>
-      <translation>라이브 배율</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4957" />
-      <source>Live failed: %1</source>
-      <translation>라이브 실패: %1</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4837" />
-      <source>Live is unavailable while another operation is active.</source>
-      <translation>다른 작업 중에는 라이브를 사용할 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="4945" />
-      <source>Live session running.</source>
-      <translation>라이브 세션 실행 중.</translation>
-    </message>
-    <message>
-      <source>Live session started.</source>
-      <translation>라이브 세션 시작됨.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5012" />
-      <source>Live session stopped.</source>
-      <translation>라이브 세션 중지됨.</translation>
-    </message>
-    <message>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
       <translation>제어 마스크 불러오기...</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3834" />
       <source>Loading media…</source>
       <translation>미디어 불러오는 중…</translation>
     </message>
@@ -1196,30 +1013,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>미리 보기 불러오는 중...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="158" />
-      <source>Loading... Please wait.</source>
-      <translation>불러오는 중... 잠시 기다려 주세요.</translation>
-    </message>
-    <message>
       <source>Local</source>
       <translation>로컬</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="68" />
-      <location filename="../qml/views/LiveView.qml" line="512" />
       <source>Local Structure Strength</source>
       <translation>로컬 구조 강도</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="54" />
-      <location filename="../qml/views/LiveView.qml" line="501" />
       <source>Local Tone Strength</source>
       <translation>로컬 톤 강도</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="403" />
-      <source>Local Video File</source>
-      <translation>로컬 동영상 파일</translation>
     </message>
     <message>
       <location filename="../qml/components/SuperResolutionControls.qml" line="100" />
@@ -1232,33 +1037,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>낮음</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5077" />
-      <source>MPV: %1 dropped, %2 rebuffer events, A/V sync %3 ms</source>
-      <translation>MPV: %1 드롭, %2 재버퍼링, A/V 동기화 %3 ms</translation>
-    </message>
-    <message>
       <location filename="../qml/views/SettingsView.qml" line="117" />
       <source>Maintenance &amp; Defaults</source>
       <translation>유지 관리 및 기본값</translation>
     </message>
-    
-    <message>
-      <source>Match Colors</source>
-      <translation>색상 맞추기</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/ColoringControls.qml" line="53" />
-      <source>Match Colors From</source>
-      <translation>색상 참조 원본</translation>
-    </message>
     <message>
       <source>Max</source>
       <translation>최대</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="423" />
-      <source>Max Input Resolution</source>
-      <translation>최대 입력 해상도</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="444" />
@@ -1270,8 +1055,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>현재 단계에서 측정된 초당 입력 프레임</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4304" />
-      <location filename="../bridge.py" line="3976" />
       <source>Media loading cancelled.</source>
       <translation>미디어 불러오기 취소됨.</translation>
     </message>
@@ -1280,7 +1063,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>중간</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3968" />
       <source>Metadata unavailable for %1.</source>
       <translation>%1의 메타데이터를 사용할 수 없습니다.</translation>
     </message>
@@ -1320,7 +1102,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Mute</source>
       <translation>음소거</translation>
     </message>
@@ -1330,22 +1111,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>NO OUTPUT</source>
       <translation>출력 없음</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
-      <location filename="../qml/views/LiveView.qml" line="479" />
       <source>NR Intensity</source>
       <translation>NR 강도</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
-      <location filename="../qml/views/LiveView.qml" line="521" />
       <source>NR Passes</source>
       <translation>NR 패스 수</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
-      <location filename="../qml/views/LiveView.qml" line="471" />
       <source>NR Style</source>
       <translation>NR 스타일</translation>
     </message>
@@ -1376,17 +1153,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>아니요</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3653" />
       <source>No file is selected to clear.</source>
       <translation>지울 파일을 선택하지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3678" />
       <source>No file is selected to show in Explorer.</source>
       <translation>탐색기에 표시할 파일을 선택하지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4001" />
       <source>No files in queue to process.</source>
       <translation>대기열에 처리할 파일이 없습니다.</translation>
     </message>
@@ -1404,18 +1178,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="620" />
       <location filename="../qml/components/MediaViewport.qml" line="825" />
-      <location filename="../qml/views/LiveView.qml" line="276" />
       <source>OUTPUT</source>
       <translation>출력</translation>
     </message>
     <message>
       <source>Online</source>
       <translation>온라인</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="394" />
-      <source>Online Stream URL</source>
-      <translation>온라인 스트림 URL</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="122" />
@@ -1446,7 +1214,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>원본 폴더 열기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3719" />
       <source>Opened containing folder for %1.</source>
       <translation>%1이 있는 폴더를 열었습니다.</translation>
     </message>
@@ -1474,7 +1241,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>출력 형식</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3085" />
       <source>Output unavailable: %1</source>
       <translation>출력 사용 불가: %1</translation>
     </message>
@@ -1506,14 +1272,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>패스 수</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5475" />
-      <location filename="../bridge.py" line="5563" />
       <source>Paste failed: %1</source>
       <translation>붙여넣기 실패: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
-      <location filename="../qml/views/LiveView.qml" line="177" />
       <source>Pause</source>
       <translation>일시 정지</translation>
     </message>
@@ -1541,23 +1304,15 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>재생</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="447" />
-      <source>Playback Buffer</source>
-      <translation>재생 버퍼</translation>
-    </message>
-    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>재생 속도</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5074" />
       <source>Playlist: %1</source>
       <translation>재생 목록: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3214" />
-      <location filename="../bridge.py" line="3231" />
       <source>Please enter a preset name.</source>
       <translation>프리셋 이름을 입력하세요.</translation>
     </message>
@@ -1575,7 +1330,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>환경 설정 및 시스템 구성</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4080" />
       <source>Preparing batch processing…</source>
       <translation>일괄 처리 준비 중…</translation>
     </message>
@@ -1609,17 +1363,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>미리 보기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4811" />
       <source>Preview cancelled.</source>
       <translation>미리 보기 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4790" />
       <source>Preview complete%1.</source>
       <translation>미리 보기 완료%1.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4701" />
       <source>Preview configuration error: %1</source>
       <translation>미리 보기 구성 오류: %1</translation>
     </message>
@@ -1629,12 +1380,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>파일 미리 보기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4565" />
       <source>Preview is unavailable while another operation is active.</source>
       <translation>다른 작업 중에는 미리 보기를 사용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4722" />
       <source>Preview superseded by newer settings.</source>
       <translation>새 설정으로 미리 보기가 교체되었습니다.</translation>
     </message>
@@ -1684,18 +1433,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>인코딩 품질: 코덱에 의해 고정</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3376" />
-      <location filename="../bridge.py" line="3616" />
-      <location filename="../bridge.py" line="3631" />
-      <location filename="../bridge.py" line="3647" />
-      <location filename="../bridge.py" line="5506" />
       <source>Queue changes are disabled while an operation is active.</source>
       <translation>작업 중에는 대기열을 변경할 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="280" />
-      <source>REBUFFER</source>
-      <translation>재버퍼링</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="44" />
@@ -1709,9 +1448,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2069" />
-      <location filename="../bridge.py" line="3951" />
-      <location filename="../bridge.py" line="4561" />
       <source>Ready.</source>
       <translation>준비 완료.</translation>
     </message>
@@ -1721,7 +1457,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>실시간 미리 보기</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5082" />
       <source>Received %1 → Input %2 → Output %3 (%4)</source>
       <translation>수신 %1 → 입력 %2 → 출력 %3 (%4)</translation>
     </message>
@@ -1731,22 +1466,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>참조 이미지</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1070" />
       <source>Reference match could not be applied during the current operation.</source>
       <translation>현재 작업 중에는 참조 일치를 적용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1064" />
       <source>Reference match skipped because the input or color controls changed.</source>
       <translation>입력이나 색상 설정이 변경되어 참조 일치를 건너뛰었습니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1084" />
       <source>Reference matching cancelled.</source>
       <translation>참조 색상 일치 취소됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1082" />
       <source>Reference matching failed: %1</source>
       <translation>참조 색상 일치 실패: %1</translation>
     </message>
@@ -1776,13 +1507,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>동영상 렌더링</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4615" />
       <source>Rendering preview%1…</source>
       <translation>미리 보기%1 렌더링 중…</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
-      <location filename="../qml/views/LiveView.qml" line="576" />
       <location filename="../qml/views/UpscaleView.qml" line="459" />
       <source>Reset</source>
       <translation>초기화</translation>
@@ -1822,34 +1551,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>업스케일 설정 초기화</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4923" />
-      <location filename="../bridge.py" line="4922" />
-      <source>Resolving source and starting Live pipeline…</source>
-      <translation>소스를 확인하고 라이브 시작 중…</translation>
-    </message>
-    <message>
       <source>Resolving source...</source>
       <translation>소스 확인 중...</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="224" />
-      <source>Restore</source>
-      <translation>복원</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="177" />
-      <source>Resume</source>
-      <translation>재개</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2050" />
       <source>Runtime initialization failed: %1</source>
       <translation>런타임 초기화 실패: %1</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="275" />
-      <source>SOURCE</source>
-      <translation>소스</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1882,7 +1589,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>프로그램의 출력 폴더에 결과를 저장합니다.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1125" />
       <source>Saved LUT to %1</source>
       <translation>LUT를 %1에 저장했습니다</translation>
     </message>
@@ -1892,7 +1598,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>저장 및 검증 완료</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1123" />
       <source>Saving %1³ LUT…</source>
       <translation>%1³ LUT 저장 중…</translation>
     </message>
@@ -1927,12 +1632,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>크기 조정 방법</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3391" />
       <source>Scanning selected inputs…</source>
       <translation>선택한 입력 검색 중…</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1017" />
       <source>Select Apply LUT to match the reference with Color Adjustment.</source>
       <translation>색상 보정으로 참조를 맞추려면 LUT 적용을 선택하세요.</translation>
     </message>
@@ -1969,38 +1672,26 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>입력 미디어 선택</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="404" />
-      <source>Select MP4/MKV video...</source>
-      <translation>MP4/MKV 동영상 선택...</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3997" />
       <source>Select a batch processing tab before exporting.</source>
       <translation>내보내기 전에 일괄 처리 탭을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4849" />
-      <location filename="../bridge.py" line="4854" />
       <source>Select a valid local video file (MP4/MKV/MOV/AVI/WebM...).</source>
       <translation>유효한 로컬 동영상 파일을 선택하세요 (MP4/MKV/MOV/AVI/WebM...).</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4844" />
       <source>Select a valid local video file.</source>
       <translation>유효한 로컬 동영상 파일을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="888" />
       <source>Select an image or video before using Auto color.</source>
       <translation>자동 색상 보정 전에 이미지나 동영상을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1012" />
       <source>Select an input and wait for the current operation before matching.</source>
       <translation>입력을 선택하고 현재 작업이 끝난 뒤 색상을 맞추세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1021" />
       <source>Select an input image or video before choosing a reference.</source>
       <translation>참조를 선택하기 전에 입력 이미지나 동영상을 선택하세요.</translation>
     </message>
@@ -2010,19 +1701,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>선택...</translation>
     </message>
     <message>
-      <location filename="../qml/components/ColoringControls.qml" line="62" />
-      <source>Selected Reference Image</source>
-      <translation>선택한 참조 이미지</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="3602" />
       <source>Selection changes are disabled while an operation is active.</source>
       <translation>작업 중에는 선택을 변경할 수 없습니다.</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="2192" />
-      <source>Setting saved; this change applies the next time Live is started.</source>
-      <translation>설정 저장됨. 다음 라이브 시작 시 적용됩니다.</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="134" />
@@ -2056,7 +1736,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Sharpness</source>
       <translation>선명도</translation>
     </message>
-    
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="952" />
       <location filename="../qml/components/MediaViewport.qml" line="1011" />
@@ -2073,11 +1752,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="187" />
       <source>Sizing Mode</source>
       <translation>크기 모드</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="522" />
-      <source>Skin Structure</source>
-      <translation>피부 구조 강도</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="82" />
@@ -2102,12 +1776,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>소스 (원본)</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="415" />
-      <source>Source Quality</source>
-      <translation>소스 품질</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5090" />
       <source>Source: %1 fps, Guide: %2 ms, DLSS: %3 ms, Encode: %4 ms</source>
       <translation>소스: %1 fps, 가이드: %2 ms, DLSS: %3 ms, 인코딩: %4 ms</translation>
     </message>
@@ -2131,11 +1799,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>시작 / 렌더링</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Start Live Session</source>
-      <translation>라이브 세션 시작</translation>
-    </message>
-    <message>
       <source>Starting...</source>
       <translation>시작 중...</translation>
     </message>
@@ -2153,34 +1816,22 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>중지</translation>
     </message>
     <message>
-      <location filename="../qml/components/MenuStrip.qml" line="221" />
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stop Live Session</source>
-      <translation>라이브 세션 중지</translation>
-    </message>
-    <message>
-      <location filename="../bridge.py" line="5021" />
       <source>Stop error: %1</source>
       <translation>중지 오류: %1</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2115" />
       <source>Stop the current operation before changing processing settings.</source>
       <translation>설정을 변경하기 전에 현재 작업을 중지하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3251" />
       <source>Stop the current operation before importing a preset.</source>
       <translation>프리셋을 가져오기 전에 작업을 중지하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3114" />
-      <location filename="../bridge.py" line="3195" />
       <source>Stop the current operation before resetting settings.</source>
       <translation>설정을 초기화하기 전에 작업을 중지하세요.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3999" />
       <source>Stop the current operation before starting a batch.</source>
       <translation>일괄 처리를 시작하기 전에 작업을 중지하세요.</translation>
     </message>
@@ -2194,25 +1845,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>중지됨.</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="4992" />
-      <location filename="../bridge.py" line="4323" />
-      <location filename="../bridge.py" line="4991" />
-      <source>Stopping Live session…</source>
-      <translation>라이브 세션 중지 중…</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="552" />
-      <source>Stopping Live...</source>
-      <translation>라이브 중지 중...</translation>
-    </message>
-    <message>
       <source>Stopping...</source>
       <translation>중지 중...</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="378" />
-      <source>Stream Source</source>
-      <translation>스트림 소스</translation>
     </message>
     <message>
       <source>Style</source>
@@ -2224,19 +1858,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Patreon에서 후원</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3449" />
       <source>Switched to %1 mode. %2</source>
       <translation>%1 모드로 전환했습니다. %2</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="3083" />
       <source>Target %1 FPS</source>
       <translation>목표 %1 FPS</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="439" />
-      <source>Target FPS</source>
-      <translation>목표 FPS</translation>
     </message>
     <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
@@ -2279,7 +1906,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Tonal Response</source>
       <translation>톤 반응</translation>
     </message>
-    
     <message>
       <source>Ultra</source>
       <translation>최고</translation>
@@ -2299,12 +1925,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
-      <location filename="../qml/views/LiveView.qml" line="185" />
       <source>Unmute</source>
       <translation>음소거 해제</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="1726" />
       <source>Updating realtime preview…</source>
       <translation>실시간 미리 보기 업데이트 중…</translation>
     </message>
@@ -2319,7 +1943,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>이미지 업스케일</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="2135" />
       <source>Upscale Video requires VSR or RTX Video HDR to remain enabled.</source>
       <translation>동영상 업스케일에는 VSR 또는 RTX Video HDR이 활성화되어야 합니다.</translation>
     </message>
@@ -2359,11 +1982,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>동영상 파일</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="407" />
-      <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</source>
-      <translation>동영상 파일 (*.mp4 *.mkv *.mov *.avi *.webm *.m4v *.ts *.mts *.m2ts *.mxf *.vob *.wmv *.flv *.mpg *.mpeg *.mpe *.ogv *.3gp *.3g2 *.asf *.divx *.f4v *.m2v *.m1v *.m2t)</translation>
-    </message>
-    <message>
       <location filename="../qml/components/DropZone.qml" line="95" />
       <source>Video Files (*.mp4 *.mkv *.mov *.avi *.webm)</source>
       <translation>동영상 파일 (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
@@ -2397,24 +2015,9 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>보기</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="199" />
-      <source>Vol %1</source>
-      <translation>볼륨 %1</translation>
-    </message>
-    <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="145" />
       <source>Volume</source>
       <translation>음량</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="193" />
-      <source>Volume down</source>
-      <translation>볼륨 낮추기</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="210" />
-      <source>Volume up</source>
-      <translation>볼륨 높이기</translation>
     </message>
     <message>
       <source>Waiting</source>
@@ -2426,7 +2029,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>시작 대기 중</translation>
     </message>
     <message>
-      <location filename="../bridge.py" line="5481" />
       <source>Web image download failed: %1</source>
       <translation>웹 이미지 다운로드 실패: %1</translation>
     </message>
@@ -2446,11 +2048,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/SettingsView.qml" line="148" />
       <source>Yes</source>
       <translation>예</translation>
-    </message>
-    <message>
-      <location filename="../qml/views/LiveView.qml" line="395" />
-      <source>YouTube, Twitch, or HLS/RTMP URL...</source>
-      <translation>YouTube, Twitch 또는 HLS/RTMP URL...</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="528" />
@@ -2490,11 +2087,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>이미지</translation>
     </message>
     <message>
-      <location filename="../qml/views/LiveView.qml" line="448" />
-      <source>sec</source>
-      <translation>초</translation>
-    </message>
-    <message>
       <source>video</source>
       <translation>동영상</translation>
     </message>
@@ -2507,18 +2099,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS 및 RTX는 NVIDIA Corporation의 상표입니다.</translation>
-    </message>
-    <message>
-      <source>Fast lossless</source>
-      <translation>빠른 무손실</translation>
-    </message>
-    <message>
-      <source>Fast compressed</source>
-      <translation>빠른 압축</translation>
-    </message>
-    <message>
-      <source>Fast 8-bit RGB compression without color subsampling. HDR uses Fast lossless. Models run one at a time.</source>
-      <translation>색상 서브샘플링 없는 빠른 8비트 RGB 압축. HDR에는 빠른 무손실을 사용합니다. 모델은 한 번에 하나씩 실행됩니다.</translation>
     </message>
     <message>
       <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
@@ -2572,27 +2152,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Startup %1 s · switch %2 s</source>
       <translation>시작 %1초 · 전환 %2초</translation>
     </message>
-    <message>
-      <source>Cache Memory (Rolling Cache)</source>
-      <translation>캐시 메모리 (롤링 캐시)</translation>
-    </message>
-    <message>
+<message>
       <source>Cache size</source>
       <translation>캐시 크기</translation>
     </message>
-    <message>
-      <source>%1 GB (Default)</source>
-      <translation>%1 GB (기본값)</translation>
-    </message>
-    <message>
-      <source>Native precision</source>
-      <translation>원본 정밀도</translation>
-    </message>
-    <message>
-      <source>Compressed RGB (8-bit)</source>
-      <translation>압축 RGB (8비트)</translation>
-    </message>
-    <message>
+<message>
       <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
       <translation>제어 마스크가 자동 마스크를 대신합니다. RGB 채널로 강도, 톤, 구조를 제어합니다.</translation>
     </message>
@@ -2712,10 +2276,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Software codecs</source>
       <translation>소프트웨어 코덱</translation>
-    </message>
-    <message>
-      <source>Source quality selection applies to YouTube/Twitch pages; using the supplied source.</source>
-      <translation>소스 화질 선택은 YouTube/Twitch 페이지에 적용됩니다. 제공된 소스를 사용합니다.</translation>
     </message>
     <message>
       <source>Startup warning: %1</source>

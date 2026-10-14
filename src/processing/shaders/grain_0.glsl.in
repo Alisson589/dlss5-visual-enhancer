@@ -1,0 +1,39 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC Film grain (Gaussian, variance normalized)
+uint grain_hash(uint x) {
+    x ^= x >> 16; x *= 0x7feb352du;
+    x ^= x >> 15; x *= 0x846ca68bu;
+    return x ^ (x >> 16);
+}
+@uint_kind@ grain_hashv(@uint_kind@ x) {
+    x ^= x >> 16; x *= 0x7feb352du;
+    x ^= x >> 15; x *= 0x846ca68bu;
+    return x ^ (x >> 16);
+}
+@kind@ grain_normal(ivec2 p, uint tick) {
+    uint base = grain_hash(uint(p.x)) ^ grain_hash(uint(p.y) + 0x9e3779b9u)
+              ^ grain_hash(@options.seed@u ^ grain_hash(tick));
+    @uint_kind@ h = @uint_kind@(base) + @salts@;
+    @kind@ u = (@kind@(grain_hashv(h) >> 8) + 0.5) / 16777216.0;
+    @kind@ v = (@kind@(grain_hashv(h ^ 0xa511e9b3u) >> 8) + 0.5) / 16777216.0;
+    return sqrt(-2.0 * log(u)) * cos(6.28318530718 * v);
+}
+@kind@ grain_field(vec2 p, uint tick) {
+    // Rotation avoids a visible horizontal / vertical grid at larger sizes.
+    p = mat2(0.8, 0.6, -0.6, 0.8) * p / @options.size@;
+    ivec2 base = ivec2(floor(p));
+    @kind@ sum = @kind@(0.0); float variance = 0.0;
+    for (int y = -1; y <= 2; y++) for (int x = -1; x <= 2; x++) {
+        ivec2 q = base + ivec2(x, y);
+        vec2 d = p - vec2(q);
+        float w = exp(-dot(d, d) / 0.605);
+        sum += w * grain_normal(q, tick);
+        variance += w * w;
+    }
+    return sum * inversesqrt(max(variance, 1e-12));
+}
+vec4 hook() {
+    vec4 c = HOOKED_tex(HOOKED_pos);
+    if (c.a <= 0.0) return c;
+    @kind@ n = grain_field(floor(HOOKED_pos * HOOKED_size) + 0.5, @temporal@);

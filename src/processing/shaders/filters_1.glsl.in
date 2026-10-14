@@ -1,0 +1,12 @@
+
+    vec2 lo = (outpos - 0.5) * ratio, hi = (outpos + 0.5) * ratio;
+    vec4 sum = vec4(0.0); float total = 0.0;
+    for (int y = int(floor(lo.y)); y < int(ceil(hi.y)); y++) {
+        float wy = max(0.0, min(hi.y, float(y+1)) - max(lo.y, float(y)));
+        for (int x = int(floor(lo.x)); x < int(ceil(hi.x)); x++) {
+            float wx = max(0.0, min(hi.x, float(x+1)) - max(lo.x, float(x)));
+            sum += pixel(ivec2(x,y)) * wx * wy; total += wx * wy;
+        }
+    }
+    return sum / max(total, 1e-20);
+}

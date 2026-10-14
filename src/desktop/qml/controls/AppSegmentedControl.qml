@@ -9,7 +9,6 @@ Item {
     property var currentValue: undefined
     property int currentIndex: 0
     property int controlHeight: Theme.controlHeightSmall
-    property bool enabled: true
 
     signal activated(var value, int index)
 

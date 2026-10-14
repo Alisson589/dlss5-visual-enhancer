@@ -16,7 +16,7 @@ Rectangle {
     property real fallbackDurationMs: 0
     property real fallbackFrameRate: 30.0
     // Only user actions refresh the viewport's preview, never playback ticks.
-    signal userScrubbed(real posMs)
+    signal userScrubbed(real posMs, bool dragging)
     property var renderedRanges: []
 
     readonly property bool stacked: width < 640
@@ -81,8 +81,9 @@ Rectangle {
     function seekTo(posMs) {
         if (!canSeek) return
         var target = framePosition(frameAt(Math.max(0, Math.min(effectiveDuration, posMs))))
-        player.position = target
-        userScrubbed(target)
+        if (typeof player.seekToPosition === "function") player.seekToPosition(target)
+        else player.position = target
+        userScrubbed(target, seekSlider.pressed)
     }
     function jumpTo(end) {
         if (!canSeek) return

@@ -19,6 +19,33 @@ Item {
     property int dragTargetIndex: -1
     property real draggedCardHeight: 0
 
+    // Patch rows by their stable stage IDs. Replacing a QVariantList model
+    // destroys every delegate, including switches holding a mouse press.
+    ListModel { id: stageModel }
+    function syncStages() {
+        var rows = appBridge ? appBridge.workflowStages : []
+        for (var i = 0; i < rows.length; ++i) {
+            var found = -1
+            for (var j = i; j < stageModel.count; ++j) {
+                if (stageModel.get(j).stageKey === rows[i].id) { found = j; break }
+            }
+            if (found < 0)
+                stageModel.insert(i, {stageKey: rows[i].id, enabledValue: rows[i].enabled})
+            else {
+                if (found !== i) stageModel.move(found, i, 1)
+                stageModel.setProperty(i, "enabledValue", rows[i].enabled)
+            }
+        }
+        if (stageModel.count > rows.length)
+            stageModel.remove(rows.length, stageModel.count - rows.length)
+    }
+    onAppBridgeChanged: Qt.callLater(syncStages)
+    Component.onCompleted: syncStages()
+    Connections {
+        target: root.appBridge
+        function onWorkflowStagesChanged() { root.syncStages() }
+    }
+
     function collapseKey(stageId, mode) { return mode + ":" + stageId }
     function storedCollapsed(stageId, mode) {
         var key = collapseKey(stageId, mode)
@@ -43,6 +70,9 @@ Item {
         if (id === "dlss_super_resolution") return qsTranslate("App", "DLSS Super Resolution")
         if (id === "super_resolution") return qsTranslate("App", "RTX Super Resolution")
         if (id === "rtx_video_hdr") return qsTranslate("App", "RTX Video HDR")
+        if (id === "vfx_vsr") return qsTranslate("App", "Video Super Resolution")
+        if (id === "vfx_frame_generation") return qsTranslate("App", "Video Frame Generation")
+        if (id === "vfx_upscale") return qsTranslate("App", "Upscale (Lightweight)")
         if (id === "coloring") return qsTranslate("App", "Coloring")
         if (id === "cas_sharpening") return qsTranslate("App", "Sharpening")
         if (id === "grain") return qsTranslate("App", "Grain")
@@ -54,6 +84,7 @@ Item {
     Component { id: dlssControls; DlssSuperResolutionControls { appBridge: root.appBridge } }
     Component { id: superControls; SuperResolutionControls { appBridge: root.appBridge } }
     Component { id: hdrControls; RtxVideoHdrControls { appBridge: root.appBridge } }
+    Component { id: vfxControls; VfxControls { appBridge: root.appBridge; stageId: parent ? parent.effectStage : "" } }
     Component { id: coloringControls; ColoringControls { appBridge: root.appBridge; playheadMs: viewport.playheadMs } }
     Component { id: sharpeningControls; SharpeningControls { appBridge: root.appBridge } }
     Component { id: grainControls; GrainControls { appBridge: root.appBridge } }
@@ -142,6 +173,7 @@ Item {
                 // Scrollable Cards Area
                 Flickable {
                     id: flick
+                    objectName: "workflowCardsScroll"
                     width: parent.width
                     height: parent.height - 48 - actionBar.height
                     contentWidth: width
@@ -160,13 +192,14 @@ Item {
 
                         Repeater {
                             id: stageRepeater
-                            model: appBridge ? appBridge.workflowStages : []
+                            model: stageModel
                             delegate: WorkflowStageCard {
+                                id: stageCard
                                 objectName: "workflow-stage-" + stageId
                                 width: contentCol.width
                                 appBridge: root.appBridge
-                                stageId: modelData.id
-                                stageEnabled: modelData.enabled
+                                stageId: model.stageKey
+                                stageEnabled: model.enabledValue
                                 stageIndex: index
                                 stageCount: root.workflowRepeater ? root.workflowRepeater.count : 0
                                 stageRepeater: root.workflowRepeater
@@ -203,11 +236,18 @@ Item {
                                 }
                                 Loader {
                                     width: parent.width
+                                    property string effectStage: stageCard.stageId
+                                    property bool visited: false
+                                    readonly property bool expanded: !stageCard.collapsed
+                                    active: visited
+                                    onExpandedChanged: { if (expanded) visited = true }
+                                    Component.onCompleted: { if (expanded) visited = true }
                                     sourceComponent: stageId === "neural_model" ? neuralControls
                                                    : stageId === "scale_method" ? scaleControls
                                                    : stageId === "dlss_super_resolution" ? dlssControls
                                                    : stageId === "super_resolution" ? superControls
                                                    : stageId === "rtx_video_hdr" ? hdrControls
+                                                   : stageId.indexOf("vfx_") === 0 ? vfxControls
                                                    : stageId === "coloring" ? coloringControls
                                                    : stageId === "cas_sharpening" ? sharpeningControls
                                                    : stageId === "grain" ? grainControls
@@ -217,6 +257,7 @@ Item {
                         }
 
                         AppCard {
+                            objectName: "exportSettingsCard"
                             width: parent.width
                             title: qsTranslate("App", "Export Settings")
                             ExportSettingsControls {
@@ -287,7 +328,7 @@ Item {
                             variant: appBridge && appBridge.canStop ? "danger" : "primary"
                             width: parent.width
                             buttonHeight: 34
-                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready" && !appBridge.isLiveRunning)) : false
+                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready")) : false
                             onClicked: {
                                 if (appBridge) {
                                     if (appBridge.canStop) {

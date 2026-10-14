@@ -1,0 +1,21 @@
+float usm(float a,float b,float c,float d,float e,float strength,float limit) {
+    float ac=max(max(a,b),c)-min(min(a,b),c),bc=max(max(c,d),e)-min(min(c,d),e);
+    float ratio=max(ac,bc)/(min(ac,bc)+1.0/255.0);
+    float lti=1.0-clamp((ratio-2.0)/8.0,0.0,1.0);
+    return clamp((-0.6001*b+1.2002*c-0.6001*d)*strength,-limit,limit)*lti;
+}
+vec4 hook() {
+    vec4 center=pixel(ivec2(0)); float p[25];
+    for(int y=0;y<5;y++) for(int x=0;x<5;x++) {
+        vec4 c=pixel(ivec2(x-2,y-2));
+        if(c.a<0.99999) return center;
+        p[y*5+x]=dot(c.rgb,vec3(0.2126,0.7152,0.0722));
+    }
+    float g0=abs(p[6]+p[7]+p[8]-p[16]-p[17]-p[18]);
+    float g45=abs(p[11]+p[6]+p[7]-p[17]-p[18]-p[13]);
+    float g90=abs(p[6]+p[11]+p[16]-p[8]-p[13]-p[18]);
+    float g135=abs(p[11]+p[16]+p[17]-p[7]-p[8]-p[13]);
+    float ax=max(g0,g90),an=min(g0,g90),dx=max(g45,g135),dn=min(g45,g135);
+    bool ad=ax>an*(2.0*1127.0/1024.0)&&ax>64.0/1024.0&&ax>dn;
+    bool dd=dx>dn*(2.0*1127.0/1024.0)&&dx>64.0/1024.0&&dx>an;
+    float af=ad&&dd?ax/max(ax+dx,1e-20):1.0,df=ad&&dd?dx/max(ax+dx,1e-20):1.0;

@@ -163,6 +163,11 @@ Item {
                                     onActivated: (v) => { if (appBridge) appBridge.fiQuality = v }
                                 }
 
+                                EncodingQualityHint {
+                                    width: parent.width
+                                    visible: !appBridge || appBridge.fixedQualityCodecs.indexOf(appBridge.fiCodec) < 0
+                                    quality: appBridge ? appBridge.fiQuality : "Auto (Default)"
+                                }
                                 Text {
                                     visible: appBridge && appBridge.fixedQualityCodecs.indexOf(appBridge.fiCodec) >= 0
                                     text: qsTranslate("App", "Quality Preset: Fixed by codec")
@@ -239,7 +244,7 @@ Item {
                             variant: appBridge && appBridge.canStop ? "danger" : "primary"
                             width: parent.width
                             buttonHeight: 34
-                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready" && !appBridge.isLiveRunning)) : false
+                            enabled: appBridge ? (appBridge.canStop || (appBridge.operationState === "Idle" && appBridge.runtimeState === "Ready")) : false
                             onClicked: {
                                 if (appBridge) {
                                     if (appBridge.canStop) appBridge.stopActiveBatch()

@@ -1,0 +1,7 @@
+    vec3 rgb = clamp(c.rgb, 0.0, 1.0);
+    float luma = dot(rgb, vec3(@'0.2627, 0.6780, 0.0593' if hdr else '0.2126, 0.7152, 0.0722'@));
+    float envelope = mix(1.0, sqrt(max(4.0 * luma * (1.0 - luma), 0.0)), @options.response / 100.0@);
+    vec3 delta = noise * @options.amount / 100.0 * (0.025 if hdr else 0.06)@ * envelope;
+    // Symmetric limiting prevents clipping from lifting blacks or lowering
+    // whites. Monochrome grain keeps one common delta across RGB channels.
+    vec3 headroom = min(rgb, 1.0 - rgb);

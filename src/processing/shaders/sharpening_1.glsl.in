@@ -1,0 +1,10 @@
+vec4 hook() {
+    vec4 b=pixel(ivec2(0,-1)),d=pixel(ivec2(-1,0)),e=pixel(ivec2(0)),f=pixel(ivec2(1,0)),h=pixel(ivec2(0,1));
+    if(min(min(b.a,d.a),min(min(e.a,f.a),h.a)) < 0.99999) return e;
+    vec3 B=lin(b.rgb),D=lin(d.rgb),E=lin(e.rgb),F=lin(f.rgb),H=lin(h.rgb);
+    float mn=min(min(min(D.g,E.g),F.g),min(B.g,H.g));
+    float mx=max(max(max(D.g,E.g),F.g),max(B.g,H.g));
+    float w=sqrt(clamp(min(mn,1.0-mx)/max(mx,1e-20),0.0,1.0))*@-1.0 / (8.0 - 3.0 * sharpness / 100.0)@;
+    vec3 result=clamp((E+w*(B+D+F+H))/(1.0+4.0*w),0.0,1.0);
+    return vec4(clamp(enc(mix(E,result,@sharpness / 100.0@)),0.0,1.0),e.a);
+}

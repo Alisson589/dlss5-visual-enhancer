@@ -68,53 +68,6 @@ Rectangle {
                 }
 
                 AppCard {
-                    width: cardColumn.width; title: qsTranslate("App", "Cache Memory (Rolling Cache)"); collapsible: false
-                    Column {
-                        width: parent.width; spacing: 10
-                        AppComboBox {
-                            objectName: "cache-mode"
-                            width: parent.width; label: qsTranslate("App", "Mode")
-                            model: [
-                                {label: qsTranslate("App", "Native precision"), value: "Fast lossless"},
-                                {label: qsTranslate("App", "Compressed RGB (8-bit)"), value: "Fast compressed"}
-                            ]
-                            currentValue: appBridge ? appBridge.cacheMode : "Fast lossless"
-                            onActivated: (v) => { if (appBridge) appBridge.cacheMode = v }
-                        }
-                        Column {
-                            width: parent.width; spacing: 2
-                            AppSlider {
-                                id: cacheSizeSlider
-                                objectName: "cache-size"
-                                width: parent.width; label: qsTranslate("App", "Cache size")
-                                from: 5; to: 30; stepSize: 5; precision: 0; defaultValue: 10; unit: "GB"
-                                showValueControls: false
-                                value: appBridge ? appBridge.cacheSizeGB : 10
-                                onValueModified: (v) => {
-                                    if (appBridge) appBridge.cacheSizeGB = Math.round(v / 5) * 5
-                                }
-                            }
-                            Item {
-                                width: parent.width; height: 18
-                                Repeater {
-                                    model: [5, 10, 15, 20, 25, 30]
-                                    Text {
-                                        required property int index
-                                        required property int modelData
-                                        objectName: "cache-size-stop-" + modelData
-                                        x: Math.max(0, Math.min(parent.width - width,
-                                            7 + index * (parent.width - 14) / 5 - width / 2))
-                                        text: modelData === 10 ? qsTranslate("App", "%1 GB (Default)").arg(modelData) : modelData + " GB"
-                                        color: cacheSizeSlider.value === modelData ? Theme.accent : Theme.textMuted
-                                        font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                AppCard {
                     width: cardColumn.width; title: qsTranslate("App", "Preview"); collapsible: false
                     Column {
                         width: parent.width; spacing: 16
