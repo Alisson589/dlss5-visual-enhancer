@@ -2,7 +2,7 @@
 
 [![Downloads](https://img.shields.io/github/downloads/Merserk/dlss5-visual-enhancer/total.svg?style=flat-square&label=Downloads)](https://github.com/Merserk/dlss5-visual-enhancer/releases) ![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat-square&logo=windows11&logoColor=white) ![DLSS](https://img.shields.io/badge/DLSS%205-Neural%20Rendering-76B900?style=flat-square) ![DLSS Frame Generation](https://img.shields.io/badge/DLSS-Frame%20Generation-76B900?style=flat-square&logo=nvidia&logoColor=white) ![RTX Video](https://img.shields.io/badge/RTX-Video-76B900?style=flat-square&logo=nvidia&logoColor=white) [![Patreon](https://img.shields.io/badge/Patreon-Merserk-FF424D?style=flat-square&logo=patreon&logoColor=white)](https://www.patreon.com/Merserk)
 
-**Visual Enhancer** is a portable Windows application for AI-assisted image and video enhancement on NVIDIA RTX GPUs. Its configurable image and video processing pipeline combines **NVIDIA DLSS 5 Neural Rendering** through the **Neuroframe Engine**, conventional scaling, **DLSS Super Resolution**, **NVIDIA RTX Video Super Resolution**, coloring, sharpening, and film grain. Video processing also supports **NVIDIA RTX Video HDR** and **NVIDIA DLSS Frame Generation** as independent pipeline stages. Arrange and enable individual processing stages, preview the result, and export single files or batches. Live mode brings DLSS 5 Neural Rendering to local videos and supported online streams during playback.
+**Visual Enhancer** is a portable Windows application for AI-assisted image and video enhancement on NVIDIA RTX GPUs. Its configurable pipelines combine **NVIDIA DLSS 5 Neural Rendering** through the **Neuroframe Engine**, scaling, **DLSS Super Resolution**, **RTX Video Super Resolution**, coloring, sharpening, and film grain. Video processing also offers **RTX Video HDR**, **DLSS Frame Generation**, **Video Super Resolution**, **Video Frame Generation**, and **Upscale (Lightweight)** as separate stages. Arrange the effects, compare previews, and export single files or batches.
 
 <img width="1920" height="1080" alt="Main Cover_v2" src="https://github.com/user-attachments/assets/9248c946-391e-408c-b146-f7d8a6e9c695" />
 
@@ -30,371 +30,82 @@ https://github.com/user-attachments/assets/81c29005-e4f0-4acf-b9f7-d58850bb055f
 
 ## Main features
 
-The **Neural Rendering** workspace provides separate **Image** and **Video** pipelines. Each has its own stage order and enabled stages, so effects can be combined, rearranged by dragging their cards, or switched off individually. The image pipeline offers **DLSS Neural Rendering → Scaling → DLSS Super Resolution → RTX Super Resolution → Coloring → Sharpening → Grain** in its initial order. The video pipeline initially uses **DLSS Neural Rendering → Scaling → DLSS Super Resolution → RTX Super Resolution → RTX Video HDR → DLSS Frame Generation → Coloring → Sharpening → Grain**. These are available stages, not effects that must all be enabled; all processing cards are off by default. Rendering validates the selected order, dimensions, frame rates, hardware capabilities, and HDR compatibility before processing.
+The **Neural Rendering** workspace has separate **Image** and **Video** pipelines. Each keeps its own stage order and enabled effects. Drag cards to reorder them and enable only the stages you need; all cards are off by default.
 
-### DLSS 5 Neural Rendering
+| Feature | Processing |
+| --- | --- |
+| **DLSS Neural Rendering** | Enhance images and videos with selectable styles, intensity, local tone and structure, skin controls, automatic masking, custom control masks, and multiple passes. |
+| **Scaling** | Resize images and videos with selectable resampling filters. |
+| **DLSS Super Resolution** | DLAA or AI upscaling with selectable quality modes and presets. Video includes optical-flow quality controls. |
+| **RTX Super Resolution** | NVIDIA RTX Video enhancement and upscaling, with quality levels, scale factors, or custom dimensions. |
+| **RTX Video HDR** | Convert SDR video to HDR with contrast, saturation, middle gray, peak luminance, and precision controls. |
+| **DLSS Frame Generation** | Increase video frame rate with target FPS, engine selection, and optical-flow quality controls. |
+| **Coloring** | Adjust light and color, apply `.cube` LUTs, match image references, and export graded LUTs. |
+| **Sharpening** | NVIDIA NIS or AMD FidelityFX CAS with adjustable strength. |
+| **Grain** | Adjustable film grain with size, color, tonal response, and seed controls; animated grain for video. |
+| **Video Super Resolution** | Standard Upscaling, Denoise, Deblur, and High-Bitrate modes with quality and strength controls. Denoise and Deblur retain the input dimensions. |
+| **Upscale (Lightweight)** | Fast video upscaling with scale-factor and sharpening controls. |
+| **Video Frame Generation** | Generate intermediate video frames using a multiplier or target FPS, with model quality and automatic scene-cut detection. |
 
-- **Neuroframe Engine:** brings DLSS 5 Neural Rendering to images and videos directly inside Visual Enhancer. No external graphics injector or game add-on is required.
-- **Image and video processing:** use Neural Rendering as one stage in a larger workflow, on single files or batches.
-- **Neural Rendering controls:** choose Style 0, Style 1, or Style 2, then adjust NR Intensity, Local Tone Strength, Local Structure Strength, Skin Structure Strength, Automatic Mask, and 1–4 Neural Rendering passes.
-- **Temporal quality:** Video Neural Rendering exposes **Optical Flow Quality** with High, Medium, and Low choices; Live has an independent setting for the same control.
-- **NR Control Mask:** load an image as the native Neural Rendering control mask. Red controls intensity, green controls local tone, and blue controls local structure. While a control mask is active it replaces Automatic Mask, and the same selected mask is available to Live during the current application session.
-- **Independent scaling:** a separate Scaling stage supports Source, 200%, 175%, 150%, 125%, 75%, 50%, and 25% with image- or video-specific resampling filters.
-- **HDR handling:** compatible video pipelines can retain 10-bit HDR with a supported HDR codec and the export HDR option enabled.
-
-### RTX Video Upscale
-
-- **NVIDIA RTX Video Super Resolution:** enhance and upscale images or SDR video with VSR quality levels 1–4. This is a separate pipeline stage from DLSS Super Resolution and conventional Scaling.
-- **Flexible sizing:** use 1× native-resolution enhancement, 1.5×, 2×, 3×, 4×, or custom dimensions, subject to the 16384-pixel-per-dimension texture limit and source-size restrictions.
-- **NVIDIA RTX Video HDR:** an independent Video pipeline stage converts SDR video to HDR with adjustable contrast, saturation, middle gray, peak luminance, and processing precision.
-- **Combined processing:** RTX Video Super Resolution and RTX Video HDR can both be enabled in one workflow. HDR receives the dimensions produced by earlier stages and does not require VSR to be enabled.
-- **DLSS Super Resolution:** a separate image/video stage offers DLAA (1×), Quality (1.5×), Balanced (~1.72×), Performance (2×), and Ultra Performance (3×), with selectable DLSS presets. Video DLSS Super Resolution also exposes High, Medium, and Low Optical Flow Quality.
-- **Image output:** PNG, JPEG, WebP, AVIF, or TIFF, including 16-bit PNG/TIFF export and quality settings for lossy formats.
-- **Video output:** H.264, H.265, AV1, ProRes Proxy, ProRes HQ, and FFV1 Lossless RGB 10-bit. H.264, H.265, and AV1 also expose explicit **NVIDIA NVENC** codec choices; plain codec choices use the selected decoding/encoding path and can use hardware acceleration where supported.
-
-### DLSS Frame Generation
-
-- **Video pipeline stage:** uses NVIDIA DLSS Frame Generation to create intermediate frames at a selected output frame rate; it can be positioned among the other video stages.
-- **Target frame rates:** choose from 23.976 to 480 FPS, including common cinema, broadcast, and high-refresh rates. The selected target must exceed the frame rate entering the stage.
-- **DLSSG modes:** **Auto**, **Native DLSSG**, and **Cascade** provide different interpolation paths depending on the input and requested output. **Optical Flow Quality** can be set to High, Medium, or Low.
-- **Preview clips:** render 1, 3, 5, 10, 20, or 30 seconds from the selected video position before a full export.
-- **HDR preservation:** 10-bit HDR output is supported with H.265, AV1, ProRes Proxy, ProRes HQ, and FFV1 Lossless RGB 10-bit when HDR export is enabled.
-
-### Live
-
-- **Local and online playback:** apply DLSS 5 Neural Rendering while watching local videos, direct network streams, YouTube, and Twitch sources.
-- **Integrated playback:** pause or resume playback, control volume and mute, expand the player, or enter fullscreen without leaving the Live workflow.
-- **Live quality controls:** choose source quality, maximum input resolution from 480p to 2160p, 1/2/4-second segments, Auto/Source/60/30/24 FPS modes, a 2–30 second playback buffer, and an independent Live Scale with Source, 200%, 175%, 150%, 125%, 75%, 50%, and 25% options.
-- **Independent Live tuning:** Live keeps its own Neural Rendering settings, including Optical Flow Quality, so Live adjustments do not overwrite the main Neural Rendering settings. The NR Control Mask remains shared for the current session.
-- **Dynamic updates:** most Neural Rendering controls can be changed while Live is running. Source selection, Live Scale, source quality, maximum input resolution, target FPS, segment duration, and playback buffer changes apply the next time Live starts.
-- **Performance information:** view processing and playback status while Live is running.
+Video-only effects appear as individual cards in the Video pipeline. Stages run from top to bottom; the application checks hardware support, dimensions, frame rates, and HDR compatibility before processing.
 
 ### Workflow and preview
 
-- **Configurable pipeline:** Image and Video have independent, reorderable stage lists. Enable only the stages needed for the current task; stage-order checks prevent incompatible processing sequences.
-- **Coloring:** match an image's colors to its original input or a selected reference image, or apply and adjust a 3D `.cube` LUT. Video uses the LUT workflow. Manual light/color adjustments, automatic analysis, reference-image matching, and graded LUT export are available; video can analyze the current frame or a fixed set of frames.
-- **Sharpening:** choose NVIDIA NIS or AMD FidelityFX CAS, with adjustable sharpening strength for image or video output.
-- **Film grain:** add an independent Grain stage to images or videos, with controls for amount, size, color, tonal response, and seed. Video can use animated grain, and the stage also supports HDR video.
-- **Unified media viewer:** compare Input and Output with **Split**, **2-Up**, and **Output** views, fit images to the viewer, inspect them at 100%, and scrub through video from a shared timeline.
-- **Smart preview cache:** preview stages reuse unchanged intermediate results, reducing repeat work when adjusting later stages. Realtime Preview can refresh supported changes automatically; video previews follow the selected playhead position, while Frame Generation clips can also be rendered manually. Compatible SDR Neural Rendering and upscaling previews can seek directly to the selected position instead of preparing video from the beginning; other inputs use the established lossless preview path.
-- **Bounded rolling cache:** video exports use a configurable **5–30 GB** rolling cache and process the timeline in disposable parts. **Native precision** keeps lossless high-precision frame data, while **Compressed RGB (8-bit)** reduces SDR cache usage with lossless byte compression; HDR intermediates automatically stay on the native-precision path.
-- **Pause and resume video exports:** Neural Rendering, Upscale, and Frame Interpolation video batches can be paused from the queue. Pausing releases GPU workers and memory; resuming continues from the last committed part. Windows sleep/suspend requests also trigger this safe pause path during supported exports.
-- **Focus Preview:** hide the side panels to give the media viewer more space, using the viewer control, menu command, or `Ctrl+Shift+F`.
-- **Full-resolution image previews:** inspect generated image previews at their output resolution.
-- **Batch processing:** add multiple files or folders, drag and drop media, retry failed items, clear completed items, stop processing, and reveal completed files in Explorer.
-- **Clipboard media:** paste clipboard bitmap images, copied local files, or supported browser image URLs into compatible batch workflows; remote web images are downloaded before being added to the queue.
-- **Per-file progress:** each queue item shows its current state, progress, elapsed time, processing details, dimensions, and output path.
-- **Export destinations:** save next to the source (**Same as Input**), to the application **Output** folder, or to a selected folder. **Auto**, **Copy**, and **Custom** naming modes are available.
-- **Processing devices:** choose the NVIDIA RTX GPU used by AI/NGX stages separately from the **Decoding / Encoding Device**, which can use Automatic selection, CPU software codecs, or a detected Vulkan-capable device.
-- **Codec and container selection:** choose the video codec and a compatible MP4, MKV, or MOV container separately. H.264, H.265, and AV1 provide both plain and explicit **NVIDIA NVENC** choices. The application keeps the selected container when it is compatible and uses a supported default when a codec change requires one.
-- **Safe output handling:** incomplete output is cleaned up when necessary, and existing files are not silently overwritten.
-- **Media preservation:** the Neural Rendering pipeline exporter carries source audio, metadata, and chapters where compatible. Subtitle streams are not mapped by this exporter; original image metadata is not embedded in its exported images.
-
-By default, completed media is saved to `outputs/`; a different destination can be selected in the Export dialog. Logs are available in `logs/` for troubleshooting.
+- **Comparison:** Split, 2-Up, and Output views, zoom, fit-to-view, a shared video timeline, and Focus Preview (`Ctrl+Shift+F`).
+- **Previews:** realtime updates for supported changes, full-resolution image previews, and short video previews from the selected position. Cached results reduce repeated processing.
+- **Batches:** add files or folders, drag and drop, paste clipboard media, track per-file progress, pause or cancel exports, and retry failed items.
+- **Export:** choose the format, codec, container, quality, output folder, and naming mode. Existing files are not silently overwritten.
+- **HDR:** preserve or export 10-bit HDR with a compatible pipeline and codec. Place SDR-only effects before HDR conversion.
+- **Presets:** save and restore processing settings, stage order, and enabled effects as JSON.
 
 ## Supported media
 
 | Type | Input | Output |
 | --- | --- | --- |
-| Images | Common image formats, HEIF/HEIC, SVG, TIFF, and many camera RAW formats | PNG, JPEG, WebP, AVIF, TIFF; 8-bit, or 16-bit for PNG/TIFF |
-| Video | MP4, MKV, MOV, AVI, WebM, M4V, TS/MTS/M2TS, MXF, VOB, WMV, FLV, MPG/MPEG, and other supported video formats | H.264, H.265, AV1 (including explicit NVIDIA NVENC choices), ProRes Proxy, ProRes HQ, FFV1 Lossless RGB 10-bit |
-| Live | Local video, direct network streams, YouTube, Twitch | Processed playback inside Visual Enhancer |
+| Images | PNG, JPEG, WebP, AVIF, TIFF, BMP, GIF, SVG, HEIF/HEIC, and many camera RAW formats | PNG, JPEG, WebP, AVIF, TIFF; 16-bit export for PNG/TIFF |
+| Video | MP4, MKV, MOV, AVI, WebM, M4V, TS/MTS/M2TS, WMV, FLV | H.264, H.265, AV1, ProRes Proxy/HQ, FFV1 Lossless RGB 10-bit; compatible MP4, MKV, or MOV containers |
 
-Image decoding applies EXIF orientation, handles supported color profiles, and retains transparency in formats that support it (not JPEG). Animated and multipage image sources use the first frame/page. **Unified pipeline image exports do not preserve original EXIF or other source metadata.** The Neural Rendering video exporter maps the processed picture together with original audio, metadata, and chapters where the container and codec allow it, but does not map subtitle streams.
+Image processing applies supported color profiles and EXIF orientation, retains supported metadata, and preserves transparency where the output format allows it. Animated or multipage images use the first frame/page. Video exports retain audio, metadata, and chapters where supported; subtitle preservation depends on the processing path and container.
 
 ## Requirements
 
-- **Windows:** 64-bit Windows 11 with Direct3D 12.
-- **NVIDIA RTX GPU:** a compatible NVIDIA GeForce RTX GPU with a current NVIDIA driver for NVIDIA-powered stages.
-- **DLSS 5 Neural Rendering:** availability depends on supported NVIDIA RTX hardware, the installed driver, and successful feature initialization on the selected AI Processing GPU.
-- **DLSS Super Resolution:** requires a compatible NVIDIA GPU, driver, and available DLSS Super Resolution runtime.
-- **DLSS Frame Generation:** requires compatible NVIDIA RTX hardware. Hardware-accelerated GPU scheduling (HAGS) should be enabled; the runtime may reject Frame Generation when HAGS is disabled.
-- **RTX Video:** RTX Video Super Resolution and RTX Video HDR require compatible NVIDIA RTX hardware, driver support, and their respective runtimes.
-- **Vulkan filtering:** video scaling and other GPU filter operations require a working Vulkan device and driver. AMD, Intel, or NVIDIA Vulkan devices can be used for this path; CPU decoding/encoding mode still uses a Vulkan device for GPU filters.
-- **Video decoding/encoding:** plain H.264, H.265, and AV1 use the selected Decoding / Encoding Device, with Vulkan hardware codecs where supported and software fallback where necessary. Explicit **NVIDIA NVENC** codec choices require supported NVENC hardware and driver support. Compatible NVIDIA-native processing paths can select NVENC automatically when Automatic or a matching NVIDIA device is used.
+- **Windows:** Windows 11, 64-bit.
+- **GPU and driver:** NVIDIA GeForce RTX with a current NVIDIA driver for NVIDIA effects. Super Resolution and Lightweight Upscale support RTX 20, 30, 40, and 50 series; Neural Rendering availability is checked on the selected GPU.
+- **Frame generation:** RTX 40 or 50 series. Enable **Hardware-accelerated GPU scheduling** in Windows for DLSS Frame Generation. [NVIDIA DLSS](https://developer.nvidia.com/rtx/dlss), [Video Frame Generation support](https://docs.nvidia.com/maxine/vfx/latest/Filters/VideoFrameGeneration.html).
+- **Video filtering:** a working Vulkan-capable GPU and driver. NVIDIA, AMD, or Intel can handle this path; CPU decoding/encoding does not replace the GPU needed for these filters.
+- **Storage:** extract the complete package to a writable folder, with free space for output files and temporary video data.
+
+NVIDIA NVENC export requires an encoder supported by the selected RTX GPU. AV1 hardware encoding requires RTX 40 or 50 series; software AV1 is available through the plain codec option.
 
 ## Settings
 
-The following processing controls are available through the **Neural Rendering** workspace's Image and Video stage cards. Export options are in **Export Settings** and the Export dialog; language, processing devices, cache, preview, and preset controls are in **Settings**. Image and Video retain independent stage arrangements, while individual processing parameters can be shared between their corresponding cards.
+**Settings** contains interface language, AI Processing GPU, Decoding / Encoding Device, Realtime Preview, and preset import/export. Select the AI GPU separately from the device used for video decoding and encoding.
 
-### Processing pipeline
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Mode | Image, Video | Image |
-| Image stage order | DLSS Neural Rendering, Scaling, DLSS Super Resolution, RTX Super Resolution, Coloring, Sharpening, Grain; drag to reorder | Listed order |
-| Video stage order | DLSS Neural Rendering, Scaling, DLSS Super Resolution, RTX Super Resolution, RTX Video HDR, DLSS Frame Generation, Coloring, Sharpening, Grain; drag to reorder | Listed order |
-| Enabled stages | Each stage can be enabled or disabled independently | All off |
-| Preview length | 1, 3, 5, 10, 20, 30 seconds for video clip previews | 3 seconds |
-
-Stages execute **top to bottom** in their displayed order. Preflight checks dimensions and capabilities after each enabled stage. Video Scaling, DLSS Super Resolution, and RTX Super Resolution cannot process HDR video at their position; place them before HDR conversion. Sharpening with nonzero strength also must precede HDR conversion. **RTX Video HDR is an independent stage** that requires SDR video at its position and marks subsequent video as HDR. DLSS Frame Generation can work with supported HDR video. A Frame Generation target must be higher than the frame rate entering that stage. An export that finishes at an odd video dimension requires adjustment to even dimensions, except with FFV1 Lossless RGB 10-bit.
-
-### DLSS 5 Neural Rendering
-
-| Setting | Values | Default |
-| --- | --- | --- |
-| NR Style | Style 0, Style 1, Style 2 | Style 0 |
-| NR Intensity | 0.00–2.00 | 1.00 |
-| NR Passes | 1–4 | 1 |
-| Local Tone Strength | 0.00–1.00 | 1.00 |
-| Local Structure Strength | 0.00–1.00 | 1.00 |
-| Skin Structure Strength | 0.00–1.00; active with Automatic Mask and no loaded Control Mask | 1.00 |
-| Automatic Mask | Off, On; unavailable while an NR Control Mask is loaded | Off |
-| Optical Flow Quality | High, Medium, Low; Video only | High |
-| NR Control Mask | Load or clear a session-scoped image mask; shared with Live for the current session | None |
-
-**NR Passes** controls how many Neural Rendering passes are applied. Additional passes increase processing and can produce a stronger cumulative result. The Neural Rendering stage operates at the dimensions supplied by the preceding stages; use the separate **Scaling** stage to change those dimensions. Its input must be at least 64×64, and Neural Rendering supports dimensions up to 16384 pixels per side.
-
-**Automatic Mask** enables the Skin Structure Strength control. Loading an **NR Control Mask** disables Automatic Mask and uses the native control-mask channels instead: red controls intensity, green controls local tone, and blue controls local structure. Grayscale masks apply the same value across all native mask channels. The loaded mask is session-scoped and is not stored in settings presets.
-
-### Scaling and DLSS Super Resolution
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Scaling: scale | Source (Original), 200%, 175%, 150%, 125%, 75%, 50%, 25% | Source (Original) |
-| Scaling: image filter | Lanczos4, Area, Bicubic, Bilinear, Nearest | Lanczos4 |
-| Scaling: video filter | Spline36, Lanczos, Bicubic, Area, Bilinear | Spline36 |
-| DLSS Super Resolution: mode | DLAA (1×), Quality (1.5×), Balanced (~1.72×), Performance (2×), Ultra Performance (3×) | Quality |
-| DLSS Super Resolution: preset | Default, J, K, L, M | Default |
-| DLSS Super Resolution: Optical Flow Quality | High, Medium, Low; Video only | High |
-
-**Scaling** performs conventional resizing independently of Neural Rendering and RTX Video Super Resolution. It must produce at least 64×64 pixels; Neural Rendering supports up to 16384 pixels per dimension. **DLSS Super Resolution** is a separate neural upscaling stage: DLAA retains the input size, while the other modes increase it. DLSS Super Resolution requires at least 32×32 input and supports a maximum output texture dimension of 16384 pixels. Video output dimensions for DLSS Super Resolution are rounded up to even values.
-
-### Upscale: Image
-
-The **RTX Super Resolution** stage has these image controls; **DLSS Super Resolution** uses its separate mode and preset controls above.
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| VSR quality | 1 - Low, 2 - Medium, 3 - High, 4 - Ultra | 4 - Ultra |
-| Output sizing | Scale factor or Custom dimensions | Scale factor |
-| Scale factor | 1×, 1.5×, 2×, 3×, 4× | 2× |
-| Custom dimensions | Up to 16384 pixels per dimension; cannot be smaller than the incoming image | 3840×2160 |
-| Lock aspect ratio | Off, On | On |
-| Output format | PNG, JPEG, WebP, AVIF, TIFF; in Export Settings | PNG |
-| Image bit depth | 8-bit for all formats; 16-bit for PNG or TIFF | 8-bit |
-| Image quality | 1–100 for lossy formats | 95 |
-| Rename | Auto, Copy, Custom; in the Export dialog | Auto |
-
-RTX Video Super Resolution can be used at **1×** to enhance an image without enlarging it. Sizing applies to the dimensions entering this stage, which may already have been changed by previous stages. Unified pipeline image exports do not preserve source EXIF metadata, even if the source image contains it.
-
-### Upscale: Video
-
-The Video pipeline exposes **RTX Super Resolution** and **RTX Video HDR** as separate processing cards. RTX Super Resolution controls enhancement and sizing; RTX Video HDR has its own HDR controls and does not depend on VSR.
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| RTX Super Resolution stage | Enable or disable the pipeline card | Off |
-| VSR quality | 1 - Low, 2 - Medium, 3 - High, 4 - Ultra | 4 - Ultra |
-| Output sizing | Scale factor or Custom dimensions | Scale factor |
-| Scale factor | 1×, 1.5×, 2×, 3×, 4× | 2× |
-| Custom dimensions | Up to 16384 pixels per dimension; cannot be smaller than the incoming video | 3840×2160 |
-| Lock aspect ratio | Off, On | On |
-| RTX Video HDR stage | Enable or disable the pipeline card; converts SDR input to HDR | Off |
-| HDR contrast | 0–200 | 100 |
-| HDR saturation | 0–200 | 100 |
-| HDR middle gray | 10–100 | 50 |
-| HDR peak luminance | 400–2000 nits | 1000 nits |
-| HDR processing precision | Packed 10-bit, Packed 10-bit (FP16) | Packed 10-bit |
-
-RTX Video HDR accepts SDR video at its position in the pipeline, not existing HDR input. It retains the dimensions produced by preceding stages rather than using the RTX Super Resolution sizing controls. RTX Super Resolution and RTX Video HDR can both be enabled in the same workflow. To export an HDR result, enable **Preserve / Export 10-bit HDR** in Export Settings and choose an HDR-capable codec.
-
-### Frame Interpolation
-
-**DLSS Frame Generation** is a stage in the Video pipeline rather than a separate workspace.
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Output FPS | 23.976, 25, 29.97, 30, 50, 59.94, 60, 90, 119.88, 120, 144, 165, 180, 240, 360, 480 | 60 |
-| DLSS engine | Auto, Native DLSSG, Cascade | Auto |
-| Optical Flow Quality | High, Medium, Low | High |
-| Preview length | 1, 3, 5, 10, 20, 30 seconds; shared video preview selector | 3 seconds |
-
-**Auto** chooses a suitable Frame Generation path for the source and selected target FPS. The target must exceed the frame rate entering this stage; otherwise, preflight rejects the pipeline. A source already at or above the selected target is not silently resampled by this stage. Configure the final codec and HDR output in the shared video Export Settings.
-
-### Coloring, sharpening, and grain
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Image Coloring mode | Color Match, LUT | LUT |
-| Color Match source | Input Image, Selected Image | Input Image |
-| Video Coloring | Apply a 3D `.cube` LUT and adjustments | LUT |
-| LUT file | Optional 3D `.cube` LUT | None |
-| LUT reference image | Optional image used to derive color adjustments from the current input/reference pair | None |
-| LUT resolution | 33, 65, 129 | 33 |
-| LUT strength | 0–200% | 100% |
-| Exposure | -3.00–3.00 EV | 0.00 EV |
-| Contrast, Highlights, Shadows, Whites, Blacks, Midtones | -100–100 each | 0 |
-| Temperature, Tint, Vibrance, Saturation | -100–100 each | 0 |
-| Hue Shift | -180°–180° | 0° |
-| Sharpening method | NVIDIA NIS, AMD CAS | AMD CAS |
-| Sharpening strength | 0–100% | 50% |
-| Grain Amount | 0–100% | 20% |
-| Grain Size | 0.50–4.00 px | 1.00 px |
-| Color Grain | 0–100% | 0% |
-| Tonal Response | 0–100% | 70% |
-| Grain Seed | 0–65535 | 0 |
-| Animated Grain | Off, On; Video only | On |
-
-**Color Match** adjusts a processed image using either its original input or a user-selected reference image; it is not a video option. **LUT** mode applies a supplied `.cube` file or uses the adjustment controls to generate a grade. For LUT adjustments, **Auto** analyzes an image, **Auto 1 Frame** analyzes the current video frame, and **Auto Fixed Frames** analyzes a fixed set of video frames. Selecting a LUT reference image can derive adjustments by comparing the source with that reference. **Reset** clears adjustment values, and **Save LUT** exports the graded 3D LUT. The Coloring, Sharpening, and Grain cards can each be enabled, disabled, and repositioned like other pipeline stages. Video Sharpening with nonzero strength must run before HDR conversion. Grain can process SDR or HDR video at its position; image grain is static, while **Animated Grain** changes the generated grain field between video frames.
-
-### Live
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Source | Online URL or Local video | Online |
-| Source quality | Auto, 480p, 720p, 1080p, 1440p, 2160p | Auto |
-| Max input resolution | 480p, 720p, 1080p, 1440p, 2160p | 720p |
-| Segment duration | 1, 2, 4 seconds | 2 seconds |
-| Target FPS | Auto, Source, 60, 30, 24 | Auto |
-| Playback buffer | 2–30 seconds | 6 seconds |
-| Live Scale | Source (Original), 200%, 175%, 150%, 125%, 75%, 50%, 25% | Source (Original) |
-| Neural Rendering controls | Independent Live copy of Style, Intensity, Passes, Local Tone, Local Structure, Skin Structure, Automatic Mask, and Optical Flow Quality; NR Control Mask is shared | Neural Rendering defaults |
-
-Most Live Neural Rendering controls can be changed while playback is active. Buffered frames keep their previous appearance until playback reaches newly processed frames. Live Scale, source selection, source quality, maximum input resolution, segment duration, target FPS, and playback buffer take effect on the next **Start Live**. The Live tab uses Neural Rendering independently of the Image/Video stage pipelines.
-
-### Video output and encoding
-
-| Output setting | Behavior |
-| --- | --- |
-| H.264 | 8-bit SDR; plain `H.264` and explicit `H.264 (NVIDIA NVENC)` choices; MP4 is the default container |
-| H.265 | SDR or 10-bit HDR; plain `H.265` and explicit `H.265 (NVIDIA NVENC)` choices; MKV is the default container |
-| AV1 | SDR or 10-bit HDR; plain `AV1` and explicit `AV1 (NVIDIA NVENC)` choices; MP4 or MKV; MKV by default |
-| ProRes Proxy | 10-bit 4:2:2; MOV or MKV; supports HDR; MOV by default |
-| ProRes HQ | 10-bit 4:2:2; MOV or MKV; supports HDR; MOV by default |
-| FFV1 Lossless RGB 10-bit | Lossless 10-bit RGB; supports HDR; MKV by default |
-| Video container | MP4, MKV, MOV; only combinations accepted by the application are offered for the selected codec |
-| Default video codec | H.264 |
-| Encoding quality | Auto (Default), Max, Best, Good; ProRes HQ and FFV1 use codec-fixed quality |
-| Hardware/software encoding | Plain H.264/H.265/AV1 use the selected Decoding / Encoding Device and can fall back to software. Explicit NVIDIA NVENC choices require NVENC; compatible NVIDIA-native pipelines can select matching NVENC automatically when the device configuration allows it |
-| Preserve / Export 10-bit HDR | Off by default; available with H.265 and AV1, including their NVIDIA NVENC variants, plus ProRes Proxy, ProRes HQ, and FFV1 Lossless RGB 10-bit |
-| Export destination | Same as Input, Output (`outputs/`), Select Folder; Output by default |
-| Rename | Auto creates a workflow-specific name; Copy keeps the source base name; Custom adds the selected suffix |
-
-The Neural Rendering video exporter maps the processed video alongside the original audio, metadata, and chapters where supported. Audio is copied or encoded according to container compatibility; subtitle streams are **not** mapped by this exporter. HDR results require the corresponding export setting and a supported codec. The final video codec, container, encoding quality, HDR mode, destination, and filename settings apply to the complete pipeline, not to each individual stage.
-
-### Application
-
-| Setting | Choices and behavior | Default |
-| --- | --- | --- |
-| Interface Language | Available application languages | English (US) |
-| AI Processing GPU | Automatic (Best Available) or a compatible detected NVIDIA RTX GPU | Automatic |
-| Decoding / Encoding Device | Automatic (Best Available), CPU software decoding/encoding, or a detected Vulkan-capable device | Automatic |
-| Cache Memory mode | Native precision (Fast lossless), Compressed RGB (8-bit) (Fast compressed) | Native precision |
-| Cache size | 5, 10, 15, 20, 25, 30 GB | 10 GB |
-| Realtime Preview | Off, On; supported Image and Video pipeline changes | On |
-| Settings preset | Export or import adjustable application settings as JSON; NR Control Mask is not included | n/a |
-| Factory reset | Restores processing, device, cache, and export settings to defaults and clears the NR Control Mask; interface language and window layout are separate | n/a |
-
-Video exports always use the bounded rolling-cache workflow. The selected **Cache size** is the working-storage ceiling used to divide long exports into parts. **Native precision** preserves the stage's native frame precision in lossless frame blocks. **Compressed RGB (8-bit)** stores SDR intermediates as independently compressed RGB frames to reduce cache usage; HDR passes automatically use native precision instead. Smart video previews use a separate lossless preview cache.
-
-Saved GPU and decoding/encoding device selections are validated when the application starts; unavailable selections fall back to Automatic. Compatible older settings presets can be imported and migrated automatically, including older Neural Rendering style names and retired cache choices. Pipeline stage order and enabled-state settings are included in saved presets; the NR Control Mask is not.
+Use the processing cards for individual effects and **Export Settings** for image format, bit depth, video codec, container, quality, and **Preserve / Export 10-bit HDR**. The Export dialog selects the destination and filename. Portable settings, outputs, logs, and temporary files are stored under `data/`; the default output folder is `data/outputs/`, and logs are in `data/logs/`.
 
 ## Command line
 
-**`VE_CLI.exe`** runs the same image and video processing engines as the desktop application without opening a window. Keep it in the application folder beside `cli.py`, `src`, and `bin`; no separate Python installation is required. Run it from PowerShell, Command Prompt, or another program. See [CLI.md](CLI.md) for the complete command-line reference.
+**`VE_CLI.exe`** uses the same processing engines as the desktop application. Keep both executables beside the `app/` folder.
 
-### Commands
-
-| Command | Default behavior | Common options |
-| --- | --- | --- |
-| `render` | Neural Rendering at the original dimensions; PNG for images, H.264/MP4 for videos | `--style 1`, `--strength 0.8`, `--preset pipeline.json` |
-| `upscale` | RTX Super Resolution at 2×; PNG for images, H.265/MKV for videos | `--scale 2`, `--size 3840x2160`, `--engine dlss --mode quality` |
-| `interpolate` | DLSS Frame Generation to 60 FPS; H.264/MP4 | `--fps 120`, `--preset settings.json` |
-| `devices` | List NVIDIA GPU indices, UUIDs, driver versions, and VRAM | `--json` |
-
-Use `VE_CLI.exe --help` for the command list and `VE_CLI.exe render --help`, `VE_CLI.exe upscale --help`, or `VE_CLI.exe interpolate --help` for command-specific options. Running without arguments also shows help.
-
-For `render`, `--style 0`, `--style 1`, and `--style 2` select the corresponding Neural Rendering styles.
-
-### Quick examples
-
-```powershell
-# Enhance an image or video with Neural Rendering.
-.\VE_CLI.exe render "C:\Media\photo.png" -o "C:\Results\photo.png"
-.\VE_CLI.exe render "C:\Media\clip.mp4" -o "C:\Results"
-
-# Upscale 2x using RTX Super Resolution.
-.\VE_CLI.exe upscale "C:\Media\clip.mp4" --scale 2 -o "C:\Results"
-
-# Upscale with DLSS Super Resolution; Performance is approximately 2x.
-.\VE_CLI.exe upscale "C:\Media\photo.png" --engine dlss --mode performance -o "C:\Results"
-
-# Increase video frame rate to 60 FPS.
-.\VE_CLI.exe interpolate "C:\Media\clip.mp4" --fps 60 -o "C:\Results"
-
-# Run every enabled stage from a preset exported by the desktop app.
-.\VE_CLI.exe render "C:\Media\clip.mp4" --preset "C:\Presets\cinematic.json" -o "C:\Results"
-```
-
-DLSS output sizing follows the selected mode: DLAA 1×, Quality 1.5×, Balanced approximately 1.724×, Performance 2×, and Ultra Performance 3×. `--scale` and `--size` apply to RTX Super Resolution; `--size` uses the exact requested dimensions. Frame Generation accepts the same target rates as the application, from 23.976 through 480 FPS, and the selected target must be higher than the input frame rate.
-
-### Files and batches
-
-The CLI accepts individual files, multiple inputs, folders, and quoted wildcards. Add `--recursive` to include subfolders. Jobs run one file at a time in the supplied order, duplicate inputs are processed once, and unsupported files discovered through folder or wildcard scans are skipped.
-
-```powershell
-# Process several files.
-.\VE_CLI.exe render "photo.png" "clip.mp4" -o ".\results"
-
-# Process supported files directly inside a folder.
-.\VE_CLI.exe upscale "C:\Photos" -o "C:\Results"
-
-# Include subfolders or use a wildcard.
-.\VE_CLI.exe render "C:\Media" --recursive -o "C:\Results"
-.\VE_CLI.exe render "C:\Media\*.mp4" -o "C:\Results"
-```
-
-Without `-o`, output is written to the application's `outputs` folder. For a single input, `-o` can also be a supported output filename; its extension selects the image format or video container. Existing files are not overwritten. Folder outputs keep the source base name and add `_2`, `_3`, and so on when required. Use **Ctrl+C** or **Ctrl+Break** to request cancellation; completed files are kept and unfinished output from the active job is cleaned up.
-
-### Presets and output options
-
-The CLI starts from factory defaults rather than the desktop application's currently loaded settings. Export a JSON settings preset from the desktop app and pass it with `--preset` to reuse stage order, enabled stages, and advanced processing/output settings. Command-line flags override corresponding preset values. Reference images and LUT files stored in a preset must remain accessible.
-
-```powershell
-# Select an image output format.
-.\VE_CLI.exe render "photo.png" --format webp -o "C:\Results"
-
-# Select video codec, container, and quality.
-.\VE_CLI.exe render "clip.mp4" --codec hevc --container mp4 --quality best -o "C:\Results"
-
-# Select the RTX processing/video GPU by NVIDIA index or UUID.
-.\VE_CLI.exe render "clip.mp4" --gpu 0 -o "C:\Results"
-
-# Inspect available NVIDIA devices.
-.\VE_CLI.exe devices
-```
-
-Supported CLI image formats are PNG, JPEG, WebP, AVIF, and TIFF. Video codecs are `h264`, `hevc`, `av1`, `prores` (HQ), and `ffv1` (lossless); quality modes are `auto`, `good`, `best`, and `max`. `--container mp4|mkv|mov` selects the video container, and incompatible codec/container combinations are rejected. ProRes supports MOV and MKV; AV1 supports MP4 and MKV. HDR, sharpening, coloring, grain, image bit depth, image compression quality, and other advanced controls can be supplied through presets. The direct `--codec` flag uses the base codec names above; presets can retain the desktop application's explicit NVIDIA NVENC codec selections.
-
-### Dry run and JSON output
-
-Use `--dry-run` to inspect media metadata, stage order, planned output paths, dimensions, and frame rates without starting the enhancement engines or creating output folders. `--quiet` suppresses progress while retaining errors and the final result. `--json` writes a single machine-readable result object to stdout while progress and errors use stderr.
-
-```powershell
-# Validate and inspect a job without rendering.
-.\VE_CLI.exe upscale "photo.png" --scale 2 --dry-run
-
-# Produce one JSON result object for scripting.
-.\VE_CLI.exe render "C:\Media" --json --quiet -o "C:\Results"
-
-# PowerShell: parse the result and inspect the process exit status.
-$resultText = .\VE_CLI.exe render "clip.mp4" --json --quiet -o "C:\Results"
-$exitCode = $LASTEXITCODE
-$result = $resultText | ConvertFrom-Json
-$result.items
-```
-
-| Exit code | Meaning |
+| Command | Purpose |
 | --- | --- |
-| `0` | All files succeeded, or help/devices/dry-run succeeded |
-| `1` | Processing, runtime, hardware, or unexpected failure |
-| `2` | Invalid arguments, paths, or settings |
-| `130` | Cancelled |
+| `render` | Neural Rendering, or the complete enabled pipeline from a JSON preset. |
+| `upscale` | RTX or DLSS Super Resolution. |
+| `interpolate` | DLSS Frame Generation to a target FPS. |
+| `devices` | List available NVIDIA GPUs. |
+
+```powershell
+.\VE_CLI.exe render "photo.png" -o "results\photo.png"
+.\VE_CLI.exe upscale "clip.mp4" --scale 2 -o "results"
+.\VE_CLI.exe interpolate "clip.mp4" --fps 60 -o "results"
+.\VE_CLI.exe render "clip.mp4" --preset "pipeline.json" -o "results"
+```
+
+Use `--help` for options, `--recursive` for subfolders, `--dry-run` to inspect a job, and `--json --quiet` for scripting. Presets exported from the application include advanced effect and export settings. Without `-o`, output goes to `data/outputs/`.
 
 ## License and third-party notices
 
-Project-owned Visual Enhancer material is distributed under the **Merserk Source License 1.0**. The software may be used for personal, professional, and commercial work, and outputs created or processed with Visual Enhancer may be used commercially. Redistribution, mirroring, repackaging, rebranding, resale, sublicensing, publishing modified builds, and similar redistribution require prior written permission except where the license states otherwise. See [LICENSE](LICENSE) for the complete terms.
+Project-owned Visual Enhancer material is distributed under the **Merserk Source License**. The software may be used for personal, professional, and commercial work, and outputs created or processed with Visual Enhancer may be used commercially. Redistribution, mirroring, repackaging, rebranding, resale, sublicensing, publishing modified builds, and similar redistribution require prior written permission except where the license states otherwise. See [LICENSE](LICENSE) for the complete terms.
 
 Third-party components remain subject to their own licenses and are not relicensed under the Merserk Source License. See [THIRD-PARTY-NOTICES](THIRD-PARTY-NOTICES) for the notices included with the application.
 
