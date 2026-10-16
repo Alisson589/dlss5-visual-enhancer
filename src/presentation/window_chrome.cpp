@@ -1,24 +1,71 @@
 #include "window_chrome.hpp"
+#include "windows_resources.h"
 #include <QCoreApplication>
+#include <QDir>
 #include <QGuiApplication>
 #include <QRectF>
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <dwmapi.h>
 #include <shellapi.h>
 #include <shobjidl.h>
+#include <propkey.h>
+#include <propvarutil.h>
+#include <wrl/client.h>
 #include <windows.h>
 #include <windowsx.h>
 
 namespace ve {
-void configureWindowsIdentity() {
+namespace {
+void clearTaskbarIdentity(HWND hwnd) {
+    Microsoft::WRL::ComPtr<IPropertyStore> store;
+    if (FAILED(SHGetPropertyStoreForWindow(hwnd, IID_PPV_ARGS(store.GetAddressOf())))) return;
+    const PROPVARIANT empty{};
+    for (const auto& key : {PKEY_AppUserModel_ID, PKEY_AppUserModel_RelaunchCommand,
+                           PKEY_AppUserModel_RelaunchIconResource, PKEY_AppUserModel_RelaunchDisplayNameResource})
+        (void)store->SetValue(key, empty);
+}
+HRESULT setTaskbarIdentity(HWND hwnd) {
+    PWSTR rawId = nullptr;
+    const auto idResult = GetCurrentProcessExplicitAppUserModelID(&rawId);
+    if (FAILED(idResult)) return idResult;
+    const std::unique_ptr<wchar_t, decltype(&CoTaskMemFree)> id(rawId, &CoTaskMemFree);
+    Microsoft::WRL::ComPtr<IPropertyStore> store;
+    const auto storeResult = SHGetPropertyStoreForWindow(hwnd, IID_PPV_ARGS(store.GetAddressOf()));
+    if (FAILED(storeResult)) return storeResult;
+    const auto set = [&](const PROPERTYKEY& key, const std::wstring& text) {
+        PROPVARIANT value{};
+        auto result = InitPropVariantFromString(text.c_str(), &value);
+        if (SUCCEEDED(result)) result = store->SetValue(key, value);
+        PropVariantClear(&value);
+        return result;
+    };
+    // Publish this running copy's embedded resources before its app ID. The
+    // shell can otherwise reuse an implicit shortcut from a moved/older copy.
+    const auto executable = QDir::toNativeSeparators(QCoreApplication::applicationFilePath()).toStdWString();
+    auto result = set(PKEY_AppUserModel_RelaunchCommand, L"\"" + executable + L"\"");
+    if (SUCCEEDED(result)) result = set(PKEY_AppUserModel_RelaunchDisplayNameResource,
+        L"@" + executable + L",-" + std::to_wstring(VE_DISPLAY_NAME_RESOURCE_ID));
+    if (SUCCEEDED(result)) result = set(PKEY_AppUserModel_RelaunchIconResource,
+        executable + L",-" + std::to_wstring(VE_ICON_RESOURCE_ID));
+    if (SUCCEEDED(result)) result = set(PKEY_AppUserModel_ID, id.get());
+    if (FAILED(result)) clearTaskbarIdentity(hwnd);
+    return result;
+}
+} // namespace
+void configureWindowsIdentity(const wchar_t* appId) {
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-    SetCurrentProcessExplicitAppUserModelID(L"Merserk.VisualEnhancer");
+    SetCurrentProcessExplicitAppUserModelID(appId);
 }
 WindowChrome::WindowChrome(QQuickWindow* window, std::function<void()> suspend)
     : window_(window), suspend_(std::move(suspend)) {
     nativeId_ = window->winId();
     const auto hwnd = reinterpret_cast<HWND>(nativeId_);
+    const auto identityResult = setTaskbarIdentity(hwnd);
+    taskbarIdentitySet_ = SUCCEEDED(identityResult);
+    if (FAILED(identityResult))
+        qWarning("Cannot configure the Windows taskbar identity (HRESULT 0x%08lx).", static_cast<unsigned long>(identityResult));
     // Install before changing the native style, which sends sizing messages.
     QCoreApplication::instance()->installNativeEventFilter(this);
     // Keep the resize capability permanently: the shell uses it to offer
@@ -32,6 +79,10 @@ WindowChrome::WindowChrome(QQuickWindow* window, std::function<void()> suspend)
     window->setProperty("nativeChromeActive", true);
 }
 WindowChrome::~WindowChrome() {
+    // SHGetPropertyStoreForWindow properties must be released while the HWND
+    // still exists, before Qt destroys the native window.
+    if (taskbarIdentitySet_ && window_ && window_->handle())
+        clearTaskbarIdentity(reinterpret_cast<HWND>(nativeId_));
     if (auto* app = QCoreApplication::instance())
         app->removeNativeEventFilter(this);
 }

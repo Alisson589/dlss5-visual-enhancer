@@ -35,7 +35,7 @@ QImage IconProvider::requestImage(const QString& id, QSize* size, const QSize& r
             const QColor color('#' + parts[2]);
             if (!color.isValid())
                 return {};
-            image = QImage(Paths::instance().at("app/resources/desktop/qml/assets/icons/png/" + parts[0] + '/' +
+            image = QImage(Paths::instance().at("resources/desktop/qml/assets/icons/png/" + parts[0] + '/' +
                                                 parts[1] + ".png"))
                         .convertToFormat(QImage::Format_ARGB32_Premultiplied);
             if (image.isNull())
@@ -54,21 +54,37 @@ QImage IconProvider::requestImage(const QString& id, QSize* size, const QSize& r
 }
 struct PreviewProvider::DiskCleanup {
     QThreadPool pool;
+    std::shared_ptr<ProcessingCacheRoot> owner;
+    QMutex pendingMutex;
+    QHash<QString, qint64> waitingFiles;
     std::atomic<qint64> pending{0};
     std::atomic<bool> closing{false};
-    DiskCleanup() { pool.setMaxThreadCount(1); pool.setExpiryTimeout(1000); }
+    explicit DiskCleanup(std::shared_ptr<ProcessingCacheRoot> root) : owner(std::move(root)) { pool.setMaxThreadCount(1); pool.setExpiryTimeout(1000); }
     ~DiskCleanup() { pool.waitForDone(); }
     void remove(QString path, qint64 bytes) {
-        pending.fetch_add(bytes, std::memory_order_relaxed);
+        {
+            QMutexLocker lock(&pendingMutex);
+            if (waitingFiles.contains(path)) return;
+            waitingFiles.insert(path, bytes);
+            pending.fetch_add(bytes, std::memory_order_relaxed);
+        }
+        attempt(std::move(path), bytes);
+    }
+    void retryPending() {
+        QHash<QString, qint64> files;
+        { QMutexLocker lock(&pendingMutex); files = waitingFiles; }
+        for (auto it = files.begin(); it != files.end(); ++it) attempt(it.key(), it.value());
+    }
+    void attempt(QString path, qint64 bytes) {
         pool.start([this, path=std::move(path), bytes] {
-            for (int retry=0; retry<20; ++retry) {
-                if (QFile::remove(path) || !QFileInfo::exists(path)) {
-                    pending.fetch_sub(bytes, std::memory_order_relaxed);
+            for (int retry=0; retry<4; ++retry) {
+                if (owner->removeFile(path) || !QFileInfo::exists(path)) {
+                    QMutexLocker lock(&pendingMutex);
+                    if (waitingFiles.remove(path)) pending.fetch_sub(bytes, std::memory_order_relaxed);
                     return;
                 }
                 // During shutdown, do not accumulate 500 ms per locked frame.
-                // The temporary-directory cleanup makes a final removal pass;
-                // any remaining stale files are handled by startup cleanup.
+                // The owned temporary directory makes the final removal pass.
                 if (closing.load(std::memory_order_relaxed))
                     return;
                 QThread::msleep(25);
@@ -85,7 +101,7 @@ struct PreviewProvider::DiskFrame {
 };
 PreviewProvider::PreviewProvider(int memoryKiB)
     : QQuickImageProvider(Image, ForceAsynchronousImageLoading),
-      storage_(Paths::instance().at("data/temp/app/preview-images-XXXXXX")), cleanup_(std::make_shared<DiskCleanup>()) {
+      cleanup_(std::make_shared<DiskCleanup>(storage_.cacheRoot())) {
     images_.setMaxCost(std::max(0, memoryKiB));
     if (!storage_.isValid())
         throw std::runtime_error("Cannot create the preview image cache.");
@@ -145,6 +161,7 @@ QString PreviewProvider::storeFrame(const QImage& source, const QString& key, bo
     auto entry = std::make_shared<DiskFrame>();
     entry->cleanup = cleanup_;
     entry->path = storage_.filePath(QUuid::createUuid().toString(QUuid::WithoutBraces) + ".frame");
+    auto writing = storage_.cacheRoot()->leaseFile(entry->path);
     // These session cache files have unique names and are published only after
     // the complete write. Atomic replacement and durable disk synchronization
     // are unnecessary here and can stall a preview on Windows storage.
@@ -158,6 +175,7 @@ QString PreviewProvider::storeFrame(const QImage& source, const QString& key, bo
     if (file.write(bytes.data(), bytes.size()) != bytes.size() || !file.flush())
         throw std::runtime_error(file.errorString().toStdString());
     file.close();
+    storage_.cacheRoot()->publishFile(entry->path);
     const auto fileBytes = QFileInfo(entry->path).size();
     entry->bytes = fileBytes;
     QMutexLocker lock(&mutex_);
@@ -190,10 +208,11 @@ void PreviewProvider::retain(const QStringList& urls) {
     for (const auto& url : urls)
         if (url.startsWith("image://preview/"))
             retained_.insert(url.mid(16).section('?', 0, 0));
+    QSet<QString> protectedPaths;
+    for (const auto& id : retained_)
+        if (const auto frame = files_.value(id)) protectedPaths.insert(frame->path);
+    storage_.cacheRoot()->protect(protectedPaths);
     trim();
-}
-bool PreviewProvider::ownsPath(const QString& path) const {
-    return path.startsWith(storage_.path() + '/', Qt::CaseInsensitive);
 }
 qint64 PreviewProvider::diskUsage() const {
     QMutexLocker lock(&mutex_);
@@ -207,21 +226,41 @@ void PreviewProvider::clear() {
     QMutexLocker lock(&mutex_);
     images_.clear();
     ++epoch_;
+    storage_.cacheRoot()->protect({});
     files_.clear();
     order_.clear();
     retained_.clear();
     diskBytes_ = 0;
 }
+void PreviewProvider::clearUnused() {
+    QMutexLocker lock(&mutex_);
+    ++epoch_;
+    for (auto it = order_.begin(); it != order_.end();) {
+        if (retained_.contains(*it)) { ++it; continue; }
+        images_.remove(*it);
+        if (auto frame = files_.take(*it)) diskBytes_ -= frame->bytes;
+        it = order_.erase(it);
+    }
+}
+void PreviewProvider::waitForCleanup() {
+    cleanup_->pool.waitForDone();
+    cleanup_->retryPending();
+    cleanup_->pool.waitForDone();
+}
 QImage PreviewProvider::requestImage(const QString& urlId, QSize* size, const QSize& requested) {
     QImage image;
     std::shared_ptr<DiskFrame> entry;
+    std::shared_ptr<void> reading;
     {
         QMutexLocker lock(&mutex_);
         const auto id = urlId.section('?', 0, 0);
         const auto* cached = images_.object(id);
         if (cached)
             image = *cached;
-        else entry = files_.value(id);
+        else {
+            entry = files_.value(id);
+            if (entry) reading = cleanup_->owner->leaseFile(entry->path);
+        }
     }
     // A lease keeps this immutable file alive while reading its native pixels.
     // No GUI bookkeeping can wait behind a large disk read or image conversion.
@@ -244,7 +283,7 @@ QImage PreviewProvider::requestImage(const QString& urlId, QSize* size, const QS
                         image = {};
                     else {
                         std::memcpy(image.bits(), data.constData(), size_t(data.size()));
-                        image.setColorSpace(QColorSpace::fromIccProfile(profile));
+                        if (!profile.isEmpty()) image.setColorSpace(QColorSpace::fromIccProfile(profile));
                         image.setDevicePixelRatio(dpr);
                         image.setDotsPerMeterX(dx);
                         image.setDotsPerMeterY(dy);

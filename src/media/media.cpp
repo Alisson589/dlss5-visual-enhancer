@@ -14,7 +14,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSaveFile>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <array>
 #include <cmath>
 #include <cstring>
@@ -209,10 +209,10 @@ QImage decodeImage(const QString& path, JobControl& control) {
     if (QFileInfo(path).suffix().compare("avif", Qt::CaseInsensitive) == 0) {
         const auto declared=probeMedia(path,&control).pixelFormat;
         const bool wide=declared.contains("10") || declared.contains("12") || declared.contains("16");
-        QTemporaryDir directory(Paths::instance().at("data/temp/app/avif-XXXXXX"));
+        ScratchDirectory directory(QStringLiteral("avif-XXXXXX"));
         if (!directory.isValid()) throw std::runtime_error("Cannot create the AVIF decoder directory.");
         const auto decoded = directory.filePath("decoded.png");
-        const auto result = runProcess(Paths::instance().at("app/bin/avif/avifdec.exe"),
+        const auto result = runProcess(Paths::instance().at("bin/avif/avifdec.exe"),
                                        {"--depth", wide ? "16" : "8", "--png-compress", "1", path, decoded}, &control, 0);
         requireSuccess(result);
         QImageReader reader(decoded);
@@ -301,7 +301,7 @@ void encodeImage(const QString& path, const QImage& pixels, const QString& forma
         return;
     }
     if (format == "AVIF") {
-        QTemporaryDir directory(Paths::instance().at("data/temp/app/avif-XXXXXX"));
+        ScratchDirectory directory(QStringLiteral("avif-XXXXXX"));
         if (!directory.isValid()) throw std::runtime_error("Cannot create the AVIF encoder directory.");
         const auto input = directory.filePath("image.png");
         {
@@ -311,7 +311,7 @@ void encodeImage(const QString& path, const QImage& pixels, const QString& forma
                 throw std::runtime_error(writer.errorString().toStdString());
         }
         writeImageMetadata(input, metadata, control);
-        const auto result = runProcess(Paths::instance().at("app/bin/avif/avifenc.exe"),
+        const auto result = runProcess(Paths::instance().at("bin/avif/avifenc.exe"),
                                        {"--qcolor", QString::number(quality), "--qalpha", "100", "--speed",
                                         "6", "--depth", bitDepth==16 ? "12" : "8", "--yuv", "420",
                                         "--cicp", "1/13/6", input, path},
@@ -412,7 +412,7 @@ double targetFrameRate(const QString& choice) {
 QStringList audioEncoderArguments(const QString& path, const QString& container, const MediaInfo& source,
                                   JobControl& control) {
     QStringList result;
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/audio-XXXXXX"));
+    ScratchDirectory directory(QStringLiteral("audio-XXXXXX"));
     if (!directory.isValid())
         throw std::runtime_error("Cannot create the audio planning directory.");
     const auto mux = container == "MKV" ? QString("matroska") : container.toLower();

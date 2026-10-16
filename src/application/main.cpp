@@ -29,12 +29,15 @@ int main(int argc, char** argv) {
     try {
         ve::configureWindowsRuntime();
         ve::configureWindowsIdentity();
-        ve::Paths::instance().prepare();
+        QCoreApplication::setOrganizationName("Merserk");
+        QCoreApplication::setApplicationName("Visual Enhancer");
+        qputenv("QT_MEDIA_BACKEND", "ffmpeg");
         QGuiApplication app(argc, argv);
         app.setApplicationName("Visual Enhancer");
         app.setOrganizationName("Merserk");
+        ve::Paths::instance().prepare();
         app.setApplicationVersion(VE_APP_VERSION);
-        app.setWindowIcon(QIcon(ve::Paths::instance().at("app/resources/desktop/app.ico")));
+        app.setWindowIcon(QIcon(ve::Paths::instance().at("resources/desktop/app.ico")));
         app.setFont(QFont("Segoe UI", 10));
         QQuickStyle::setStyle("Basic");
         qInstallMessageHandler(qtMessage);
@@ -52,7 +55,7 @@ int main(int argc, char** argv) {
             for (const auto& error : errors)
                 qmlErrors.append(error.toString());
         });
-        engine.load(QUrl::fromLocalFile(ve::Paths::instance().at("app/resources/desktop/qml/Main.qml")));
+        engine.load(QUrl::fromLocalFile(ve::Paths::instance().at("resources/desktop/qml/Main.qml")));
         if (engine.rootObjects().isEmpty())
             throw std::runtime_error(qmlErrors.join('\n').toStdString());
         auto* window = qobject_cast<QQuickWindow*>(engine.rootObjects().front());
@@ -73,11 +76,13 @@ int main(int argc, char** argv) {
             controller.shutdown();
             ve::info("shutdown", "Jobs cancelled and settings saved.");
         });
-        ve::WindowChrome chrome(window, [&controller] { controller.suspendProcessing(); });
-        window->showMaximized();
-        QTimer::singleShot(0, &controller, &ve::QmlFacade::initializeRuntime);
-        const int result = app.exec();
-        app.removeNativeEventFilter(&chrome);
+        int result = 0;
+        {
+            ve::WindowChrome chrome(window, [&controller] { controller.suspendProcessing(); });
+            window->showMaximized();
+            QTimer::singleShot(0, &controller, &ve::QmlFacade::initializeRuntime);
+            result = app.exec();
+        }
         QElapsedTimer shutdownTime;
         shutdownTime.start();
         // Release video decoders and the render surface before waiting for

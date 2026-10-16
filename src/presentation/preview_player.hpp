@@ -30,6 +30,8 @@ class PreviewPlayer : public QObject {
   public:
     explicit PreviewPlayer(QObject* parent = nullptr);
     ~PreviewPlayer() override;
+    // Called on the GUI thread; includes decoder requests still being retired.
+    static QStringList processingFilesInUse();
     QUrl source() const { return source_; }
     QObject* videoOutput() const { return output_; }
     int loops() const { return loops_; }
@@ -84,6 +86,7 @@ class PreviewPlayer : public QObject {
     void setState(int state);
     void setStatus(int status);
     QUrl source_;
+    QString decodingPath_;
     QPointer<QObject> output_;
     QPointer<QVideoSink> sink_;
     int loops_ = 1, completedLoops_ = 0, position_ = 0, duration_ = 0, status_ = 0, state_ = 0;

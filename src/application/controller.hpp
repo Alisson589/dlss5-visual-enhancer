@@ -57,7 +57,7 @@ class AppController : public QmlFacade {
     [[nodiscard]] PreviewContext& context();
     [[nodiscard]] const PreviewContext& context() const;
     [[nodiscard]] int previewDelay() const { return context().source.video ? 35 : 80; }
-    [[nodiscard]] bool idle() const { return operation_ == "Idle" && !shuttingDown_; }
+    [[nodiscard]] bool idle() const { return operation_ == "Idle" && !shuttingDown_ && !cacheCleaning_; }
     void notifyContext();
     void setOperation(const QString& operation, const QString& status = {});
     void log(const QString& message, const QString& tag = "desktop");
@@ -76,6 +76,9 @@ class AppController : public QmlFacade {
     void shutdownAll();
     void persistLayout();
     void cleanupCaches();
+    void updateProcessingCache(bool clean = false, bool automatic = false);
+    [[nodiscard]] bool cacheMaintenanceSafe() const;
+    [[nodiscard]] QSet<QString> protectedProcessingFiles() const;
     void copyClipboardText(const QString& text, quint64 request, quint32 sequence, int attempts);
     [[nodiscard]] QString translate(const QString& text) const;
     PreviewProvider* previews_;
@@ -95,7 +98,13 @@ class AppController : public QmlFacade {
     std::vector<std::unique_ptr<QTranslator>> translators_;
     QTimer saveTimer_, autoTimer_, scrubTimer_, cleanupTimer_;
     QElapsedTimer lastCacheCleanup_;
-    QThreadPool pool_, previewPool_;
+    QTemporaryDir transientFiles_;
+    ProcessingTemporaryDirectory previewClips_{ProcessingCacheKind::PreviewClips};
+    QThreadPool pool_, previewPool_, cachePool_;
+    ProcessingCacheSnapshot cacheSnapshot_;
+    bool cacheBusy_ = false, cacheCleaning_ = false, cacheReady_ = false;
+    QString cacheStatus_;
+    QTimer cacheRefreshTimer_, cacheTrimTimer_;
     VideoFrameReader videoFrames_;
     std::unique_ptr<VideoStillPreview> videoStill_;
     PreviewFrameCache previewStages_{192 * 1024};
@@ -108,7 +117,7 @@ class AppController : public QmlFacade {
     quint64 previewRequestRevision_ = 0;
     quint64 clipboardRequestRevision_ = 0;
     bool runtimeInitializationStarted_ = false;
-    QString lutAutoMode_, lutReferenceStatus_, lutSaveStatus_;
+    QString lutAutoMode_, lutReferenceStatus_, lutSaveStatus_, lutSavedPath_;
     bool lutSaving_ = false;
     QPointer<QQuickWindow> window_;
 };

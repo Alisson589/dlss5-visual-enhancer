@@ -35,7 +35,7 @@
 #include <QRegularExpression>
 #include <QSaveFile>
 #include <QScopeGuard>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <QUuid>
 #include <QtGui/qrgbafloat.h>
 #include <algorithm>
@@ -65,7 +65,7 @@ bool renderCudaVideo(const RenderRequest& request, const MediaInfo& source, cons
         (settings.ffmpeg_device != "auto" && settings.ffmpeg_device != "cpu" &&
          settings.ffmpeg_device.mid(7).compare(selected->uuid.mid(4), Qt::CaseInsensitive) != 0))
         return false;
-    QTemporaryDir temporary(Paths::instance().at("data/temp/app/cuda-render-XXXXXX"));
+    ScratchDirectory temporary(QStringLiteral("cuda-render-XXXXXX"));
     if (!temporary.isValid()) throw std::runtime_error("Cannot create the GPU render directory.");
     const auto video = temporary.filePath(settings.codec.startsWith("ProRes") ? "video.mov" : "video.nut");
     const auto codec = settings.codec.startsWith("H.264") ? QString("h264_nvenc")
@@ -117,7 +117,7 @@ bool renderCudaVideo(const RenderRequest& request, const MediaInfo& source, cons
             ++count;
             actualDuration = std::max(actualDuration, seconds + (frame->duration > 0
                 ? frame->duration*double(frame->timeBase.numerator)/frame->timeBase.denominator : 1/source.fps));
-            if (progress) progress({std::min(.98, duration > 0 ? seconds / duration : .1), "Processing video",
+            if (progress) progress({std::min(.98, duration > 0 ? seconds / duration : .1), QT_TRANSLATE_NOOP("App", "Processing video"),
                 count, source.frames, timer.elapsed() > 0 ? count * 1000. / timer.elapsed() : 0});
             frame = decoder.read();
         }
@@ -449,7 +449,7 @@ QString renderOutputPath(const QString& input, const QString& directory, const S
                                                           : QString("Neural_Rendering")) +
                 '_' + QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss") + '_' +
                 QUuid::createUuid().toString(QUuid::WithoutBraces).left(8);
-    return uniqueOutputPath(QDir(directory.isEmpty() ? Paths::instance().at("data/outputs") : directory)
+    return uniqueOutputPath(QDir(directory.isEmpty() ? Paths::instance().at("outputs") : directory)
                                 .filePath(stem + '.' + extension));
 }
 namespace {
@@ -510,6 +510,7 @@ QImage FramePipeline::process(const QImage& input, JobControl& control, qint64 f
 }
 std::vector<QImage> FramePipeline::processBatch(std::span<const QImage> input, JobControl& control,
                                                 qint64 firstFrame, bool reset, float frameTimeMs) {
+    ProcessingCacheActivity cacheActivity;
     std::vector<QImage> images{input.begin(), input.end()};
     if (images.empty())
         return images;
@@ -678,6 +679,7 @@ std::vector<QImage> FramePipeline::processBatch(std::span<const QImage> input, J
 }
 RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
                               const ProgressCallback& progress) {
+    ProcessingCacheActivity cacheActivity;
     // Construct first so that job-local frames, encoders, processes and sessions
     // are destroyed before unused allocator pages are reclaimed on this worker.
     const auto reclaimCaches=qScopeGuard([] { reclaimIdleHeapCaches(); });
@@ -693,19 +695,19 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         if (progress)
             progress({value, text, frames, total, milliseconds > 0 ? frames * 1000. / milliseconds : 0});
     };
-    report(.01, "Loading source metadata");
+    report(.01, QT_TRANSLATE_NOOP("App", "Loading source metadata"));
     const auto input = probeMedia(request.input, &control);
     const auto requestedSettings = request.preview && input.video ? videoPreviewSettings(request.settings) : request.settings;
     auto settings = workflowSettings(requestedSettings, request.workflow, input.video);
     const auto estimate = estimatePipeline(input, requestedSettings, request.workflow);
-    if(input.video&&hasVfxStages(estimate.stages)&&QCoreApplication::applicationName()=="Visual Enhancer")return renderIsolatedVfx(request,control,progress);
+    if(input.video&&hasVfxStages(estimate.stages)&&!request.isolatedVfxWorker)return renderIsolatedVfx(request,control,progress);
     OutputTransaction output(request.output);
     if (input.video && (renderVfxVideo(request,input,settings,estimate,output.path(),control,progress) ||
                        renderCudaVideo(request, input, settings, estimate, output.path(), control, progress) ||
                        renderInterpolationVideo(request, input, settings, estimate, output.path(), control, progress))) {
         output.commit();
         const auto result = probeMedia(request.output, &control);
-        report(1, "Video complete", result.frames, result.frames);
+        report(1, QT_TRANSLATE_NOOP("App", "Video complete"), result.frames, result.frames);
         info("render", request.input + " -> " + request.output);
         return {request.input, request.output, Log::instance().sessionPath(), result, activeElapsed() / 1000.};
     }
@@ -714,18 +716,18 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         estimate.stages.contains("rtx_video_hdr"))
         NativeEngines::instance().prepare(gpuOrdinal(settings.ai_gpu_uuid), estimate.stages);
     if (!input.video) {
-        report(.05, "Decoding image");
+        report(.05, QT_TRANSLATE_NOOP("App", "Decoding image"));
         const auto source = request.stillSources ? decodeStillPreviewSource(request.input, *request.stillSources, control).pixels
                                                  : decodeImage(request.input, control);
         FramePipeline pipeline(settings, input, estimate.stages);
-        report(.2, "Processing image");
+        report(.2, QT_TRANSLATE_NOOP("App", "Processing image"));
         auto result = pipeline.process(source, control, 0, true);
-        report(.9, "Saving image");
+        report(.9, QT_TRANSLATE_NOOP("App", "Saving image"));
         encodeImage(output.path(), result, settings.image_format, settings.image_quality,
                     settings.image_bit_depth, control, request.input,
                     estimate.stages.contains("neural_model") ? neuralRenderNote(settings) : QString{});
         output.commit();
-        report(1, "Image complete");
+        report(1, QT_TRANSLATE_NOOP("App", "Image complete"));
         return {request.input, request.output, Log::instance().sessionPath(),
                 probeMedia(request.output, &control), activeElapsed() / 1000.};
     }
@@ -881,7 +883,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
                               ? QString("smpte2084")
                               : vfxSdr ? QString("bt470m") : estimate.stages.contains("super_resolution") ? QString("bt709")
                               : known(input.transfer, estimate.hdr ? "smpte2084" : "unknown");
-    QTemporaryDir encodedTemporary(Paths::instance().at("data/temp/app/host-delivery-XXXXXX"));
+    ScratchDirectory encodedTemporary(QStringLiteral("host-delivery-XXXXXX"));
     if (!encodedTemporary.isValid()) throw std::runtime_error("Cannot create the host delivery directory.");
     const auto encodedVideo = encodedTemporary.filePath(codec.startsWith("ProRes") ? "video.mov" : request.preview ? "video.mkv" : "video.nut");
     auto encodedInfo = input;
@@ -1000,7 +1002,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
             if (neuralDelivery) neuralDelivery->write(results[index], timestamps[index].first, timestamps[index].second, timeBase);
             else hostEncoder->write(results[index], timestamps[index].first, timestamps[index].second, timeBase,filteredDelivery);
             ++written;
-            report(total > 0 ? std::min(.98, written / double(total)) : .1, "Processing video", written,
+            report(total > 0 ? std::min(.98, written / double(total)) : .1, QT_TRANSLATE_NOOP("App", "Processing video"), written,
                    total);
         }
         pending.clear();
@@ -1011,7 +1013,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
             if (neuralDelivery) neuralDelivery->write(pixels,pts,frameDuration,timeBase);
             else hostEncoder->write(pixels,pts,frameDuration,timeBase,filteredDelivery);
             ++outputIndex; ++written;
-            report(total>0 ? std::min(.98,written/double(total)) : .1,"Processing video",written,total);
+            report(total>0 ? std::min(.98,written/double(total)) : .1,QT_TRANSLATE_NOOP("App", "Processing video"),written,total);
             return;
         }
         pending.push_back(pixels);
@@ -1027,7 +1029,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
             frame.pts = index; frame.duration = 1; frame.timeBase = timeBase;
             interpolationEncoder->write(frame);
             ++outputIndex; ++written;
-            report(total>0 ? std::min(.98,written/double(total)) : .1,"Processing video",written,total);
+            report(total>0 ? std::min(.98,written/double(total)) : .1,QT_TRANSLATE_NOOP("App", "Processing video"),written,total);
         } else {
             const auto pixels = selected.surface
                 ? interpolation->hdr ? selected.surface.toHostRgb10() : selected.surface.toHost()
@@ -1058,7 +1060,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         }
     }
     flush();
-    report(.99, "Finalizing export", outputIndex, total);
+    report(.99, QT_TRANSLATE_NOOP("App", "Finalizing export"), outputIndex, total);
     if (interpolationEncoder) { interpolationEncoder->finish(); interpolationEncoder.reset(); }
     else if (neuralDelivery) { neuralDelivery->finish(); neuralDelivery.reset(); }
     else { hostEncoder->finish(); hostEncoder.reset(); }
@@ -1067,7 +1069,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         request.seconds > 0 ? std::min(actualDuration, request.seconds) : actualDuration, control,
         request.preview ? std::nullopt : sourceTimeOrigin);
     output.commit();
-    report(1, "Video complete", outputIndex, total);
+    report(1, QT_TRANSLATE_NOOP("App", "Video complete"), outputIndex, total);
     auto outputInfo = probeMedia(request.output, &control);
     info("render", request.input + " -> " + request.output);
     return {request.input, request.output, Log::instance().sessionPath(), outputInfo,

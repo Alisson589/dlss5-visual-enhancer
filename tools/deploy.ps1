@@ -5,6 +5,7 @@ param(
     [string]$BuildDir = 'out',
     [string]$Destination,
     [string]$NativeBuildRoot,
+    [string]$RuntimeSource,
     [string]$CertificateThumbprint,
     [string]$TimestampServer = 'http://timestamp.digicert.com',
     [switch]$MachineCertificateStore
@@ -20,11 +21,12 @@ $resolvedDestination = Resolve-VePath $Destination $projectRoot
 if ($resolvedDestination -eq $projectRoot -or $resolvedDestination -eq $workspaceRoot) {
     throw 'Deploy to the Visual Enhancer folder or another dedicated application folder.'
 }
-$appDirectory = Join-Path $resolvedDestination 'app'
-$runtimeSource = Join-Path $workspaceRoot 'Visual Enhancer/app'
+$appDirectory = $resolvedDestination
+$runtimeSource = if ($RuntimeSource) { Resolve-VePath $RuntimeSource $projectRoot }
+    else { Join-Path $workspaceRoot 'Visual Enhancer' }
 $binaryDirectory = Join-Path $resolvedBuild $Configuration
 $deployment = Join-Path $resolvedQt 'bin/windeployqt.exe'
-foreach ($name in @('Visual Enhancer.exe', 'VE_CLI.exe', 'Visual Enhancer.app.exe', 'VE_CLI.app.exe')) {
+foreach ($name in @('Visual Enhancer.exe', 'VE_CLI.exe')) {
     $binary = Join-Path $binaryDirectory $name
     if (-not (Test-Path -LiteralPath $binary)) { throw "Build $Configuration first: $binary is missing." }
 }
@@ -55,6 +57,9 @@ function Copy-VeTree([string]$Source, [string]$Target) {
         if ($item.PSIsContainer) { Copy-VeTree $item.FullName $targetItem }
         else { Copy-Item -LiteralPath $item.FullName -Destination $targetItem -Force }
     }
+}
+if ((Test-Path -LiteralPath $appDirectory) -and @(Get-ChildItem -LiteralPath $appDirectory -Force).Count) {
+    throw 'Package into a new empty application directory.'
 }
 New-Item -ItemType Directory -Path $appDirectory -Force | Out-Null
 Copy-VeTree (Join-Path $runtimeSource 'bin') (Join-Path $appDirectory 'bin')
@@ -89,14 +94,17 @@ foreach ($name in @('LICENSE.txt', 'THIRD-PARTY-NOTICES.txt')) {
 $resources = Join-Path $appDirectory 'resources'
 $brandingDirectory = Join-Path $resources 'branding'
 New-Item -ItemType Directory -Path $brandingDirectory -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $workspaceRoot 'native (dev)/assets/icon.png') -Destination $brandingDirectory -Force
+$brandingSource = Join-Path $runtimeSource 'resources/branding/icon.png'
+if (-not (Test-Path -LiteralPath $brandingSource -PathType Leaf)) {
+    $brandingSource = Join-Path $workspaceRoot 'native (dev)/assets/icon.png'
+}
+if (Test-Path -LiteralPath $brandingSource -PathType Leaf) {
+    Copy-Item -LiteralPath $brandingSource -Destination $brandingDirectory -Force
+}
 Copy-VeTree (Join-Path $projectRoot 'src/desktop') (Join-Path $resources 'desktop')
 Copy-VeTree (Join-Path $projectRoot 'src/processing/shaders') (Join-Path $resources 'shaders')
 foreach ($name in @('Visual Enhancer.exe', 'VE_CLI.exe')) {
     Copy-Item -LiteralPath (Join-Path $binaryDirectory $name) -Destination (Join-Path $resolvedDestination $name) -Force
-}
-foreach ($name in @('Visual Enhancer.app.exe', 'VE_CLI.app.exe')) {
-    Copy-Item -LiteralPath (Join-Path $binaryDirectory $name) -Destination (Join-Path $appDirectory $name) -Force
 }
 $mode = if ($Configuration -eq 'Debug') { '--debug' } else { '--release' }
 $visualStudio = Get-VeVisualStudioInstallation
@@ -105,7 +113,7 @@ try {
     $env:VCINSTALLDIR = (Join-Path $visualStudio.installationPath 'VC') + '\'
     $deploymentArguments = @($mode, '--compiler-runtime', '--skip-plugin-types', 'qmltooling', '--dir', $appDirectory,
         '--qmldir', (Join-Path $projectRoot 'src/desktop/qml'),
-        (Join-Path $appDirectory 'Visual Enhancer.app.exe'), (Join-Path $appDirectory 'VE_CLI.app.exe'))
+        (Join-Path $appDirectory 'Visual Enhancer.exe'), (Join-Path $appDirectory 'VE_CLI.exe'))
     Invoke-VeCommand $deployment $deploymentArguments
 } finally { $env:VCINSTALLDIR = $originalVcDirectory }
 $offscreenName = if ($Configuration -eq 'Debug') { 'qoffscreend.dll' } else { 'qoffscreen.dll' }
@@ -132,7 +140,7 @@ $externalQtConfiguration = Join-Path $resolvedDestination 'qt.conf'
 if (Test-Path -LiteralPath $externalQtConfiguration) { Remove-Item -LiteralPath $externalQtConfiguration -Force }
 # Remove only obsolete application entry files after the replacement executables
 # and their dependencies have been deployed successfully.
-foreach ($name in @('Visual Enhancer.app.dll', 'VE_CLI.app.dll', 'Visual Enhancer.exe', 'VE_CLI.exe', 'qt.conf')) {
+foreach ($name in @('Visual Enhancer.app.dll', 'VE_CLI.app.dll', 'Visual Enhancer.app.exe', 'VE_CLI.app.exe', 'qt.conf')) {
     $obsolete = Join-Path $appDirectory $name
     if (Test-Path -LiteralPath $obsolete) { Remove-Item -LiteralPath $obsolete -Force }
 }
@@ -143,7 +151,7 @@ function Remove-VePackagedArtifact([string]$RelativePath) {
     $appRoot = [IO.Path]::GetFullPath($appDirectory).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
     $target = [IO.Path]::GetFullPath((Join-Path $appDirectory $RelativePath))
     if (-not $target.StartsWith($appRoot, [StringComparison]::OrdinalIgnoreCase)) {
-        throw "Packaging cleanup target is outside app/: $RelativePath"
+        throw "Packaging cleanup target is outside the application directory: $RelativePath"
     }
     if (Test-Path -LiteralPath $target) {
         $item = Get-Item -LiteralPath $target -Force
@@ -176,8 +184,8 @@ foreach ($directory in @('qml', 'resources/desktop/translations')) {
             Remove-VePackagedArtifact ([IO.Path]::GetRelativePath($appDirectory, $_.FullName))
         }
 }
-foreach ($directory in @('config', 'outputs', 'logs', 'jobs', 'temp')) {
-    New-Item -ItemType Directory -Path (Join-Path $resolvedDestination ('data/' + $directory)) -Force | Out-Null
+foreach ($directory in @('outputs', 'logs')) {
+    New-Item -ItemType Directory -Path (Join-Path $resolvedDestination $directory) -Force | Out-Null
 }
 if ($CertificateThumbprint) {
     & (Join-Path $PSScriptRoot 'sign-release.ps1') -PackageRoot $resolvedDestination `

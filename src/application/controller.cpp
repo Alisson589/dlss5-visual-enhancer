@@ -38,10 +38,25 @@ QVariantList labeled(const QStringList& values, const QString& suffix = {}) {
 } // namespace
 AppController::AppController(PreviewProvider* previews, QObject* parent)
     : QmlFacade(parent), previews_(previews),
-      settings_(Settings::load(Paths::instance().at("data/config/config.ini"))),
-      desktop_(Paths::instance().at("data/temp/desktop.ini"), QSettings::IniFormat) {
+      settings_(Settings::load(Paths::instance().configurationFile())),
+      desktop_() {
+    if (!transientFiles_.isValid())
+        throw std::runtime_error("Cannot create the desktop temporary directory.");
     pool_.setMaxThreadCount(3);
     previewPool_.setMaxThreadCount(1);
+    cachePool_.setMaxThreadCount(1);
+    cacheTrimTimer_.setSingleShot(true);
+    cacheTrimTimer_.setInterval(100);
+    connect(&cacheTrimTimer_, &QTimer::timeout, this, &AppController::cleanupCaches);
+    connect(this, &AppController::languageChanged, this, [this] { cacheStatus_.clear(); emit processingCacheChanged(); });
+    cacheRefreshTimer_.setSingleShot(true);
+    cacheRefreshTimer_.setInterval(300);
+    connect(&cacheRefreshTimer_, &QTimer::timeout, this, [this] { updateProcessingCache(); });
+    connect(&ProcessingCache::instance(), &ProcessingCache::usageChanged, this, [this] {
+        if (tab_ == "settings" && !cacheRefreshTimer_.isActive()) cacheRefreshTimer_.start();
+    }, Qt::QueuedConnection);
+    connect(this, &AppController::operationStateChanged, this, &AppController::processingCacheChanged);
+    connect(this, &AppController::runtimeStateChanged, this, &AppController::processingCacheChanged);
     for (auto& context : contexts_)
         context.queue = new BatchModel(this);
     upscaleMode_ = settings_.upscale_mode;
@@ -50,7 +65,7 @@ AppController::AppController(PreviewProvider* previews, QObject* parent)
     logHeight_ = desktop_.value("layout/logHeight", 220).toInt();
     autoPreview_ = desktop_.value("preview/realtimeEnabled", true).toBool();
     destinationMode_ = desktop_.value("export/destinationMode", "output").toString();
-    exportFolder_ = Paths::instance().decode(desktop_.value("export/folder").toString());
+    exportFolder_ = desktop_.value("export/folder").toString();
     saveTimer_.setSingleShot(true);
     saveTimer_.setInterval(450);
     connect(&saveTimer_, &QTimer::timeout, this, &AppController::saveSettings);
@@ -89,6 +104,7 @@ AppController::~AppController() {
     QElapsedTimer elapsed;
     elapsed.start();
     shutdownAll();
+    cachePool_.waitForDone();
     auto release = QtConcurrent::run(&previewPool_, [this] {
         videoFrames_.clear();
         videoStill_.reset();
@@ -158,14 +174,14 @@ QVariant AppController::read(Property property) const {
         auto text=vfxWorkerDiagnostics();auto info=QJsonDocument::fromJson(text.toUtf8()).object();
         if(info.isEmpty()||info.value("gpu_ordinal").toInt()!=gpuOrdinal(settings_.ai_gpu_uuid)){text=VideoEffects::diagnostics();info=QJsonDocument::fromJson(text.toUtf8()).object();}
         if(info.isEmpty())return text;
-        if(!info.value("initialized").toBool())return info.value("last_error").toString().isEmpty()?translate("GPU support and installed models are checked before processing."):info.value("last_error").toString();
+        if(!info.value("initialized").toBool())return info.value("last_error").toString().isEmpty()?QCoreApplication::translate("App", "GPU support and installed models are checked before processing."):info.value("last_error").toString();
         QStringList unavailable;
         for(const auto& feature:info.value("features").toArray()){
             const auto f=feature.toObject();
             if(!f.value("installed").toBool()||!f.value("hardware_supported").toBool()||f.value("initialization_error").toInt()!=0)unavailable.append(f.value("effect").toString());
         }
         auto summary=info.value("gpu").toString()+" | NVIDIA VFX 1.3";
-        if(!unavailable.isEmpty())summary+=" | "+translate("Unavailable")+": "+unavailable.join(", ");return summary;
+        if(!unavailable.isEmpty())summary+=" | "+QCoreApplication::translate("App", "Unavailable")+": "+unavailable.join(", ");return summary;
     }
     case Property::ffmpegDeviceChoices: {
         QVariantList choices{
@@ -177,11 +193,11 @@ QVariant AppController::read(Property property) const {
     }
     case Property::ffmpegDeviceStatus: {
         if (settings_.ffmpeg_device == "cpu")
-            return translate("CPU codecs; GPU pixel filters");
+            return QCoreApplication::translate("App", "CPU codecs; GPU pixel filters");
         for (const auto& device : vulkanDevices())
             if (settings_.ffmpeg_device == "auto" || settings_.ffmpeg_device == device.selection())
                 return device.label();
-        return translate("The selected GPU is unavailable.");
+        return QCoreApplication::translate("App", "The selected GPU is unavailable.");
     }
     case Property::lutAdjustmentValues: {
         QVariantMap values;
@@ -203,7 +219,8 @@ QVariant AppController::read(Property property) const {
     case Property::lutSaveBusy:
         return lutSaving_;
     case Property::lutSaveStatus:
-        return translate(lutSaveStatus_);
+        return lutSavedPath_.isEmpty() ? translate(lutSaveStatus_)
+                                      : QCoreApplication::translate("App", "Saved LUT to %1").arg(lutSavedPath_);
     case Property::isProcessing:
         return !idle();
     case Property::overallProgress:
@@ -241,6 +258,22 @@ QVariant AppController::read(Property property) const {
         return c.outputInfo;
     case Property::presetStatus:
         return translate(presetStatus_);
+    case Property::processingCacheBytes: return cacheSnapshot_.bytes;
+    case Property::processingCacheReclaimableBytes: return cacheSnapshot_.reclaimableBytes;
+    case Property::processingCacheBusy: return cacheBusy_;
+    case Property::processingCacheCleaning: return cacheCleaning_;
+    case Property::processingCacheReady: return cacheReady_;
+    case Property::canCleanProcessingCache:
+        return cacheReady_ && !cacheBusy_ && cacheSnapshot_.reclaimableBytes > 0 && cacheMaintenanceSafe();
+    case Property::processingCacheSizeText:
+        return cacheSnapshot_.bytes > 0 && cacheSnapshot_.bytes < 10000000
+            ? QString("<%1 GB").arg(QLocale().toString(.01, 'f', 2))
+            : QString("%1 GB").arg(QLocale().toString(double(cacheSnapshot_.bytes) / 1e9, 'f', 2));
+    case Property::processingCacheStatus: return cacheStatus_;
+    case Property::processingCacheDetails:
+        return QCoreApplication::translate("App", "Total: %1 bytes; available to clean: %2 bytes.")
+            .arg(QLocale().toString(cacheSnapshot_.bytes), QLocale().toString(cacheSnapshot_.reclaimableBytes))
+            + '\n' + QCoreApplication::translate("App", "Current previews and active processing files are kept.");
     case Property::previewBusy:
         return operation_.startsWith("Preview") || autoTimer_.isActive() || scrubTimer_.isActive() || analysisJob_ != nullptr;
     case Property::operationState:
@@ -339,7 +372,7 @@ QVariant AppController::read(Property property) const {
         return labeled(containersForCodec(settings_.frame_interpolation_codec));
     case Property::aiGpuChoices:
     case Property::videoGpuChoices: {
-        QVariantList values{QVariantMap{{"label", translate("Automatic")}, {"value", "auto"}}};
+        QVariantList values{QVariantMap{{"label", QCoreApplication::translate("App", "Auto")}, {"value", "auto"}}};
         for (const auto& gpu : gpus_)
             values.append(
                 QVariantMap{{"label", gpu.name + " (" + QString::number(gpu.memoryMiB / 1024) + " GB)"},
@@ -420,6 +453,7 @@ void AppController::write(Property property, const QVariant& value) {
             return;
         tab_ = tab;
         emit activeTabChanged();
+        if (tab_ == "settings") updateProcessingCache();
         notifyContext();
         if (autoPreview_ && idle())
             autoTimer_.start(previewDelay());
@@ -501,7 +535,7 @@ void AppController::write(Property property, const QVariant& value) {
         break;
     case Property::exportFolder:
         exportFolder_ = localPath(value.toString());
-        desktop_.setValue("export/folder", Paths::instance().encode(exportFolder_));
+        desktop_.setValue("export/folder", exportFolder_);
         emit exportPrefsChanged();
         break;
     default:
@@ -511,6 +545,8 @@ void AppController::write(Property property, const QVariant& value) {
 QVariant AppController::execute(Action action, const QVariantList& args) {
     try {
         switch (action) {
+        case Action::refreshProcessingCache: updateProcessingCache(); return {};
+        case Action::cleanProcessingCache: updateProcessingCache(true); return {};
         case Action::setVfxSetting:
         case Action::setLutFile:
         case Action::setLutAdjustment:
@@ -536,6 +572,10 @@ QVariant AppController::execute(Action action, const QVariantList& args) {
         status_ = QString::fromUtf8(e.what());
         log(status_, "error");
         emit statusMessageChanged();
+        if (action == Action::exportPreset || action == Action::exportPresetTo || action == Action::importPreset) {
+            presetStatus_ = translate(status_);
+            emit presetStatusChanged();
+        }
         if (action == Action::startActiveBatchWithExport)
             return status_;
         return {};
@@ -576,7 +616,7 @@ void AppController::log(const QString& message, const QString& tag) {
     Log::instance().append("INFO", tag, message);
 }
 void AppController::saveSettings() {
-    if (auto result = settings_.save(Paths::instance().at("data/config/config.ini")); !result)
+    if (auto result = settings_.save(Paths::instance().configurationFile()); !result)
         log(result.error(), "settings");
 }
 void AppController::settingsChanged() {
@@ -604,7 +644,7 @@ void AppController::suspendProcessing() {
         job_->pause(true);
         for (auto& current : contexts_)
             current.queue->setPaused(true);
-        exportPhase_ = "Paused";
+        exportPhase_ = QT_TRANSLATE_NOOP("App", "Paused");
         emit exportPhaseChanged();
     } else
         stopOperation();
@@ -633,7 +673,7 @@ void AppController::setLanguage(const QString& code) {
             }
         }
         auto translator = std::make_unique<QTranslator>();
-        if (translator->load(Paths::instance().at("app/resources/desktop/translations/app_" + code + ".qm"))) {
+        if (translator->load(Paths::instance().at("resources/desktop/translations/app_" + code + ".qm"))) {
             QCoreApplication::installTranslator(translator.get());
             translators_.push_back(std::move(translator));
         }
@@ -646,50 +686,26 @@ void AppController::setLanguage(const QString& code) {
     emit languageChanged();
     emit settingsUpdated();
     emit statusMessageChanged();
+    emit gpuChoicesChanged();
+    emit exportPhaseChanged();
+    emit lutSaveChanged();
+    emit lutReferenceChanged();
 }
 void AppController::cleanupCaches() {
-    if (!idle())
+    if (cacheBusy_) return;
+    if (!cacheMaintenanceSafe()) {
+        // A preview completion callback can arrive just before its worker has
+        // unwound. Retry after the producer releases its job-local resources.
+        if (idle() && !job_ && !analysisJob_ && !metadataJob_ && metadataScans_.empty() &&
+            !runtimeInitializationStarted_ && previewPool_.activeThreadCount() > 0)
+            cacheTrimTimer_.start();
         return;
-    // Preview files already have bounded provider storage. Avoid repeated
-    // synchronous directory scans while image controls are being adjusted.
-    if (lastCacheCleanup_.isValid() && lastCacheCleanup_.elapsed()<5000) return;
-    lastCacheCleanup_.start();
-    const auto threshold = QDateTime::currentDateTimeUtc().addSecs(-86400);
-    const auto root = Paths::instance().at("data/temp/app");
-    QDirIterator it(root, QDir::Files, QDirIterator::Subdirectories);
-    QSet<QString> active;
-    for (const auto& context : contexts_) {
-        for (const auto& input : context.queue->paths()) active.insert(input);
-        for (const auto& url : {context.inputUrl, context.outputUrl})
-            if (QUrl(url).isLocalFile())
-                active.insert(QUrl(url).toLocalFile());
     }
-    std::vector<QFileInfo> clips;
-    qint64 clipBytes = 0;
-    while (it.hasNext()) {
-        const auto path = it.next();
-        const auto info = it.fileInfo();
-        if (info.suffix() == "mkv" && info.absolutePath().startsWith(root + "/preview-")) {
-            clips.push_back(info);
-            clipBytes += info.size();
-        } else if (!previews_->ownsPath(path) && !active.contains(path) &&
-                   info.lastModified().toUTC() < threshold)
-            QFile::remove(path);
+    if (lastCacheCleanup_.isValid() && lastCacheCleanup_.elapsed() < 5000) {
+        cacheTrimTimer_.start(int(5000 - lastCacheCleanup_.elapsed()));
+        return;
     }
-    std::ranges::sort(clips, {}, [](const QFileInfo& info) { return info.lastModified(); });
-    const auto budget =
-        std::max<qint64>(0, PreviewProvider::diskBudget - previews_->diskUsage());
-    for (const auto& clip : clips) {
-        if (active.contains(clip.absoluteFilePath()) ||
-            (clipBytes <= budget && clip.lastModified().toUTC() >= threshold))
-            continue;
-        if (!QFile::remove(clip.absoluteFilePath()))
-            continue;
-        clipBytes -= clip.size();
-        const auto url = QUrl::fromLocalFile(clip.absoluteFilePath()).toString();
-        for (auto& context : contexts_)
-            context.ranges.removeIf([&](const QVariant& range) { return range.toMap().value("url") == url; });
-    }
-    emit previewRangesChanged();
+    lastCacheCleanup_.restart();
+    updateProcessingCache(true, true);
 }
 } // namespace ve

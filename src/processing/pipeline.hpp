@@ -31,6 +31,7 @@ struct RenderRequest {
     double startSeconds = 0;
     double seconds = 0; // Zero exports the complete source.
     PreviewFrameCache* stillSources = nullptr; // Optional reuse of the original decoded preview image.
+    bool isolatedVfxWorker = false; // Set only by the internal worker, independently of Qt's storage identity.
 };
 struct RenderResult {
     QString input, output, report;

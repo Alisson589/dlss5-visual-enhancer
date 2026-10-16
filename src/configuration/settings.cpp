@@ -557,8 +557,6 @@ Settings Settings::load(const QString& path) {
                                             {"Natural", "Style 1"},
                                             {"Cinematic", "Style 2"}}
                          .value(value, value);
-        else if (key == "lut_path" || key == "lut_reference_image")
-            parsed = Paths::instance().decode(value);
         loaded.insert(key, parsed);
     }
 #define VE_SETTING(type, name, initial)                                                                      \
@@ -602,8 +600,6 @@ std::expected<void, QString> Settings::save(const QString& path) const {
                 QJsonDocument(QJsonObject::fromVariantMap(value.toMap())).toJson(QJsonDocument::Compact));
         else if (value.metaType().id() == QMetaType::Bool)
             text = value.toBool() ? "true" : "false";
-        else if (it.key() == "lut_path" || it.key() == "lut_reference_image")
-            text = Paths::instance().encode(value.toString());
         else
             text = value.toString();
         bytes += (it.key() + " = " + text + '\n').toUtf8();
@@ -615,8 +611,6 @@ std::expected<void, QString> Settings::save(const QString& path) const {
 QJsonObject Settings::preset(const QString& name) const {
     auto migrated=*this;migrateStages(migrated,true);auto map = migrated.values();
     map.remove("nr_mask");
-    for (const auto& key : {"lut_path", "lut_reference_image"})
-        map[key] = Paths::instance().encode(map[key].toString());
     return {{"format", "dlss5-visual-enhancer-settings-preset"},
             {"schema_version", 36},
             {"name", name.trimmed()},
@@ -624,7 +618,7 @@ QJsonObject Settings::preset(const QString& name) const {
 }
 std::expected<void, QString> Settings::exportPreset(const QString& path, const QString& name) const {
     if (name.trimmed().isEmpty() || name.size() > 120)
-        return std::unexpected("Preset name must contain 1 to 120 characters.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset name must contain 1 to 120 characters."));
     if (auto valid = validate(); !valid)
         return valid;
     QSaveFile file(localPath(path));
@@ -640,24 +634,24 @@ std::expected<QString, QString> Settings::importPreset(const QString& path) {
     if (!file.open(QIODevice::ReadOnly))
         return std::unexpected(file.errorString());
     if (file.size() > 1024 * 1024)
-        return std::unexpected("Preset file is too large; the maximum size is 1 MiB.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset file is too large; the maximum size is 1 MiB."));
     QJsonParseError error;
     const auto json = QJsonDocument::fromJson(file.readAll(), &error);
     if (!json.isObject())
-        return std::unexpected("Preset file is not valid UTF-8 JSON.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset file is not valid UTF-8 JSON."));
     const auto object = json.object();
     if (object.value("format").toString() != "dlss5-visual-enhancer-settings-preset")
-        return std::unexpected("This JSON file is not a Visual Enhancer settings preset.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "This JSON file is not a Visual Enhancer settings preset."));
     if (!object.value("schema_version").isDouble() ||
         std::floor(object.value("schema_version").toDouble()) != object.value("schema_version").toDouble())
-        return std::unexpected("Preset schema_version must be an integer.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset schema_version must be an integer."));
     const int version = object.value("schema_version").toInt();
     if (version < 1 || version > 36)
-        return std::unexpected("Unsupported preset schema version.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Unsupported preset schema version."));
     const auto name = object.value("name").toString().trimmed();
     if (!object.value("settings").isObject() || name.isEmpty() || name.size() > 120 ||
         name.contains(QRegularExpression("[\\x00-\\x1f]")))
-        return std::unexpected("Preset must contain a valid name and settings object.");
+        return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset must contain a valid name and settings object."));
     auto changes = object.value("settings").toObject().toVariantMap();
     const auto originals = values();
     changes.remove("nr_mask");
@@ -680,7 +674,7 @@ std::expected<QString, QString> Settings::importPreset(const QString& path) {
         if (type == QMetaType::QStringList)
             for (const auto& stage : it.value().toList())
                 if (stage.metaType().id() != QMetaType::QString)
-                    return std::unexpected("Pipeline stages must be text.");
+                    return std::unexpected(QT_TRANSLATE_NOOP("App", "Pipeline stages must be text."));
         if (it.key().endsWith("codec"))
             it.value() = normalizeCodec(it.value().toString());
         if (version < 31 && it.key().endsWith("nr_style"))
@@ -692,8 +686,6 @@ std::expected<QString, QString> Settings::importPreset(const QString& path) {
             it.value() = it.key().endsWith("skin_structure_strength") && it.value().toDouble() == -1
                              ? 1.
                              : std::clamp(it.value().toDouble(), 0., 1.);
-        if (it.key() == "lut_path" || it.key() == "lut_reference_image")
-            it.value() = Paths::instance().decode(it.value().toString());
     }
     auto migrated =
         migratePreset(*this, changes, version, object.value("settings").toObject().toVariantMap());

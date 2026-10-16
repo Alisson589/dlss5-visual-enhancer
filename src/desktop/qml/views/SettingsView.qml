@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Dialogs
 import QtQuick.Controls as QQC2
 import ".."
 import "../controls"
@@ -7,7 +6,6 @@ import "../controls"
 Rectangle {
     id: root
     property var appBridge: null
-    property string presetName: ""
     color: Theme.bgBase
 
     Flickable {
@@ -53,6 +51,7 @@ Rectangle {
                         width: parent.width; spacing: 16
                         AppComboBox {
                             width: parent.width; label: qsTranslate("App", "AI Processing GPU (Tensor Cores / NGX)")
+                            objectName: "ai-processing-device"
                             model: appBridge ? appBridge.aiGpuChoices : []
                             currentValue: appBridge ? appBridge.aiGpuUuid : "auto"
                             onActivated: (v) => { if (appBridge) appBridge.aiGpuUuid = v }
@@ -76,24 +75,22 @@ Rectangle {
                 }
 
                 AppCard {
-                    width: cardColumn.width; title: qsTranslate("App", "Settings Presets"); collapsible: false
-                    Column {
-                        width: parent.width; spacing: 12
-                        AppTextField { width: parent.width; placeholderText: qsTranslate("App", "Preset name (e.g. 4K Master)..."); text: root.presetName; onTextEdited: (t) => root.presetName = t }
-                        Flow {
-                            width: parent.width
-                            spacing: 8
-                            AppButton {
-                                text: qsTranslate("App", "Export Preset...")
-                                iconName: "export"
-                                onClicked: {
-                                    if (root.presetName.trim().length === 0) { if (appBridge) appBridge.exportPreset(""); return }
-                                    presetSaveDialog.open()
-                                }
-                            }
-                            AppButton { text: qsTranslate("App", "Import..."); iconName: "import"; onClicked: presetImportDialog.open() }
+                    objectName: "processingCacheCard"
+                    width: cardColumn.width; title: qsTranslate("App", "Processing Cache"); collapsible: false
+                    Flow {
+                        width: parent.width; spacing: 16
+                        AppButton {
+                            objectName: "cleanProcessingCacheButton"
+                            text: appBridge && appBridge.processingCacheCleaning ? qsTranslate("App", "Cleaning…") : qsTranslate("App", "Clean Cache")
+                            enabled: appBridge ? appBridge.canCleanProcessingCache : false
+                            onClicked: { if (appBridge) appBridge.cleanProcessingCache() }
                         }
-                        Text { visible: appBridge && appBridge.presetStatus !== ""; width: parent.width; wrapMode: Text.Wrap; text: appBridge ? appBridge.presetStatus : ""; font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeSmall; color: Theme.accent }
+                        Text {
+                            objectName: "processingCacheSize"
+                            height: 36; verticalAlignment: Text.AlignVCenter
+                            text: appBridge && appBridge.processingCacheReady ? appBridge.processingCacheSizeText : qsTranslate("App", "Calculating…")
+                            color: Theme.textSecondary; font.family: Theme.fontFamily; font.pixelSize: Theme.fontSizeBody
+                        }
                     }
                 }
 
@@ -112,13 +109,10 @@ Rectangle {
         }
     }
 
-    FileDialog {
-        id: presetImportDialog; title: qsTranslate("App", "Import Preset JSON"); nameFilters: [qsTranslate("App", "JSON Presets (*.json)"), qsTranslate("App", "All Files (*.*)")]
-        onAccepted: { if (appBridge && selectedFile) appBridge.importPreset(selectedFile.toString()) }
-    }
-    FileDialog {
-        id: presetSaveDialog; title: qsTranslate("App", "Export Preset JSON"); fileMode: FileDialog.SaveFile; nameFilters: [qsTranslate("App", "JSON Presets (*.json)")]
-        onAccepted: { if (appBridge && selectedFile) appBridge.exportPresetTo(root.presetName, selectedFile.toString()) }
+    onVisibleChanged: { if (visible && appBridge) appBridge.refreshProcessingCache() }
+    Timer {
+        interval: 2000; repeat: true; running: root.visible && root.appBridge !== null
+        onTriggered: { if (root.appBridge) root.appBridge.refreshProcessingCache() }
     }
 
     QQC2.Dialog {

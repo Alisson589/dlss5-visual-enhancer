@@ -37,7 +37,8 @@ Column {
 
         AppSegmentedControl {
             width: parent.width
-            model: ["Color Adjustment", "LUT File"]
+            model: [{label: qsTranslate("App", "Color Adjustment"), value: "Color Adjustment"},
+                    {label: qsTranslate("App", "LUT File"), value: "LUT File"}]
             currentValue: root.lutPanel
             onActivated: value => { root.lutPanel = value }
         }

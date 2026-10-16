@@ -7,6 +7,7 @@ param(
     [switch]$Deploy,
     [string]$Destination,
     [string]$NativeBuildRoot,
+    [string]$RuntimeSource,
     [string]$CertificateThumbprint,
     [string]$TimestampServer = 'http://timestamp.digicert.com',
     [switch]$MachineCertificateStore
@@ -31,6 +32,7 @@ if ($Test) {
 if ($Deploy) {
     & (Join-Path $PSScriptRoot 'tools/deploy.ps1') -BuildDir $resolvedBuild -QtRoot $resolvedQt `
         -Configuration $Configuration -Destination $Destination -NativeBuildRoot $NativeBuildRoot `
+        -RuntimeSource $RuntimeSource `
         -CertificateThumbprint $CertificateThumbprint `
         -TimestampServer $TimestampServer -MachineCertificateStore:$MachineCertificateStore
 }

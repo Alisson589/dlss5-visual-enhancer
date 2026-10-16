@@ -35,7 +35,7 @@ int rawProgress(void* context, enum LibRaw_progress, int, int) {
 class HeifLibrary {
   public:
     HeifLibrary() {
-        const auto directory = Paths::instance().at("app/bin/runtime/image-codecs");
+        const auto directory = Paths::instance().at("bin/runtime/image-codecs");
         const auto names = QDir(directory).entryList({"libheif*.dll"}, QDir::Files);
         if (names.isEmpty())
             throw std::runtime_error("The bundled HEIF image decoder is missing.");

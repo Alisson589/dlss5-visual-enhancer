@@ -8,7 +8,7 @@
       <source>
 Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>
-Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</translation>
+Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier dans une application externe.</translation>
     </message>
     <message>
       <source>  -  1 frame</source>
@@ -43,6 +43,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation> FPS de traitement</translation>
     </message>
     <message>
+      <source>%1 (Discrete GPU)</source>
+      <translation>%1 (GPU dédié)</translation>
+    </message>
+    <message>
+      <source>%1 (Integrated GPU)</source>
+      <translation>%1 (GPU intégré)</translation>
+    </message>
+    <message>
+      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
+      <translation>Cible : %1 fps | Traitement : %2 fps | %3 images améliorées | %4 ignorées lors de l’échantillonnage | %5 s en mémoire tampon</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="84" />
       <source>%1 h %2 min</source>
       <translation>%1 h %2 min</translation>
@@ -67,8 +79,48 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>%1 images source</translation>
     </message>
     <message>
+      <source>%1 · pass %2/%3</source>
+      <translation>%1 · passe %2/%3</translation>
+    </message>
+    <message>
+      <source>%1. GPU filters: %2.</source>
+      <translation>%1. Filtres GPU : %2.</translation>
+    </message>
+    <message>
+      <source>%1: %2 (%3)</source>
+      <translation>%1: %2 (%3)</translation>
+    </message>
+    <message>
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
+    </message>
+    <message numerus="yes">
+      <source>%n file</source>
+      <translation>
+        <numerusform>%n fichier</numerusform>
+        <numerusform>%n fichiers</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n files</source>
+      <translation>
+        <numerusform>%n fichier</numerusform>
+        <numerusform>%n fichiers</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frame</source>
+      <translation>
+        <numerusform>%n image</numerusform>
+        <numerusform>%n images</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frames</source>
+      <translation>
+        <numerusform>%n image</numerusform>
+        <numerusform>%n images</numerusform>
+      </translation>
     </message>
     <message>
       <source>1 - Low</source>
@@ -116,6 +168,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Un rendu, un aperçu ou une analyse est encore en cours. Annuler et quitter ?</translation>
     </message>
     <message>
+      <source>AI GPU selection: %1</source>
+      <translation>GPU sélectionné pour l’IA : %1</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
       <source>AI Processing GPU (Tensor Cores / NGX)</source>
       <translation>GPU pour le traitement IA (Tensor Cores / NGX)</translation>
@@ -124,6 +180,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/BatchQueueDrawer.qml" line="484" />
       <source>Actions for %1</source>
       <translation>Actions pour %1</translation>
+    </message>
+    <message>
+      <source>Active: %1 — %2×%3.</source>
+      <translation>Actif : %1 — %2×%3.</translation>
     </message>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="506" />
@@ -218,6 +278,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Grain animé</translation>
     </message>
     <message>
+      <source>Another operation is active; stop it before starting a batch.</source>
+      <translation>Une autre opération est en cours ; arrêtez-la avant de démarrer un lot.</translation>
+    </message>
+    <message>
+      <source>Application: %1</source>
+      <translation>Application : %1</translation>
+    </message>
+    <message>
       <source>Applied to processing</source>
       <translation>Appliqué au traitement</translation>
     </message>
@@ -229,6 +297,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Applying</source>
       <translation>Application</translation>
+    </message>
+    <message>
+      <source>Applying; newer changes pending</source>
+      <translation>Application en cours ; des modifications plus récentes sont en attente</translation>
+    </message>
+    <message>
+      <source>Area</source>
+      <translation>Moyenne par aire</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="13" />
@@ -276,12 +352,28 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Masque automatique</translation>
     </message>
     <message>
+      <source>Automatic color adjustments applied.</source>
+      <translation>Corrections automatiques des couleurs appliquées.</translation>
+    </message>
+    <message>
+      <source>Automatic scene-cut detection</source>
+      <translation>Détection automatique des changements de scène</translation>
+    </message>
+    <message>
+      <source>Available</source>
+      <translation>Disponible</translation>
+    </message>
+    <message>
       <source>Balanced</source>
       <translation>Équilibré</translation>
     </message>
     <message>
       <source>Balanced ~1.72×</source>
       <translation>Équilibré ~1.72×</translation>
+    </message>
+    <message>
+      <source>Balances visual quality and file size. Size adapts to scene detail.</source>
+      <translation>Équilibre la qualité visuelle et la taille du fichier. La taille s’adapte aux détails de la scène.</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="150" />
@@ -309,6 +401,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Meilleure</translation>
     </message>
     <message>
+      <source>Bicubic</source>
+      <translation>Bicubique</translation>
+    </message>
+    <message>
+      <source>Bilinear</source>
+      <translation>Bilinéaire</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="29" />
       <source>Bit Depth</source>
       <translation>Profondeur de bits</translation>
@@ -323,7 +423,31 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <source>Browse</source>
       <translation>Parcourir</translation>
     </message>
-<message>
+    <message>
+      <source>Buffering: %1</source>
+      <translation>Mise en mémoire tampon : %1</translation>
+    </message>
+    <message>
+      <source>CPU (Software decoding / encoding)</source>
+      <translation>CPU (décodage / encodage logiciel)</translation>
+    </message>
+    <message>
+      <source>CPU codecs; GPU pixel filters</source>
+      <translation>Codecs CPU ; filtres de pixels GPU</translation>
+    </message>
+    <message>
+      <source>Cache maintenance failed: %1</source>
+      <translation>Échec de la maintenance du cache : %1</translation>
+    </message>
+    <message>
+      <source>Cache size</source>
+      <translation>Taille du cache</translation>
+    </message>
+    <message>
+      <source>Calculating…</source>
+      <translation>Calcul…</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>Annuler</translation>
@@ -343,6 +467,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Cannot start batch: %1</source>
       <translation>Impossible de démarrer le lot : %1</translation>
+    </message>
+    <message>
+      <source>Cascade</source>
+      <translation>Cascade</translation>
     </message>
     <message>
       <source>Changes apply immediately.</source>
@@ -370,6 +498,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Choisir une image de référence</translation>
     </message>
     <message>
+      <source>Choose an Export Path option.</source>
+      <translation>Choisissez une option de chemin d’exportation.</translation>
+    </message>
+    <message>
+      <source>Choose an existing export folder.</source>
+      <translation>Choisissez un dossier d’exportation existant.</translation>
+    </message>
+    <message>
       <source>Choose an existing reference image.</source>
       <translation>Choisissez une image de référence existante.</translation>
     </message>
@@ -385,7 +521,15 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <source>Cinematic</source>
-      <translation>Cinématique</translation>
+      <translation>Cinématographique</translation>
+    </message>
+    <message>
+      <source>Clean Cache</source>
+      <translation>Vider le cache</translation>
+    </message>
+    <message>
+      <source>Cleaning…</source>
+      <translation>Nettoyage…</translation>
     </message>
     <message>
       <location filename="../qml/components/CompositionCard.qml" line="115" />
@@ -423,6 +567,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Le presse-papiers ne contient ni image ni fichier.</translation>
     </message>
     <message>
+      <source>Close</source>
+      <translation>Fermer</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="76" />
       <location filename="../qml/views/UpscaleView.qml" line="390" />
       <source>Codec</source>
@@ -445,7 +593,7 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <source>Color Adjustment</source>
-      <translation>Colorimétrie</translation>
+      <translation>Réglage des couleurs</translation>
     </message>
     <message>
       <location filename="../qml/components/GrainControls.qml" line="32" />
@@ -457,9 +605,17 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Correspondance des couleurs</translation>
     </message>
     <message>
+      <source>Color adjustment skipped because the input or color controls changed.</source>
+      <translation>Correction des couleurs ignorée, car l’entrée ou les réglages de couleur ont changé.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
       <translation>Colorimétrie</translation>
+    </message>
+    <message>
+      <source>Committing part</source>
+      <translation>Validation de la partie</translation>
     </message>
     <message>
       <source>Completed</source>
@@ -479,6 +635,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>Terminé avec avertissements : %1 réussis, %2 échecs.</translation>
+    </message>
+    <message>
+      <source>Config: %1</source>
+      <translation>Configuration : %1</translation>
     </message>
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
@@ -502,6 +662,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Contraste</translation>
     </message>
     <message>
+      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
+      <translation>Le masque de contrôle remplace le masque automatique. Les canaux RGB contrôlent l’intensité, la tonalité et la structure.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/UpscaleView.qml" line="282" />
       <source>Convert SDR to HDR</source>
       <translation>Convertir SDR en HDR</translation>
@@ -517,6 +681,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Could not show in Explorer: %1</source>
       <translation>Affichage dans l’Explorateur impossible : %1</translation>
+    </message>
+    <message>
+      <source>Current previews and active processing files are kept.</source>
+      <translation>Les aperçus actuels et les fichiers de traitement actifs sont conservés.</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -556,7 +724,7 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/DlssSuperResolutionControls.qml" line="30" />
       <location filename="../qml/views/UpscaleView.qml" line="150" />
       <source>DLSS Preset</source>
-      <translation>DLSS Préréglage</translation>
+      <translation>Préréglage DLSS</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="43" />
@@ -572,7 +740,11 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/FrameGenerationControls.qml" line="25" />
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
-      <translation>DLSS-G Moteur</translation>
+      <translation>Moteur DLSS-G</translation>
+    </message>
+    <message>
+      <source>Deblur Modes</source>
+      <translation>Modes de réduction du flou</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -580,8 +752,16 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Périphérique de décodage / encodage</translation>
     </message>
     <message>
+      <source>Decoding image</source>
+      <translation>Décodage de l’image</translation>
+    </message>
+    <message>
       <source>Default</source>
       <translation>Par défaut</translation>
+    </message>
+    <message>
+      <source>Denoise Modes</source>
+      <translation>Modes de réduction du bruit</translation>
     </message>
     <message>
       <source>Download cancelled.</source>
@@ -685,6 +865,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Chemin d’exportation</translation>
     </message>
     <message>
+      <source>Export Preset</source>
+      <translation>Exporter un préréglage</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="136" />
       <source>Export Preset JSON</source>
       <translation>Exporter un préréglage JSON</translation>
@@ -704,6 +888,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Échec de l’exportation : %1</translation>
     </message>
     <message>
+      <source>Export paused; GPU memory released</source>
+      <translation>Export en pause ; mémoire GPU libérée</translation>
+    </message>
+    <message>
       <source>Exported preset '%1' to %2</source>
       <translation>Préréglage '%1' exporté vers %2</translation>
     </message>
@@ -711,6 +899,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/ColoringControls.qml" line="193" />
       <source>Exposure</source>
       <translation>Exposition</translation>
+    </message>
+    <message>
+      <source>FFV1 Lossless RGB 10-bit</source>
+      <translation>FFV1 RGB sans perte 10 bits</translation>
     </message>
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
@@ -722,6 +914,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Échec</translation>
     </message>
     <message>
+      <source>Failed: %1</source>
+      <translation>Échec : %1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="82" />
       <source>File</source>
       <translation>Fichier</translation>
@@ -731,9 +927,29 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Le fichier n’existe plus : %1</translation>
     </message>
     <message>
+      <source>Finalizing export</source>
+      <translation>Finalisation de l’exportation</translation>
+    </message>
+    <message>
+      <source>Finalizing video</source>
+      <translation>Finalisation de la vidéo</translation>
+    </message>
+    <message>
+      <source>Finished processing: %1. Playback available until Stop.</source>
+      <translation>Traitement terminé : %1. Lecture disponible jusqu’à l’appui sur Arrêter.</translation>
+    </message>
+    <message>
+      <source>Finished: %1. %2 frames enhanced.</source>
+      <translation>Terminé : %1. %2 images améliorées.</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="505" />
       <source>Fit to window</source>
       <translation>Adapter à la fenêtre</translation>
+    </message>
+    <message>
+      <source>Flushing output</source>
+      <translation>Finalisation de la sortie</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="181" />
@@ -761,9 +977,17 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Interpolation d’images</translation>
     </message>
     <message>
+      <source>Frame-rate mode</source>
+      <translation>Mode de fréquence d’images</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>Plein écran</translation>
+    </message>
+    <message>
+      <source>GPU support and installed models are checked before processing.</source>
+      <translation>La compatibilité du GPU et les modèles installés sont vérifiés avant le traitement.</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="29" />
@@ -798,13 +1022,13 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="13" />
       <location filename="../qml/views/UpscaleView.qml" line="290" />
       <source>HDR Contrast</source>
-      <translation>HDR Contraste</translation>
+      <translation>Contraste HDR</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="74" />
       <location filename="../qml/views/UpscaleView.qml" line="339" />
       <source>HDR Precision</source>
-      <translation>HDR Précision</translation>
+      <translation>Précision HDR</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="28" />
@@ -835,6 +1059,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>High</source>
       <translation>Élevée</translation>
+    </message>
+    <message>
+      <source>High visual quality, with moderate compression.</source>
+      <translation>Haute qualité visuelle, avec une compression modérée.</translation>
+    </message>
+    <message>
+      <source>High-Bitrate Modes</source>
+      <translation>Modes à haut débit binaire</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="209" />
@@ -877,6 +1109,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Qualité d’image</translation>
     </message>
     <message>
+      <source>Image complete</source>
+      <translation>Traitement de l’image terminé</translation>
+    </message>
+    <message>
       <source>Images</source>
       <translation>Images</translation>
     </message>
@@ -885,6 +1121,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/ColoringControls.qml" line="324" />
       <source>Images (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</source>
       <translation>Images (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</translation>
+    </message>
+    <message>
+      <source>Import Preset</source>
+      <translation>Importer un préréglage</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="132" />
@@ -907,6 +1147,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Initial settings</source>
       <translation>Paramètres initiaux</translation>
+    </message>
+    <message>
+      <source>Initializing</source>
+      <translation>Initialisation</translation>
     </message>
     <message>
       <source>Initializing runtime…</source>
@@ -964,6 +1208,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Progression de la tâche</translation>
     </message>
     <message>
+      <source>LUT File</source>
+      <translation>Fichier LUT</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>Fichier LUT (.cube)</translation>
@@ -1007,10 +1255,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Chargement des médias…</translation>
     </message>
     <message>
+      <source>Loading model</source>
+      <translation>Chargement du modèle</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="627" />
       <location filename="../qml/components/MediaViewport.qml" line="641" />
       <source>Loading preview...</source>
       <translation>Chargement de l’aperçu...</translation>
+    </message>
+    <message>
+      <source>Loading source metadata</source>
+      <translation>Chargement des métadonnées source</translation>
     </message>
     <message>
       <source>Local</source>
@@ -1031,6 +1287,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/UpscaleView.qml" line="248" />
       <source>Lock Aspect Ratio</source>
       <translation>Verrouiller les proportions</translation>
+    </message>
+    <message>
+      <source>Logs: %1</source>
+      <translation>Journaux : %1</translation>
+    </message>
+    <message>
+      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
+      <translation>Cache RAM sans perte avec repli sur disque. Les modèles s’exécutent un par un.</translation>
     </message>
     <message>
       <source>Low</source>
@@ -1083,12 +1347,24 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Tons moyens</translation>
     </message>
     <message>
+      <source>Missing</source>
+      <translation>Manquant</translation>
+    </message>
+    <message>
       <source>Mixed images and videos are not allowed — please add only one type at a time.</source>
       <translation>Ne mélangez pas images et vidéos ; ajoutez un seul type à la fois.</translation>
     </message>
     <message>
       <source>Mode</source>
       <translation>Mode</translation>
+    </message>
+    <message>
+      <source>Mode family</source>
+      <translation>Famille de modes</translation>
+    </message>
+    <message>
+      <source>Model</source>
+      <translation>Modèle</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="101" />
@@ -1099,6 +1375,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/WorkflowStageCard.qml" line="90" />
       <source>Move %1 up</source>
       <translation>Déplacer %1 vers le haut</translation>
+    </message>
+    <message>
+      <source>Multiplier</source>
+      <translation>Multiplicateur</translation>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
@@ -1114,7 +1394,7 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
       <source>NR Intensity</source>
-      <translation>NR Intensité</translation>
+      <translation>Intensité NR</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
@@ -1127,8 +1407,16 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Style NR</translation>
     </message>
     <message>
+      <source>Native DLSSG</source>
+      <translation>DLSSG natif</translation>
+    </message>
+    <message>
       <source>Natural</source>
       <translation>Naturel</translation>
+    </message>
+    <message>
+      <source>Nearest</source>
+      <translation>Plus proche voisin</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="132" />
@@ -1223,6 +1511,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Opération toujours active</translation>
     </message>
     <message>
+      <source>Optical Flow Quality</source>
+      <translation>Qualité du flux optique</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="78" />
       <location filename="../qml/components/MediaViewport.qml" line="410" />
       <location filename="../qml/components/MediaViewport.qml" line="417" />
@@ -1250,6 +1542,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Sortie</translation>
     </message>
     <message>
+      <source>Outputs: %1</source>
+      <translation>Résultats : %1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="415" />
       <source>Overall job progress</source>
       <translation>Progression de la tâche</translation>
@@ -1268,6 +1564,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>10 bits compactés (FP16)</translation>
     </message>
     <message>
+      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
+      <translation>Partie %1 · %2 · %3 FPS · %4 Go</translation>
+    </message>
+    <message>
       <source>Passes</source>
       <translation>Passes</translation>
     </message>
@@ -1279,6 +1579,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Pause</source>
       <translation>Pause</translation>
+    </message>
+    <message>
+      <source>Paused</source>
+      <translation>En pause</translation>
+    </message>
+    <message>
+      <source>Pausing export; releasing GPU workers…</source>
+      <translation>Mise en pause de l’export ; libération des processus GPU…</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="58" />
@@ -1299,6 +1607,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Performance 2.0×</translation>
     </message>
     <message>
+      <source>Pipeline stages must be text.</source>
+      <translation>Les étapes de traitement doivent être du texte.</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Play</source>
       <translation>Lire</translation>
@@ -1307,6 +1619,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>Vitesse de lecture</translation>
+    </message>
+    <message>
+      <source>Playing: %1</source>
+      <translation>Lecture : %1</translation>
     </message>
     <message>
       <source>Playlist: %1</source>
@@ -1318,7 +1634,7 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     </message>
     <message>
       <source>Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
-      <translation>Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</translation>
+      <translation>Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier dans une application externe.</translation>
     </message>
     <message>
       <source>Precision</source>
@@ -1330,8 +1646,16 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Préférences et configuration système</translation>
     </message>
     <message>
+      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
+      <translation>Préparation du rendu neuronal : %1x%2 -&gt; %3x%4...</translation>
+    </message>
+    <message>
       <source>Preparing batch processing…</source>
       <translation>Préparation du traitement par lots…</translation>
+    </message>
+    <message>
+      <source>Preroll: %1 frames</source>
+      <translation>Préchauffage : %1 images</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="100" />
@@ -1348,9 +1672,33 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Préréglage</translation>
     </message>
     <message>
+      <source>Preset file is not valid UTF-8 JSON.</source>
+      <translation>Le fichier de préréglage n’est pas un JSON UTF-8 valide.</translation>
+    </message>
+    <message>
+      <source>Preset file is too large; the maximum size is 1 MiB.</source>
+      <translation>Le fichier de préréglage est trop volumineux ; la taille maximale est de 1 Mio.</translation>
+    </message>
+    <message>
+      <source>Preset must contain a valid name and settings object.</source>
+      <translation>Le préréglage doit contenir un nom valide et un objet de paramètres.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="98" />
       <source>Preset name (e.g. 4K Master)...</source>
       <translation>Nom du préréglage (ex. 4K Master)...</translation>
+    </message>
+    <message>
+      <source>Preset name must contain 1 to 120 characters.</source>
+      <translation>Le nom du préréglage doit contenir de 1 à 120 caractères.</translation>
+    </message>
+    <message>
+      <source>Preset schema_version must be an integer.</source>
+      <translation>La valeur schema_version du préréglage doit être un entier.</translation>
+    </message>
+    <message>
+      <source>Presets</source>
+      <translation>Préréglages</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="210" />
@@ -1393,6 +1741,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Image précédente</translation>
     </message>
     <message>
+      <source>Prioritizes quality over file size. Files can be very large.</source>
+      <translation>Privilégie la qualité plutôt que la taille du fichier. Les fichiers peuvent être très volumineux.</translation>
+    </message>
+    <message>
+      <source>Probing %1...</source>
+      <translation>Analyse de %1...</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="84" />
       <source>Process</source>
       <translation>Traitement</translation>
@@ -1403,9 +1759,38 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Traitement</translation>
     </message>
     <message>
+      <source>Processing Cache</source>
+      <translation>Cache de traitement</translation>
+    </message>
+    <message>
+      <source>Processing NVIDIA VFX</source>
+      <translation>Traitement avec NVIDIA VFX</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="285" />
       <source>Processing Stage %1 of %2</source>
       <translation>Traitement de l’étape %1 sur %2</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
+      <source>Processing Stage %1 of %2 (Part %3)</source>
+      <translation>Traitement de l’étape %1 sur %2 (Partie %3)</translation>
+    </message>
+    <message>
+      <source>Processing finished or stopped; changes apply on the next Start.</source>
+      <translation>Traitement terminé ou arrêté ; les modifications s’appliqueront au prochain démarrage.</translation>
+    </message>
+    <message>
+      <source>Processing image</source>
+      <translation>Traitement de l’image</translation>
+    </message>
+    <message>
+      <source>Processing is active. Try again when it finishes.</source>
+      <translation>Un traitement est en cours. Réessayez lorsqu’il sera terminé.</translation>
+    </message>
+    <message>
+      <source>Processing video</source>
+      <translation>Traitement de la vidéo</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="371" />
@@ -1448,8 +1833,16 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>RTX Video HDR</translation>
     </message>
     <message>
+      <source>Ready</source>
+      <translation>Prêt</translation>
+    </message>
+    <message>
       <source>Ready.</source>
       <translation>Prêt.</translation>
+    </message>
+    <message>
+      <source>Ready. Add files to begin.</source>
+      <translation>Prêt. Ajoutez des fichiers pour commencer.</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="90" />
@@ -1464,6 +1857,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/ColoringControls.qml" line="320" />
       <source>Reference Image</source>
       <translation>Image de référence</translation>
+    </message>
+    <message>
+      <source>Reference color adjustments ready</source>
+      <translation>Corrections des couleurs de référence prêtes</translation>
     </message>
     <message>
       <source>Reference match could not be applied during the current operation.</source>
@@ -1482,6 +1879,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Échec de la correspondance : %1</translation>
     </message>
     <message>
+      <source>Releasing worker</source>
+      <translation>Libération du processus</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="202" />
       <source>Remaining</source>
       <translation>Restant</translation>
@@ -1490,6 +1891,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/BatchQueueDrawer.qml" line="516" />
       <source>Remove from queue</source>
       <translation>Retirer de la file</translation>
+    </message>
+    <message>
+      <source>Removed %1. Remaining: %2.</source>
+      <translation>%1 supprimé. Restant : %2.</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="121" />
@@ -1509,6 +1914,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Rendering preview%1…</source>
       <translation>Rendu de l’aperçu%1…</translation>
+    </message>
+    <message>
+      <source>Requested up to %1p; received %2.</source>
+      <translation>Jusqu’à %1p demandé ; %2 reçu.</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
@@ -1538,25 +1947,41 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <location filename="../qml/views/FrameInterpolationView.qml" line="215" />
       <source>Reset interpolation settings</source>
-      <translation>Réinitialiser les paramètres Interpolation d’images</translation>
+      <translation>Réinitialiser les paramètres d’interpolation d’images</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="272" />
       <source>Reset neural rendering settings</source>
-      <translation>Réinitialiser les paramètres Rendu neuronal</translation>
+      <translation>Réinitialiser les paramètres de rendu neuronal</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="501" />
       <source>Reset upscale settings</source>
-      <translation>Réinitialiser les paramètres Agrandir</translation>
+      <translation>Réinitialiser les paramètres d’agrandissement</translation>
     </message>
     <message>
       <source>Resolving source...</source>
       <translation>Résolution de la source...</translation>
     </message>
     <message>
+      <source>Resume</source>
+      <translation>Reprendre</translation>
+    </message>
+    <message>
+      <source>Resuming export from the last committed part…</source>
+      <translation>Reprise depuis la dernière partie validée…</translation>
+    </message>
+    <message>
+      <source>Runtime error: %1</source>
+      <translation>Erreur d’exécution : %1</translation>
+    </message>
+    <message>
       <source>Runtime initialization failed: %1</source>
       <translation>Échec de l’initialisation : %1</translation>
+    </message>
+    <message>
+      <source>Runtime state: %1</source>
+      <translation>État d’exécution : %1</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1607,6 +2032,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Enregistrement de la LUT…</translation>
     </message>
     <message>
+      <source>Saving image</source>
+      <translation>Enregistrement de l’image</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ScaleMethodControls.qml" line="31" />
       <source>Scale</source>
       <translation>Échelle</translation>
@@ -1640,12 +2069,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Choisissez Appliquer la LUT pour reprendre les couleurs de la référence.</translation>
     </message>
     <message>
-      <location filename="../qml/components/CompositionCard.qml" line="137" />
-      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
-      <source>Select NR Control Mask</source>
-      <translation>Sélectionner le masque de contrôle NR</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ExportDialog.qml" line="175" />
       <source>Select Export Folder</source>
       <translation>Sélectionner le dossier d’exportation</translation>
@@ -1670,6 +2093,12 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/DropZone.qml" line="91" />
       <source>Select Input Media</source>
       <translation>Sélectionner les médias d’entrée</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/CompositionCard.qml" line="137" />
+      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
+      <source>Select NR Control Mask</source>
+      <translation>Sélectionner le masque de contrôle NR</translation>
     </message>
     <message>
       <source>Select a batch processing tab before exporting.</source>
@@ -1732,6 +2161,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Méthode de netteté</translation>
     </message>
     <message>
+      <source>Sharpening strength</source>
+      <translation>Intensité de la netteté</translation>
+    </message>
+    <message>
       <location filename="../qml/components/SharpeningControls.qml" line="22" />
       <source>Sharpness</source>
       <translation>Netteté</translation>
@@ -1768,6 +2201,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Ignoré avant traitement</translation>
     </message>
     <message>
+      <source>Software codecs</source>
+      <translation>Codecs logiciels</translation>
+    </message>
+    <message>
+      <source>Some files are in use or could not be removed.</source>
+      <translation>Certains fichiers sont utilisés ou n’ont pas pu être supprimés.</translation>
+    </message>
+    <message>
       <source>Source</source>
       <translation>Source</translation>
     </message>
@@ -1789,6 +2230,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Par défaut</translation>
     </message>
     <message>
+      <source>Standard Upscaling Modes</source>
+      <translation>Modes d’agrandissement standard</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="122" />
       <source>Start</source>
       <translation>Démarrer</translation>
@@ -1801,6 +2246,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
     <message>
       <source>Starting...</source>
       <translation>Démarrage...</translation>
+    </message>
+    <message>
+      <source>Startup %1 s · switch %2 s</source>
+      <translation>Démarrage %1 s · transition %2 s</translation>
+    </message>
+    <message>
+      <source>Startup warning: %1</source>
+      <translation>Avertissement au démarrage : %1</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="204" />
@@ -1849,8 +2302,16 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Arrêt...</translation>
     </message>
     <message>
+      <source>Strength</source>
+      <translation>Intensité</translation>
+    </message>
+    <message>
       <source>Style</source>
       <translation>Style</translation>
+    </message>
+    <message>
+      <source>Style %1</source>
+      <translation>Style %1</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="30" />
@@ -1866,6 +2327,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Cible %1 FPS</translation>
     </message>
     <message>
+      <source>Target FPS</source>
+      <translation>FPS cible</translation>
+    </message>
+    <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
       <location filename="../qml/views/FrameInterpolationView.qml" line="96" />
       <source>Target Output Frame Rate</source>
@@ -1877,9 +2342,29 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Température</translation>
     </message>
     <message>
+      <source>The active workflow changed. Reopen Export Path.</source>
+      <translation>Le flux de travail actif a changé. Rouvrez Chemin d’exportation.</translation>
+    </message>
+    <message>
+      <source>The resolved stream differs from the requested height.</source>
+      <translation>La hauteur du flux obtenu diffère de la hauteur demandée.</translation>
+    </message>
+    <message>
+      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
+      <translation>Le GPU FFmpeg/Vulkan sélectionné est indisponible. Choisissez Automatique ou un autre GPU dans les paramètres.</translation>
+    </message>
+    <message>
+      <source>The selected GPU is unavailable.</source>
+      <translation>Le GPU sélectionné est indisponible.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/AboutView.qml" line="31" />
       <source>Third-Party Licenses</source>
       <translation>Licences tierces</translation>
+    </message>
+    <message>
+      <source>This JSON file is not a Visual Enhancer settings preset.</source>
+      <translation>Ce fichier JSON n’est pas un préréglage de Visual Enhancer.</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="164" />
@@ -1907,6 +2392,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Réponse tonale</translation>
     </message>
     <message>
+      <source>Total: %1 bytes; available to clean: %2 bytes.</source>
+      <translation>Total : %1 octets ; nettoyables : %2 octets.</translation>
+    </message>
+    <message>
       <source>Ultra</source>
       <translation>Ultra</translation>
     </message>
@@ -1919,6 +2408,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Performance ultra 3.0×</translation>
     </message>
     <message>
+      <source>Unavailable</source>
+      <translation>Indisponible</translation>
+    </message>
+    <message>
       <location filename="../qml/controls/AppComboBox.qml" line="44" />
       <source>Unavailable: %1</source>
       <translation>Indisponible : %1</translation>
@@ -1929,6 +2422,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Activer le son</translation>
     </message>
     <message>
+      <source>Unsupported preset schema version.</source>
+      <translation>Version du schéma de préréglage non prise en charge.</translation>
+    </message>
+    <message>
+      <source>Update failed; recovery failed</source>
+      <translation>Échec de la mise à jour ; échec de la récupération</translation>
+    </message>
+    <message>
+      <source>Update failed—previous settings restored</source>
+      <translation>Échec de la mise à jour — paramètres précédents restaurés</translation>
+    </message>
+    <message>
       <source>Updating realtime preview…</source>
       <translation>Actualisation de l’aperçu…</translation>
     </message>
@@ -1936,6 +2441,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/MenuStrip.qml" line="150" />
       <source>Upscale</source>
       <translation>Agrandir</translation>
+    </message>
+    <message>
+      <source>Upscale (Lightweight)</source>
+      <translation>Agrandissement (léger)</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="514" />
@@ -1960,7 +2469,11 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/components/SuperResolutionControls.qml" line="15" />
       <location filename="../qml/views/UpscaleView.qml" line="173" />
       <source>VSR Quality</source>
-      <translation>VSR Qualité</translation>
+      <translation>Qualité VSR</translation>
+    </message>
+    <message>
+      <source>Very high visual quality, with less compression.</source>
+      <translation>Très haute qualité visuelle, avec une compression réduite.</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="281" />
@@ -1987,6 +2500,18 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Fichiers vidéo (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
     </message>
     <message>
+      <source>Video Frame Generation</source>
+      <translation>Génération d’images vidéo</translation>
+    </message>
+    <message>
+      <source>Video GPU selection: %1</source>
+      <translation>GPU sélectionné pour la vidéo : %1</translation>
+    </message>
+    <message>
+      <source>Video Super Resolution</source>
+      <translation>Super-résolution vidéo</translation>
+    </message>
+    <message>
       <source>Video cannot be played natively:</source>
       <translation>La vidéo ne peut pas être lue directement :</translation>
     </message>
@@ -1996,6 +2521,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
 </source>
       <translation>La vidéo ne peut pas être lue directement :
 </translation>
+    </message>
+    <message>
+      <source>Video complete</source>
+      <translation>Traitement de la vidéo terminé</translation>
     </message>
     <message>
       <source>Video duration is unavailable; reload the input and try Auto again.</source>
@@ -2020,6 +2549,14 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <translation>Volume</translation>
     </message>
     <message>
+      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
+      <translation>Le filtrage GPU avec Vulkan est indisponible. Installez un pilote Vulkan récent d’AMD, d’Intel ou de NVIDIA.</translation>
+    </message>
+    <message>
+      <source>Vulkan codecs where supported; software fallback</source>
+      <translation>Codecs Vulkan si pris en charge ; sinon, codecs logiciels</translation>
+    </message>
+    <message>
       <source>Waiting</source>
       <translation>En attente</translation>
     </message>
@@ -2042,6 +2579,10 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/UpscaleView.qml" line="220" />
       <source>Width (px)</source>
       <translation>Largeur (px)</translation>
+    </message>
+    <message>
+      <source>Writing cache</source>
+      <translation>Écriture du cache</translation>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="228" />
@@ -2099,259 +2640,6 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier ailleurs.</t
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS et RTX sont des marques de NVIDIA Corporation.</translation>
-    </message>
-    <message>
-      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
-      <translation>Cache RAM sans perte avec repli sur disque. Les modèles s’exécutent un par un.</translation>
-    </message>
-    <message>
-      <source>Export paused; GPU memory released</source>
-      <translation>Export en pause ; mémoire GPU libérée</translation>
-    </message>
-    <message>
-      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
-      <translation>Partie %1 · %2 · %3 FPS · %4 Go</translation>
-    </message>
-    <message>
-      <source>Preroll: %1 frames</source>
-      <translation>Préchauffage : %1 images</translation>
-    </message>
-    <message>
-      <source>Pausing export; releasing GPU workers…</source>
-      <translation>Mise en pause de l’export ; libération des processus GPU…</translation>
-    </message>
-    <message>
-      <source>Resuming export from the last committed part…</source>
-      <translation>Reprise depuis la dernière partie validée…</translation>
-    </message>
-    <message>
-      <source>Loading model</source>
-      <translation>Chargement du modèle</translation>
-    </message>
-    <message>
-      <source>Flushing output</source>
-      <translation>Finalisation de la sortie</translation>
-    </message>
-    <message>
-      <source>Writing cache</source>
-      <translation>Écriture du cache</translation>
-    </message>
-    <message>
-      <source>Releasing worker</source>
-      <translation>Libération du processus</translation>
-    </message>
-    <message>
-      <source>Committing part</source>
-      <translation>Validation de la partie</translation>
-    </message>
-    <message>
-      <source>Finalizing video</source>
-      <translation>Finalisation de la vidéo</translation>
-    </message>
-    <message>
-      <source>Startup %1 s · switch %2 s</source>
-      <translation>Démarrage %1 s · transition %2 s</translation>
-    </message>
-<message>
-      <source>Cache size</source>
-      <translation>Taille du cache</translation>
-    </message>
-<message>
-      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
-      <translation>Le masque de contrôle remplace le masque automatique. Les canaux RGB contrôlent l’intensité, la tonalité et la structure.</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
-      <source>Processing Stage %1 of %2 (Part %3)</source>
-      <translation>Traitement de l’étape %1 sur %2 (Partie %3)</translation>
-    </message>
-    <message>
-      <source>Optical Flow Quality</source>
-      <translation>Qualité du flux optique</translation>
-    </message>
-    <message>
-      <source>%1 (Discrete GPU)</source>
-      <translation>%1 (GPU dédié)</translation>
-    </message>
-    <message>
-      <source>%1 (Integrated GPU)</source>
-      <translation>%1 (GPU intégré)</translation>
-    </message>
-    <message>
-      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
-      <translation>Cible : %1 fps | Traitement : %2 fps | %3 images améliorées | %4 ignorées lors de l’échantillonnage | %5 s en mémoire tampon</translation>
-    </message>
-    <message>
-      <source>%1 · pass %2/%3</source>
-      <translation>%1 · passe %2/%3</translation>
-    </message>
-    <message>
-      <source>%1. GPU filters: %2.</source>
-      <translation>%1. Filtres GPU : %2.</translation>
-    </message>
-    <message>
-      <source>AI GPU selection: %1</source>
-      <translation>GPU sélectionné pour l’IA : %1</translation>
-    </message>
-    <message>
-      <source>Active: %1 — %2×%3.</source>
-      <translation>Actif : %1 — %2×%3.</translation>
-    </message>
-    <message>
-      <source>Application: %1</source>
-      <translation>Application : %1</translation>
-    </message>
-    <message>
-      <source>Applying; newer changes pending</source>
-      <translation>Application en cours ; des modifications plus récentes sont en attente</translation>
-    </message>
-    <message>
-      <source>Available</source>
-      <translation>Disponible</translation>
-    </message>
-    <message>
-      <source>Buffering: %1</source>
-      <translation>Mise en mémoire tampon : %1</translation>
-    </message>
-    <message>
-      <source>CPU (Software decoding / encoding)</source>
-      <translation>CPU (décodage / encodage logiciel)</translation>
-    </message>
-    <message>
-      <source>Config: %1</source>
-      <translation>Configuration : %1</translation>
-    </message>
-    <message>
-      <source>Failed: %1</source>
-      <translation>Échec : %1</translation>
-    </message>
-    <message>
-      <source>Finished processing: %1. Playback available until Stop.</source>
-      <translation>Traitement terminé : %1. Lecture disponible jusqu’à l’appui sur Arrêter.</translation>
-    </message>
-    <message>
-      <source>Finished: %1. %2 frames enhanced.</source>
-      <translation>Terminé : %1. %2 images améliorées.</translation>
-    </message>
-    <message>
-      <source>Logs: %1</source>
-      <translation>Journaux : %1</translation>
-    </message>
-    <message>
-      <source>Missing</source>
-      <translation>Manquant</translation>
-    </message>
-    <message>
-      <source>Outputs: %1</source>
-      <translation>Résultats : %1</translation>
-    </message>
-    <message>
-      <source>Playing: %1</source>
-      <translation>Lecture : %1</translation>
-    </message>
-    <message>
-      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
-      <translation>Préparation de Neural Rendering : %1x%2 -&gt; %3x%4...</translation>
-    </message>
-    <message>
-      <source>Probing %1...</source>
-      <translation>Analyse de %1...</translation>
-    </message>
-    <message>
-      <source>Processing finished or stopped; changes apply on the next Start.</source>
-      <translation>Traitement terminé ou arrêté ; les modifications s’appliqueront au prochain démarrage.</translation>
-    </message>
-    <message>
-      <source>Requested up to %1p; received %2.</source>
-      <translation>Jusqu’à %1p demandé ; %2 reçu.</translation>
-    </message>
-    <message>
-      <source>Runtime error: %1</source>
-      <translation>Erreur d’exécution : %1</translation>
-    </message>
-    <message>
-      <source>Runtime state: %1</source>
-      <translation>État d’exécution : %1</translation>
-    </message>
-    <message>
-      <source>Software codecs</source>
-      <translation>Codecs logiciels</translation>
-    </message>
-    <message>
-      <source>Startup warning: %1</source>
-      <translation>Avertissement au démarrage : %1</translation>
-    </message>
-    <message>
-      <source>The resolved stream differs from the requested height.</source>
-      <translation>La hauteur du flux obtenu diffère de la hauteur demandée.</translation>
-    </message>
-    <message>
-      <source>Update failed; recovery failed</source>
-      <translation>Échec de la mise à jour ; échec de la récupération</translation>
-    </message>
-    <message>
-      <source>Update failed—previous settings restored</source>
-      <translation>Échec de la mise à jour — paramètres précédents restaurés</translation>
-    </message>
-    <message>
-      <source>Video GPU selection: %1</source>
-      <translation>GPU sélectionné pour la vidéo : %1</translation>
-    </message>
-    <message>
-      <source>Vulkan codecs where supported; software fallback</source>
-      <translation>Codecs Vulkan si pris en charge ; sinon, codecs logiciels</translation>
-    </message>
-    <message>
-      <source>Native DLSSG</source>
-      <translation>DLSSG natif</translation>
-    </message>
-    <message>
-      <source>Cascade</source>
-      <translation>Cascade</translation>
-    </message>
-    <message>
-      <source>Area</source>
-      <translation>Moyenne par aire</translation>
-    </message>
-    <message>
-      <source>Bicubic</source>
-      <translation>Bicubique</translation>
-    </message>
-    <message>
-      <source>Bilinear</source>
-      <translation>Bilinéaire</translation>
-    </message>
-    <message>
-      <source>Nearest</source>
-      <translation>Plus proche voisin</translation>
-    </message>
-    <message>
-      <source>FFV1 Lossless RGB 10-bit</source>
-      <translation>FFV1 RGB sans perte 10 bits</translation>
-    </message>
-    <message>
-      <source>Ready</source>
-      <translation>Prêt</translation>
-    </message>
-    <message>
-      <source>Initializing</source>
-      <translation>Initialisation</translation>
-    </message>
-    <message>
-      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
-      <translation>Le GPU FFmpeg/Vulkan sélectionné est indisponible. Choisissez Automatique ou un autre GPU dans les paramètres.</translation>
-    </message>
-    <message>
-      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
-      <translation>Le filtrage GPU avec Vulkan est indisponible. Installez un pilote Vulkan récent d’AMD, d’Intel ou de NVIDIA.</translation>
-    </message>
-    <message>
-      <source>%1: %2 (%3)</source>
-      <translation>%1: %2 (%3)</translation>
-    </message>
-    <message>
-      <source>Style %1</source>
-      <translation>Style %1</translation>
     </message>
   </context>
 </TS>

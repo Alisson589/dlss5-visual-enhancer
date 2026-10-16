@@ -29,7 +29,7 @@ struct Api {
     FUNCTION(vfx_convert_frame_v2); FUNCTION(vfx_process_frame_v2);
 #undef FUNCTION
     Api(){
-        auto path=QDir::toNativeSeparators(Paths::instance().at("app/bin/runtime/vfx/neuroframe_engine_video_effects.dll")).toStdWString();
+        auto path=QDir::toNativeSeparators(Paths::instance().at("bin/runtime/vfx/neuroframe_engine_video_effects.dll")).toStdWString();
         library=LoadLibraryExW(path.c_str(),nullptr,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_APPLICATION_DIR|LOAD_LIBRARY_SEARCH_SYSTEM32);
         if(!library)throw std::runtime_error("Cannot load NVIDIA VFX engine: Windows error "+std::to_string(GetLastError()));
 #define LOAD(name) name##Fn=reinterpret_cast<decltype(name##Fn)>(GetProcAddress(library,#name));if(!name##Fn)throw std::runtime_error("Missing VFX engine export: " #name)
@@ -147,7 +147,7 @@ QImage vfxDisplayAspect(const QImage& pixels,const MediaInfo& source){
 }
 void VideoEffects::initialize(int ordinal){
     prepareCudaPrimaryContext(ordinal);auto& api=Api::get();std::lock_guard lock(api.mutex);Error error{};
-    auto root=QDir::toNativeSeparators(Paths::instance().at("app/bin/runtime/vfx")).toStdWString();check(api.vfx_initFn(ordinal,root.c_str(),error.data(),int(error.size())),error);
+    auto root=QDir::toNativeSeparators(Paths::instance().at("bin/runtime/vfx")).toStdWString();check(api.vfx_initFn(ordinal,root.c_str(),error.data(),int(error.size())),error);
 }
 QString VideoEffects::diagnostics(){try{std::array<char,16384> out{};Api::get().vfx_statusFn(out.data(),int(out.size()));return QString::fromUtf8(out.data());}catch(const std::exception& e){return QString::fromUtf8(e.what());}}
 

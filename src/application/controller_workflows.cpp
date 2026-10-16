@@ -19,6 +19,7 @@
 #include <QRegularExpression>
 #include <QSaveFile>
 #include <QTemporaryDir>
+#include <QUuid>
 #include <QUrl>
 #include <QtConcurrent/QtConcurrentRun>
 #include <algorithm>
@@ -71,7 +72,7 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
                 gpus_ = devices;
                 runtime_ = error.isEmpty() ? "Ready" : "Failed";
                 runtimeError_ = error;
-                status_ = error.isEmpty() ? "Ready. Add files to begin." : error;
+                status_ = error.isEmpty() ? QT_TRANSLATE_NOOP("App", "Ready. Add files to begin.") : error;
                 if (!error.isEmpty()) log(error, "runtime");
                 emit runtimeStateChanged(); emit gpuChoicesChanged(); emit statusMessageChanged();
             }, Qt::QueuedConnection);
@@ -143,17 +144,17 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
         return true;
     case Action::startActiveBatchWithExport: {
         if (args[0].toString() != contextKey())
-            return QString("The active workflow changed. Reopen Export Path.");
+            return QCoreApplication::translate("App", "The active workflow changed. Reopen Export Path.");
         if (!idle())
-            return QString("Another operation is active; stop it before starting a batch.");
+            return QCoreApplication::translate("App", "Another operation is active; stop it before starting a batch.");
         if (!context().queue->count())
-            return QString("No files in queue to process.");
+            return QCoreApplication::translate("App", "No files in queue to process.");
         const auto mode = args[1].toString(), folder = localPath(args[2].toString()),
                    rename = args[3].toString(), suffix = args[4].toString();
         if (!QStringList{"input", "output", "folder"}.contains(mode))
-            return QString("Choose an Export Path option.");
+            return QCoreApplication::translate("App", "Choose an Export Path option.");
         if (mode == "folder" && !QFileInfo(folder).isDir())
-            return QString("Choose an existing export folder.");
+            return QCoreApplication::translate("App", "Choose an existing export folder.");
         QString prefix = contextIndex() == 4   ? "frame_interpolation_"
                          : contextIndex() == 2 ? "upscale_image_"
                          : contextIndex() == 3 ? "upscale_"
@@ -181,7 +182,7 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
             const auto planned = renderOutputPath(path,
                                                   mode == "input"    ? QFileInfo(path).absolutePath()
                                                   : mode == "folder" ? folder
-                                                                     : Paths::instance().at("data/outputs"),
+                                                                     : Paths::instance().at("outputs"),
                                                   settings_, workflow(), isVideo(path));
             (void)planned;
         }
@@ -189,7 +190,7 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
         if (mode == "folder")
             exportFolder_ = folder;
         desktop_.setValue("export/destinationMode", mode);
-        desktop_.setValue("export/folder", Paths::instance().encode(exportFolder_));
+        desktop_.setValue("export/folder", exportFolder_);
         desktop_.sync();
         emit exportPrefsChanged();
         saveSettings();
@@ -201,7 +202,7 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
             job_->pause(true);
             for (auto& current : contexts_)
                 current.queue->setPaused(true);
-            exportPhase_ = "Paused";
+            exportPhase_ = QT_TRANSLATE_NOOP("App", "Paused");
             emit exportPhaseChanged();
         }
         return {};
@@ -210,7 +211,7 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
             job_->pause(!job_->paused());
             for (auto& current : contexts_)
                 current.queue->setPaused(job_->paused());
-            exportPhase_ = job_->paused() ? "Paused" : "Processing";
+            exportPhase_ = job_->paused() ? QT_TRANSLATE_NOOP("App", "Paused") : "Processing";
             emit exportPhaseChanged();
         }
         return {};
@@ -247,15 +248,17 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
         shutdownAll();
         return {};
     case Action::openFolder: {
-        const QMap<QString, QString> paths{{"outputs", "data/outputs"}, {"logs", "data/logs"},
-                                           {"jobs", "data/jobs"}, {"config", "data/config"},
-                                           {"temp", "data/temp"}, {"root", ""}};
-        QDesktopServices::openUrl(
-            QUrl::fromLocalFile(Paths::instance().at(paths.value(args[0].toString(), args[0].toString()))));
+        const auto& paths = Paths::instance();
+        const QMap<QString, QString> folders{{"outputs", paths.at("outputs")},
+                                             {"logs", paths.at("logs")},
+                                             {"config", QFileInfo(paths.configurationFile()).absolutePath()},
+                                             {"temp", transientFiles_.path()}, {"root", paths.root}, {"", paths.root}};
+        const auto requested = args[0].toString();
+        QDesktopServices::openUrl(QUrl::fromLocalFile(folders.value(requested, localPath(requested))));
         return {};
     }
     case Action::openThirdPartyNotices:
-        QDesktopServices::openUrl(QUrl::fromLocalFile(Paths::instance().at("app/THIRD-PARTY-NOTICES.txt")));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(Paths::instance().at("THIRD-PARTY-NOTICES.txt")));
         return {};
     case Action::copyToClipboard:
         copyClipboardText(args[0].toString(), ++clipboardRequestRevision_, GetClipboardSequenceNumber(), 40);
@@ -369,7 +372,7 @@ void AppController::addInputs(const QVariantList& urls, QImage clipboardImage, Q
                 auto image=clipboardImage.isNull() ? QImage::fromData(clipboardData) : clipboardImage;
                 if (image.isNull()) throw std::runtime_error("The clipboard URL did not contain a readable image.");
                 clipboardDirectory=std::shared_ptr<QTemporaryDir>(
-                    new QTemporaryDir(Paths::instance().at("data/temp/app/clipboard-XXXXXX")),
+                    new QTemporaryDir(),
                     [](QTemporaryDir* directory) { (void)QtConcurrent::run([directory] { delete directory; }); });
                 if (!clipboardDirectory->isValid()) throw std::runtime_error("Cannot create clipboard image storage.");
                 const auto path=clipboardDirectory->filePath("clipboard.png");
@@ -638,9 +641,9 @@ void AppController::preview(double positionMs, bool still) {
                     size = {cached->info.width, cached->info.height};
                     detail = cached->info.description();
                 } else {
-                    clip = QDir(Paths::instance().temporary("preview")).filePath("preview.mkv");
-                    QTemporaryDir sourceDirectory(
-                        Paths::instance().at("data/temp/app/preview-source-XXXXXX"));
+                    clip = previewClips_.filePath("preview-" + QUuid::createUuid().toString(QUuid::WithoutBraces) + ".mkv");
+                    ProcessingTemporaryDirectory sourceDirectory(ProcessingCacheKind::Scratch);
+                    (void)sourceDirectory.filePath("source-preview.mkv");
                     if (!sourceDirectory.isValid())
                         throw std::runtime_error("Cannot create the preview source directory.");
                     const auto previewSource =
@@ -664,6 +667,7 @@ void AppController::preview(double positionMs, bool still) {
                                         });
                     size = {result.info.width, result.info.height};
                     detail = result.info.description();
+                    previewClips_.cacheRoot()->publishFile(clip);
                     control->checkpoint();
                     previewVideos_.store(key, clip, result.info);
                 }
@@ -777,8 +781,8 @@ void AppController::preview(double positionMs, bool still) {
                                 output = std::move(cached->pixels);
                         }
                         if (output.isNull()) {
-                            QTemporaryDir directory(
-                                Paths::instance().at("data/temp/app/preview-still-XXXXXX"));
+                            ProcessingTemporaryDirectory directory(ProcessingCacheKind::Scratch);
+                            (void)directory.filePath("source-preview.mkv");
                             if (!directory.isValid())
                                 throw std::runtime_error("Cannot create the still preview directory.");
                             const auto source =
@@ -1033,7 +1037,7 @@ void AppController::batch(const QString& destinationMode, const QString& folder)
             try {
                 const auto directory = destinationMode == "input"    ? QFileInfo(path).absolutePath()
                                        : destinationMode == "folder" ? folder
-                                                                     : Paths::instance().at("data/outputs");
+                                                                     : Paths::instance().at("outputs");
                 const auto output = renderOutputPath(path, directory, settings, workflowType, isVideo(path));
                 Pipeline pipeline;
                 const auto result = pipeline.render(
@@ -1046,11 +1050,11 @@ void AppController::batch(const QString& destinationMode, const QString& folder)
                                     return;
                                 auto* model = contexts_[size_t(index)].queue;
                                 const bool paused = job_ && job_->paused();
-                                model->update(int(row), paused ? "Paused" : "Running", metrics.fraction,
-                                              paused ? QString("Paused") : metrics.message);
+                                model->update(int(row), paused ? QT_TRANSLATE_NOOP("App", "Paused") : "Running", metrics.fraction,
+                                              paused ? QString(QT_TRANSLATE_NOOP("App", "Paused")) : metrics.message);
                                 model->metrics(int(row), metrics.frames, metrics.totalFrames, metrics.fps);
                                 progress_ = (row + metrics.fraction) / double(count);
-                                exportPhase_ = paused ? QString("Paused") : metrics.message;
+                                exportPhase_ = paused ? QString(QT_TRANSLATE_NOOP("App", "Paused")) : metrics.message;
                                 emit overallProgressChanged();
                                 emit exportPhaseChanged();
                             },
@@ -1117,7 +1121,7 @@ void AppController::stopOperation() {
     scrubTimer_.stop();
     if (job_) {
         job_->cancel();
-        setOperation(operation_.startsWith("Batch") ? "BatchCancelling" : "PreviewCancelling", "Stopping…");
+        setOperation(operation_.startsWith("Batch") ? "BatchCancelling" : "PreviewCancelling", QT_TRANSLATE_NOOP("App", "Stopping..."));
     }
     if (analysisJob_)
         analysisJob_->cancel();
@@ -1131,6 +1135,8 @@ void AppController::shutdownAll() {
     autoTimer_.stop();
     scrubTimer_.stop();
     cleanupTimer_.stop();
+    cacheRefreshTimer_.stop();
+    cacheTrimTimer_.stop();
     if (runtimeJob_)
         runtimeJob_->cancel();
     if (prefetchJob_)

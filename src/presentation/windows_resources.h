@@ -1,0 +1,4 @@
+#pragma once
+
+#define VE_ICON_RESOURCE_ID 1
+#define VE_DISPLAY_NAME_RESOURCE_ID 101

@@ -2,7 +2,7 @@
 #include "frame_stream.hpp"
 #include "infrastructure/paths.hpp"
 #include "media/video_preview.hpp"
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <utility>
 
 namespace ve {
@@ -10,6 +10,7 @@ QImage VideoStillPreview::process(const QImage &input, Settings settings, MediaI
                                   const QStringList &requestedStages, PreviewFrameCache &cache,
                                   const QByteArray &identity, JobControl &control,
                                   const std::vector<TimedImage>& temporal, double generatedSeconds) {
+    ProcessingCacheActivity cacheActivity;
     const auto stages=normalizeVfxStages(requestedStages,settings);
     // These are the exact metadata/layout boundaries that the old source FFV1
     // container supplied to the streaming video pipeline. Rotation is already
@@ -49,7 +50,7 @@ QImage VideoStillPreview::process(const QImage &input, Settings settings, MediaI
         // Leading GPU filters reconstruct sub-16-bit planar source codes with
         // libplacebo before their first UNORM16 boundary. Retain that exact
         // conversion until its in-memory replacement has pixel parity.
-        QTemporaryDir directory(Paths::instance().at("data/temp/app/preview-wide-XXXXXX"));
+        ScratchDirectory directory(QStringLiteral("preview-wide-XXXXXX"));
         if (!directory.isValid())
             throw std::runtime_error("Cannot create the wide preview directory.");
         const auto sourcePath = directory.filePath("source.mkv");

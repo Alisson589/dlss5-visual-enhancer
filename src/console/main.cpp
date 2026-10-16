@@ -17,15 +17,24 @@ int main(int argc, char** argv) {
     LocalFree(original);
     try {
         ve::configureWindowsRuntime();
-        ve::Paths::instance().prepare();
     } catch (const std::exception& error) {
         std::fprintf(stderr, "Error: %s\n", error.what());
         return 1;
     }
     qputenv("QT_QPA_PLATFORM", "offscreen");
+    qputenv("QT_MEDIA_BACKEND", "ffmpeg");
+    QCoreApplication::setOrganizationName("Merserk");
+    QCoreApplication::setApplicationName("Visual Enhancer");
     QGuiApplication app(argc, argv);
-    app.setApplicationName("Visual Enhancer CLI");
+    app.setApplicationName("Visual Enhancer");
+    app.setApplicationDisplayName("Visual Enhancer CLI");
     app.setOrganizationName("Merserk");
     app.setApplicationVersion(VE_APP_VERSION);
+    try {
+        ve::Paths::instance().prepare();
+    } catch (const std::exception& error) {
+        std::fprintf(stderr, "Error: %s\n", error.what());
+        return 1;
+    }
     return ve::runCli(arguments);
 }

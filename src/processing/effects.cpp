@@ -9,12 +9,13 @@
 #include "media/video_backend.hpp"
 #include <QCryptographicHash>
 #include <QFile>
+#include <QDir>
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QRgba64>
 #include <QSaveFile>
 #include <QTextStream>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <algorithm>
 #include <charconv>
 #include <cmath>
@@ -69,15 +70,19 @@ QImage transform(const QImage& input, JobControl& control, const auto& operation
     return output;
 }
 QString shaderTemplate(const QString& name) {
-    QFile file(Paths::instance().at("app/resources/shaders/" + name + ".glsl.in"));
+    QFile file(Paths::instance().at("resources/shaders/" + name + ".glsl.in"));
     if (!file.open(QIODevice::ReadOnly))
         throw std::runtime_error("Processing shader is missing.");
     return QString::fromUtf8(file.readAll());
 }
 QString shaderGraph(QString shader, const QString& options = {}) {
+    ProcessingCacheActivity cacheActivity;
     const auto digest =
         QString::fromLatin1(QCryptographicHash::hash(shader.toUtf8(), QCryptographicHash::Sha256).toHex());
-    const auto path = Paths::instance().at("data/temp/app/shader-" + digest + ".hook");
+    const auto directory = QDir(Paths::instance().cacheDirectory()).filePath("shaders");
+    if (!QDir().mkpath(directory))
+        throw std::runtime_error("Cannot create the generated shader cache.");
+    const auto path = QDir(directory).filePath("shader-" + digest + ".hook");
     if (!QFileInfo::exists(path)) {
         QSaveFile file(path);
         if (!file.open(QIODevice::WriteOnly))
@@ -342,7 +347,7 @@ void saveGradedLut(const QString& path, const Settings& settings, JobControl& co
 }
 namespace {
 QImage colorImageImpl(const QImage& pixels, const Settings& settings, JobControl& control, bool compose) {
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/image-lut-XXXXXX"));
+    ScratchDirectory directory(QStringLiteral("image-lut-XXXXXX"));
     if (!directory.isValid()) throw std::runtime_error("Cannot create the image LUT directory.");
     const auto path=directory.filePath("reference.cube");
     const bool adjusted=ColorGrade(settings).hasAdjustments();
@@ -487,7 +492,8 @@ QString resizingGraph(QSize input, QSize output, const QString& filter, bool fit
 } // namespace
 
 struct VideoFilterStage::Impl {
-    QTemporaryDir directory{Paths::instance().at("data/temp/app/video-filter-XXXXXX")};
+    ProcessingCacheActivity cacheActivity;
+    ScratchDirectory directory{QStringLiteral("video-filter-XXXXXX")};
     std::unique_ptr<PipeProcess> process;
     std::unique_ptr<FramePacketReader> reader;
     QStringList arguments;

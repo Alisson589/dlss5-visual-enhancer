@@ -14,7 +14,8 @@ class WindowChrome : public QAbstractNativeEventFilter {
   private:
     QPointer<QQuickWindow> window_;
     WId nativeId_ = 0;
+    bool taskbarIdentitySet_ = false;
     std::function<void()> suspend_;
 };
-void configureWindowsIdentity();
+void configureWindowsIdentity(const wchar_t* appId = L"Merserk.VisualEnhancer");
 } // namespace ve

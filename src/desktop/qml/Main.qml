@@ -65,7 +65,7 @@ Window {
     }
 
     // Global editing shortcuts below must never steal keys from text
-    // editors (preset name and path fields use TextInput).
+    // editors (path fields use TextInput).
     // NOTE: guards live in `enabled` (not only in onActivated) so a
     // disabled Shortcut never consumes the key — TextInput keeps native
     // Ctrl+V / Delete / Space behavior while editing.
@@ -101,7 +101,14 @@ Window {
 
     Column {
         anchors.fill: parent
-        HeaderBar { id: header; width: parent.width; appBridge: typeof backend !== "undefined" ? backend : null; windowRef: appWindow }
+        HeaderBar {
+            id: header
+            width: parent.width
+            appBridge: typeof backend !== "undefined" ? backend : null
+            windowRef: appWindow
+            onImportPresetRequested: presetDialogs.openImport()
+            onExportPresetRequested: presetDialogs.openExport()
+        }
 
         Item {
             id: workspace
@@ -125,7 +132,7 @@ Window {
                     active: visited
                     onSelectedChanged: { if (selected) visited = true }
                     Component.onCompleted: { if (selected) visited = true }
-                    sourceComponent: SettingsView { appBridge: typeof backend !== "undefined" ? backend : null }
+                    sourceComponent: SettingsView { objectName: "settingsView"; appBridge: typeof backend !== "undefined" ? backend : null }
                 }
                 Loader {
                     property bool visited: false
@@ -137,6 +144,13 @@ Window {
                 }
             }
         }
+    }
+
+    PresetDialogs {
+        id: presetDialogs
+        objectName: "presetDialogs"
+        appBridge: typeof backend !== "undefined" ? backend : null
+        onFinished: header.restorePresetFocus()
     }
 
     ExportDialog {

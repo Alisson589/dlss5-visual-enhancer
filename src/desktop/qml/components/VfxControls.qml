@@ -32,7 +32,7 @@ Column {
         Column {
             width: parent.width; spacing: 10
             AppComboBox { width: parent.width; label: qsTranslate("App","Mode family")
-                model: [{label:"Standard Upscaling Modes",value:0},{label:"Denoise Modes",value:1},{label:"Deblur Modes",value:2},{label:"High-Bitrate Modes",value:3}]
+                model: [{label:qsTranslate("App","Standard Upscaling Modes"),value:0},{label:qsTranslate("App","Denoise Modes"),value:1},{label:qsTranslate("App","Deblur Modes"),value:2},{label:qsTranslate("App","High-Bitrate Modes"),value:3}]
                 currentValue: root.family; onActivated: v => root.changeFamily(v) }
             AppComboBox { width: parent.width; label: qsTranslate("App","Quality")
                 model: root.family === 0 ? [{label:"Bicubic",value:0},{label:"Low",value:1},{label:"Medium",value:2},{label:"High",value:3},{label:"Ultra",value:4}]
@@ -43,7 +43,7 @@ Column {
                 onValueModified: v => root.set("vfx_vsr_strength",v) }
             Column {
                 width: parent.width; spacing:10; visible: !root.restoration
-                AppComboBox { width: parent.width; label: qsTranslate("App","Sizing mode"); model:["Scale factor","Custom dimensions"]
+                AppComboBox { width: parent.width; label: qsTranslate("App","Sizing Mode"); model:["Scale factor","Custom dimensions"]
                     currentValue: root.values.vfx_size_mode; onActivated: v => root.set("vfx_size_mode",v) }
                 AppComboBox { width:parent.width; visible:root.values.vfx_size_mode === "Scale factor"; label:qsTranslate("App","Scale factor")
                     model:[{label:"1x",value:1},{label:"1.5x",value:1.5},{label:"2x",value:2},{label:"3x",value:3},{label:"4x",value:4}]
@@ -55,7 +55,7 @@ Column {
                     AppTextField { width:(parent.width-8)/2; label:qsTranslate("App","Height (px)"); commitOnEveryEdit:false; enabled:!root.values.vfx_aspect_lock
                         text:String(root.values.vfx_height || 2160); onTextEdited:t=>{var v=parseInt(t);if(v>0)root.set("vfx_height",v)} }
                 }
-                AppSwitch { label:qsTranslate("App","Lock aspect ratio"); checked:!!root.values.vfx_aspect_lock
+                AppSwitch { label:qsTranslate("App","Lock Aspect Ratio"); checked:!!root.values.vfx_aspect_lock
                     onToggled:c=>root.set("vfx_aspect_lock",c) }
             }
         }

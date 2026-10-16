@@ -7,6 +7,7 @@
 #include <QSet>
 #include <QTemporaryDir>
 #include <memory>
+#include "infrastructure/processing_cache.hpp"
 
 namespace ve {
 class IconProvider : public QQuickImageProvider {
@@ -27,8 +28,10 @@ class PreviewProvider : public QQuickImageProvider {
     // Identity must describe exact pixels and metadata, including all controls.
     [[nodiscard]] QString storeImmutable(const QImage& image, const QByteArray& identity);
     void clear();
+    void clearUnused();
+    void waitForCleanup();
+    [[nodiscard]] QStringList cacheFiles() const { return storage_.cacheRoot()->files(); }
     void retain(const QStringList& urls);
-    [[nodiscard]] bool ownsPath(const QString& path) const;
     [[nodiscard]] qint64 diskUsage() const;
     [[nodiscard]] qint64 memoryUsage() const;
     QImage requestImage(const QString& id, QSize* size, const QSize& requested) override;
@@ -36,7 +39,7 @@ class PreviewProvider : public QQuickImageProvider {
   private:
     QCache<QString, QImage> images_{384 * 1024}; // KiB: keeps large image costs within Qt's integer API.
     mutable QMutex mutex_;
-    QTemporaryDir storage_;
+    ProcessingTemporaryDirectory storage_{ProcessingCacheKind::PreviewFrames};
     struct DiskCleanup;
     struct DiskFrame;
     std::shared_ptr<DiskCleanup> cleanup_;

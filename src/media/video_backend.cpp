@@ -13,7 +13,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QSet>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 
 namespace ve {
 QString nativeDeliveryCodec(const Settings& settings) {
@@ -74,7 +74,7 @@ bool probeEncoder(const VulkanDevice& device, const VideoEncoderPlan& plan, QSiz
     QMutexLocker lock(&mutex);
     if (const auto* available=supported.object(key))
         return *available;
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/video-probe-XXXXXX"));
+    ScratchDirectory directory(QStringLiteral("video-probe-XXXXXX"));
     if (!directory.isValid())
         throw std::runtime_error("Cannot create a video capability probe.");
     const auto sample = directory.filePath("sample.mkv");

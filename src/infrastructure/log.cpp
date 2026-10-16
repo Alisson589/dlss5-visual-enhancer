@@ -7,7 +7,7 @@
 namespace ve {
 Log::Log() {
     file_.setFileName(Paths::instance().at(
-        "data/logs/session-" + QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss-zzz") + ".log"));
+        "logs/session-" + QDateTime::currentDateTime().toString("yyyyMMdd-HHmmss-zzz") + ".log"));
     (void)file_.open(QIODevice::WriteOnly | QIODevice::Append);
 }
 Log& Log::instance() {

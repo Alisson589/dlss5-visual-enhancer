@@ -43,6 +43,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation> FPS обробки</translation>
     </message>
     <message>
+      <source>%1 (Discrete GPU)</source>
+      <translation>%1 (дискретний GPU)</translation>
+    </message>
+    <message>
+      <source>%1 (Integrated GPU)</source>
+      <translation>%1 (інтегрований GPU)</translation>
+    </message>
+    <message>
+      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
+      <translation>Цільова частота: %1 кадр/с | Обробка: %2 кадр/с | Покращено: %3 | Пропущено під час вибірки: %4 | У буфері: %5 с</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="84" />
       <source>%1 h %2 min</source>
       <translation>%1 год %2 хв</translation>
@@ -67,8 +79,52 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 кадрів джерела</translation>
     </message>
     <message>
+      <source>%1 · pass %2/%3</source>
+      <translation>%1 · прохід %2/%3</translation>
+    </message>
+    <message>
+      <source>%1. GPU filters: %2.</source>
+      <translation>%1. Фільтри GPU: %2.</translation>
+    </message>
+    <message>
+      <source>%1: %2 (%3)</source>
+      <translation>%1: %2 (%3)</translation>
+    </message>
+    <message>
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
+    </message>
+    <message numerus="yes">
+      <source>%n file</source>
+      <translation>
+        <numerusform>%n файл</numerusform>
+        <numerusform>%n файли</numerusform>
+        <numerusform>%n файлів</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n files</source>
+      <translation>
+        <numerusform>%n файл</numerusform>
+        <numerusform>%n файли</numerusform>
+        <numerusform>%n файлів</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frame</source>
+      <translation>
+        <numerusform>%n кадр</numerusform>
+        <numerusform>%n кадри</numerusform>
+        <numerusform>%n кадрів</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frames</source>
+      <translation>
+        <numerusform>%n кадр</numerusform>
+        <numerusform>%n кадри</numerusform>
+        <numerusform>%n кадрів</numerusform>
+      </translation>
     </message>
     <message>
       <source>1 - Low</source>
@@ -116,6 +172,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Рендеринг, попередній перегляд або сканування ще триває. Скасувати та вийти?</translation>
     </message>
     <message>
+      <source>AI GPU selection: %1</source>
+      <translation>Вибраний GPU для ШІ: %1</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
       <source>AI Processing GPU (Tensor Cores / NGX)</source>
       <translation>GPU для обробки ШІ (Tensor Cores / NGX)</translation>
@@ -124,6 +184,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="484" />
       <source>Actions for %1</source>
       <translation>Дії для %1</translation>
+    </message>
+    <message>
+      <source>Active: %1 — %2×%3.</source>
+      <translation>Активна: %1 — %2×%3.</translation>
     </message>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="506" />
@@ -218,6 +282,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Анімоване зерно</translation>
     </message>
     <message>
+      <source>Another operation is active; stop it before starting a batch.</source>
+      <translation>Триває інша операція; зупиніть її перед початком пакетної обробки.</translation>
+    </message>
+    <message>
+      <source>Application: %1</source>
+      <translation>Програма: %1</translation>
+    </message>
+    <message>
       <source>Applied to processing</source>
       <translation>Застосовано до обробки</translation>
     </message>
@@ -229,6 +301,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Applying</source>
       <translation>Застосування</translation>
+    </message>
+    <message>
+      <source>Applying; newer changes pending</source>
+      <translation>Застосування; новіші зміни очікують</translation>
+    </message>
+    <message>
+      <source>Area</source>
+      <translation>Усереднення за площею</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="13" />
@@ -276,12 +356,28 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Автоматична маска</translation>
     </message>
     <message>
+      <source>Automatic color adjustments applied.</source>
+      <translation>Автоматичну корекцію кольорів застосовано.</translation>
+    </message>
+    <message>
+      <source>Automatic scene-cut detection</source>
+      <translation>Автоматичне виявлення змін сцен</translation>
+    </message>
+    <message>
+      <source>Available</source>
+      <translation>Доступний</translation>
+    </message>
+    <message>
       <source>Balanced</source>
       <translation>Збалансований</translation>
     </message>
     <message>
       <source>Balanced ~1.72×</source>
       <translation>Збалансований ~1.72×</translation>
+    </message>
+    <message>
+      <source>Balances visual quality and file size. Size adapts to scene detail.</source>
+      <translation>Збалансовує якість зображення та розмір файлу. Розмір залежить від деталізації сцени.</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="150" />
@@ -309,6 +405,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Найкраща</translation>
     </message>
     <message>
+      <source>Bicubic</source>
+      <translation>Бікубічна</translation>
+    </message>
+    <message>
+      <source>Bilinear</source>
+      <translation>Білінійна</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="29" />
       <source>Bit Depth</source>
       <translation>Бітова глибина</translation>
@@ -323,7 +427,31 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>Огляд</translation>
     </message>
-<message>
+    <message>
+      <source>Buffering: %1</source>
+      <translation>Буферизація: %1</translation>
+    </message>
+    <message>
+      <source>CPU (Software decoding / encoding)</source>
+      <translation>CPU (програмне декодування / кодування)</translation>
+    </message>
+    <message>
+      <source>CPU codecs; GPU pixel filters</source>
+      <translation>Кодеки CPU; піксельні фільтри GPU</translation>
+    </message>
+    <message>
+      <source>Cache maintenance failed: %1</source>
+      <translation>Не вдалося виконати обслуговування кешу: %1</translation>
+    </message>
+    <message>
+      <source>Cache size</source>
+      <translation>Розмір кешу</translation>
+    </message>
+    <message>
+      <source>Calculating…</source>
+      <translation>Обчислення…</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>Скасувати</translation>
@@ -343,6 +471,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Cannot start batch: %1</source>
       <translation>Не вдалося почати обробку: %1</translation>
+    </message>
+    <message>
+      <source>Cascade</source>
+      <translation>Каскад</translation>
     </message>
     <message>
       <source>Changes apply immediately.</source>
@@ -370,6 +502,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Виберіть еталонне зображення</translation>
     </message>
     <message>
+      <source>Choose an Export Path option.</source>
+      <translation>Виберіть варіант шляху експорту.</translation>
+    </message>
+    <message>
+      <source>Choose an existing export folder.</source>
+      <translation>Виберіть наявну папку експорту.</translation>
+    </message>
+    <message>
       <source>Choose an existing reference image.</source>
       <translation>Виберіть наявне еталонне зображення.</translation>
     </message>
@@ -386,6 +526,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Cinematic</source>
       <translation>Кінематографічний</translation>
+    </message>
+    <message>
+      <source>Clean Cache</source>
+      <translation>Очистити кеш</translation>
+    </message>
+    <message>
+      <source>Cleaning…</source>
+      <translation>Очищення…</translation>
     </message>
     <message>
       <location filename="../qml/components/CompositionCard.qml" line="115" />
@@ -423,6 +571,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Буфер обміну не містить зображень чи файлів.</translation>
     </message>
     <message>
+      <source>Close</source>
+      <translation>Закрити</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="76" />
       <location filename="../qml/views/UpscaleView.qml" line="390" />
       <source>Codec</source>
@@ -457,9 +609,17 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Узгодження кольорів</translation>
     </message>
     <message>
+      <source>Color adjustment skipped because the input or color controls changed.</source>
+      <translation>Корекцію кольорів пропущено через зміну входу або параметрів кольорів.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
       <translation>Корекція кольору</translation>
+    </message>
+    <message>
+      <source>Committing part</source>
+      <translation>Фіксація частини</translation>
     </message>
     <message>
       <source>Completed</source>
@@ -479,6 +639,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>Завершено з попередженнями: %1 завершених, %2 невдалих.</translation>
+    </message>
+    <message>
+      <source>Config: %1</source>
+      <translation>Конфігурація: %1</translation>
     </message>
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
@@ -502,6 +666,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Контраст</translation>
     </message>
     <message>
+      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
+      <translation>Маска керування замінює автоматичну маску. Канали RGB керують інтенсивністю, тоном і структурою.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/UpscaleView.qml" line="282" />
       <source>Convert SDR to HDR</source>
       <translation>Перетворити SDR на HDR</translation>
@@ -517,6 +685,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Could not show in Explorer: %1</source>
       <translation>Не вдалося показати у Провіднику: %1</translation>
+    </message>
+    <message>
+      <source>Current previews and active processing files are kept.</source>
+      <translation>Поточні попередні перегляди та файли активної обробки зберігаються.</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -545,7 +717,7 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DlssSuperResolutionControls.qml" line="14" />
       <location filename="../qml/views/UpscaleView.qml" line="136" />
       <source>DLSS Mode</source>
-      <translation>DLSS Режим</translation>
+      <translation>Режим DLSS</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="41" />
@@ -556,7 +728,7 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DlssSuperResolutionControls.qml" line="30" />
       <location filename="../qml/views/UpscaleView.qml" line="150" />
       <source>DLSS Preset</source>
-      <translation>DLSS Пресет</translation>
+      <translation>Пресет DLSS</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="43" />
@@ -572,7 +744,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/FrameGenerationControls.qml" line="25" />
       <location filename="../qml/views/FrameInterpolationView.qml" line="104" />
       <source>DLSS-G Engine</source>
-      <translation>DLSS-G Рушій</translation>
+      <translation>Рушій DLSS-G</translation>
+    </message>
+    <message>
+      <source>Deblur Modes</source>
+      <translation>Режими усунення розмиття</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
@@ -580,8 +756,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Пристрій декодування / кодування</translation>
     </message>
     <message>
+      <source>Decoding image</source>
+      <translation>Декодування зображення</translation>
+    </message>
+    <message>
       <source>Default</source>
       <translation>Типовий</translation>
+    </message>
+    <message>
+      <source>Denoise Modes</source>
+      <translation>Режими усунення шуму</translation>
     </message>
     <message>
       <source>Download cancelled.</source>
@@ -685,6 +869,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Шлях експорту</translation>
     </message>
     <message>
+      <source>Export Preset</source>
+      <translation>Експортувати пресет</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="136" />
       <source>Export Preset JSON</source>
       <translation>Експортувати пресет JSON</translation>
@@ -704,6 +892,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Помилка експорту: %1</translation>
     </message>
     <message>
+      <source>Export paused; GPU memory released</source>
+      <translation>Експорт призупинено; пам’ять GPU звільнено</translation>
+    </message>
+    <message>
       <source>Exported preset '%1' to %2</source>
       <translation>Пресет '%1' експортовано до %2</translation>
     </message>
@@ -711,6 +903,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="193" />
       <source>Exposure</source>
       <translation>Експозиція</translation>
+    </message>
+    <message>
+      <source>FFV1 Lossless RGB 10-bit</source>
+      <translation>FFV1 RGB без втрат, 10 біт</translation>
     </message>
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
@@ -722,6 +918,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Невдача</translation>
     </message>
     <message>
+      <source>Failed: %1</source>
+      <translation>Помилка: %1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="82" />
       <source>File</source>
       <translation>Файл</translation>
@@ -731,9 +931,29 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Файл більше не існує: %1</translation>
     </message>
     <message>
+      <source>Finalizing export</source>
+      <translation>Завершення експорту</translation>
+    </message>
+    <message>
+      <source>Finalizing video</source>
+      <translation>Завершення відео</translation>
+    </message>
+    <message>
+      <source>Finished processing: %1. Playback available until Stop.</source>
+      <translation>Обробку завершено: %1. Відтворення доступне до натискання «Зупинити».</translation>
+    </message>
+    <message>
+      <source>Finished: %1. %2 frames enhanced.</source>
+      <translation>Завершено: %1. Покращено кадрів: %2.</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="505" />
       <source>Fit to window</source>
       <translation>Умістити у вікні</translation>
+    </message>
+    <message>
+      <source>Flushing output</source>
+      <translation>Завершення виведення</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="181" />
@@ -761,9 +981,17 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Інтерполяція кадрів</translation>
     </message>
     <message>
+      <source>Frame-rate mode</source>
+      <translation>Режим частоти кадрів</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>Повний екран</translation>
+    </message>
+    <message>
+      <source>GPU support and installed models are checked before processing.</source>
+      <translation>Підтримка GPU та встановлені моделі перевіряються перед обробкою.</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="29" />
@@ -798,19 +1026,19 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="13" />
       <location filename="../qml/views/UpscaleView.qml" line="290" />
       <source>HDR Contrast</source>
-      <translation>HDR Контраст</translation>
+      <translation>Контраст HDR</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="74" />
       <location filename="../qml/views/UpscaleView.qml" line="339" />
       <source>HDR Precision</source>
-      <translation>HDR Точність</translation>
+      <translation>Точність HDR</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="28" />
       <location filename="../qml/views/UpscaleView.qml" line="302" />
       <source>HDR Saturation</source>
-      <translation>HDR Насиченість</translation>
+      <translation>Насиченість HDR</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="51" />
@@ -835,6 +1063,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>High</source>
       <translation>Висока</translation>
+    </message>
+    <message>
+      <source>High visual quality, with moderate compression.</source>
+      <translation>Висока якість зображення з помірним стисненням.</translation>
+    </message>
+    <message>
+      <source>High-Bitrate Modes</source>
+      <translation>Режими високого бітрейту</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="209" />
@@ -877,6 +1113,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Якість зображення</translation>
     </message>
     <message>
+      <source>Image complete</source>
+      <translation>Обробку зображення завершено</translation>
+    </message>
+    <message>
       <source>Images</source>
       <translation>Зображення</translation>
     </message>
@@ -885,6 +1125,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="324" />
       <source>Images (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</source>
       <translation>Зображення (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</translation>
+    </message>
+    <message>
+      <source>Import Preset</source>
+      <translation>Імпортувати пресет</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="132" />
@@ -907,6 +1151,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Initial settings</source>
       <translation>Початкові параметри</translation>
+    </message>
+    <message>
+      <source>Initializing</source>
+      <translation>Ініціалізація</translation>
     </message>
     <message>
       <source>Initializing runtime…</source>
@@ -964,6 +1212,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Перебіг завдання</translation>
     </message>
     <message>
+      <source>LUT File</source>
+      <translation>Файл LUT</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>Файл LUT (.cube)</translation>
@@ -1007,10 +1259,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Завантаження медіа…</translation>
     </message>
     <message>
+      <source>Loading model</source>
+      <translation>Завантаження моделі</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="627" />
       <location filename="../qml/components/MediaViewport.qml" line="641" />
       <source>Loading preview...</source>
       <translation>Завантаження перегляду...</translation>
+    </message>
+    <message>
+      <source>Loading source metadata</source>
+      <translation>Завантаження метаданих джерела</translation>
     </message>
     <message>
       <source>Local</source>
@@ -1031,6 +1291,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="248" />
       <source>Lock Aspect Ratio</source>
       <translation>Зафіксувати пропорції</translation>
+    </message>
+    <message>
+      <source>Logs: %1</source>
+      <translation>Журнали: %1</translation>
+    </message>
+    <message>
+      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
+      <translation>Кеш у RAM без втрат із резервним зберіганням на диску. Моделі працюють по черзі.</translation>
     </message>
     <message>
       <source>Low</source>
@@ -1083,12 +1351,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Середні тони</translation>
     </message>
     <message>
+      <source>Missing</source>
+      <translation>Відсутній</translation>
+    </message>
+    <message>
       <source>Mixed images and videos are not allowed — please add only one type at a time.</source>
       <translation>Не змішуйте зображення й відео — додавайте один тип за раз.</translation>
     </message>
     <message>
       <source>Mode</source>
       <translation>Режим</translation>
+    </message>
+    <message>
+      <source>Mode family</source>
+      <translation>Група режимів</translation>
+    </message>
+    <message>
+      <source>Model</source>
+      <translation>Модель</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="101" />
@@ -1099,6 +1379,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/WorkflowStageCard.qml" line="90" />
       <source>Move %1 up</source>
       <translation>Перемістити %1 вгору</translation>
+    </message>
+    <message>
+      <source>Multiplier</source>
+      <translation>Множник</translation>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
@@ -1114,21 +1398,29 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="25" />
       <source>NR Intensity</source>
-      <translation>NR Інтенсивність</translation>
+      <translation>Інтенсивність NR</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="39" />
       <source>NR Passes</source>
-      <translation>NR Проходи</translation>
+      <translation>Проходи NR</translation>
     </message>
     <message>
       <location filename="../qml/components/NeuralModelControls.qml" line="14" />
       <source>NR Style</source>
-      <translation>NR Стиль</translation>
+      <translation>Стиль NR</translation>
+    </message>
+    <message>
+      <source>Native DLSSG</source>
+      <translation>Нативний DLSSG</translation>
     </message>
     <message>
       <source>Natural</source>
       <translation>Природний</translation>
+    </message>
+    <message>
+      <source>Nearest</source>
+      <translation>Найближчий сусід</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="132" />
@@ -1223,6 +1515,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Операція ще активна</translation>
     </message>
     <message>
+      <source>Optical Flow Quality</source>
+      <translation>Якість оптичного потоку</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="78" />
       <location filename="../qml/components/MediaViewport.qml" line="410" />
       <location filename="../qml/components/MediaViewport.qml" line="417" />
@@ -1250,6 +1546,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Вихід</translation>
     </message>
     <message>
+      <source>Outputs: %1</source>
+      <translation>Результати: %1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="415" />
       <source>Overall job progress</source>
       <translation>Перебіг завдання</translation>
@@ -1268,6 +1568,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Упаковані 10 біт (FP16)</translation>
     </message>
     <message>
+      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
+      <translation>Частина %1 · %2 · %3 FPS · %4 ГБ</translation>
+    </message>
+    <message>
       <source>Passes</source>
       <translation>Проходи</translation>
     </message>
@@ -1279,6 +1583,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Pause</source>
       <translation>Призупинити</translation>
+    </message>
+    <message>
+      <source>Paused</source>
+      <translation>Призупинено</translation>
+    </message>
+    <message>
+      <source>Pausing export; releasing GPU workers…</source>
+      <translation>Призупинення експорту; звільнення процесів GPU…</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="58" />
@@ -1299,6 +1611,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Продуктивність 2.0×</translation>
     </message>
     <message>
+      <source>Pipeline stages must be text.</source>
+      <translation>Етапи обробки мають бути текстом.</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Play</source>
       <translation>Відтворити</translation>
@@ -1307,6 +1623,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>Швидкість відтворення</translation>
+    </message>
+    <message>
+      <source>Playing: %1</source>
+      <translation>Відтворення: %1</translation>
     </message>
     <message>
       <source>Playlist: %1</source>
@@ -1330,8 +1650,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Параметри та конфігурація системи</translation>
     </message>
     <message>
+      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
+      <translation>Підготовка нейронного рендерингу: %1x%2 -&gt; %3x%4...</translation>
+    </message>
+    <message>
       <source>Preparing batch processing…</source>
       <translation>Підготовка пакетної обробки…</translation>
+    </message>
+    <message>
+      <source>Preroll: %1 frames</source>
+      <translation>Попередні кадри: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="100" />
@@ -1348,9 +1676,33 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Пресет</translation>
     </message>
     <message>
+      <source>Preset file is not valid UTF-8 JSON.</source>
+      <translation>Файл пресета не є коректним JSON у кодуванні UTF-8.</translation>
+    </message>
+    <message>
+      <source>Preset file is too large; the maximum size is 1 MiB.</source>
+      <translation>Файл пресета завеликий; максимальний розмір — 1 МіБ.</translation>
+    </message>
+    <message>
+      <source>Preset must contain a valid name and settings object.</source>
+      <translation>Пресет має містити коректну назву та об’єкт налаштувань.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="98" />
       <source>Preset name (e.g. 4K Master)...</source>
       <translation>Назва пресета (наприклад, 4K Master)...</translation>
+    </message>
+    <message>
+      <source>Preset name must contain 1 to 120 characters.</source>
+      <translation>Назва пресета має містити від 1 до 120 символів.</translation>
+    </message>
+    <message>
+      <source>Preset schema_version must be an integer.</source>
+      <translation>Значення schema_version у пресеті має бути цілим числом.</translation>
+    </message>
+    <message>
+      <source>Presets</source>
+      <translation>Пресети</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="210" />
@@ -1393,6 +1745,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Попередній кадр</translation>
     </message>
     <message>
+      <source>Prioritizes quality over file size. Files can be very large.</source>
+      <translation>Надає перевагу якості над розміром файлу. Файли можуть бути дуже великими.</translation>
+    </message>
+    <message>
+      <source>Probing %1...</source>
+      <translation>Перевірка %1...</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="84" />
       <source>Process</source>
       <translation>Обробка</translation>
@@ -1403,9 +1763,38 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Обробка</translation>
     </message>
     <message>
+      <source>Processing Cache</source>
+      <translation>Кеш обробки</translation>
+    </message>
+    <message>
+      <source>Processing NVIDIA VFX</source>
+      <translation>Обробка за допомогою NVIDIA VFX</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="285" />
       <source>Processing Stage %1 of %2</source>
       <translation>Обробка етапу %1 з %2</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
+      <source>Processing Stage %1 of %2 (Part %3)</source>
+      <translation>Обробка етапу %1 з %2 (Частина %3)</translation>
+    </message>
+    <message>
+      <source>Processing finished or stopped; changes apply on the next Start.</source>
+      <translation>Обробку завершено або зупинено; зміни буде застосовано під час наступного запуску.</translation>
+    </message>
+    <message>
+      <source>Processing image</source>
+      <translation>Обробка зображення</translation>
+    </message>
+    <message>
+      <source>Processing is active. Try again when it finishes.</source>
+      <translation>Триває обробка. Спробуйте ще раз після її завершення.</translation>
+    </message>
+    <message>
+      <source>Processing video</source>
+      <translation>Обробка відео</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="371" />
@@ -1448,8 +1837,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
+      <source>Ready</source>
+      <translation>Готово</translation>
+    </message>
+    <message>
       <source>Ready.</source>
       <translation>Готово.</translation>
+    </message>
+    <message>
+      <source>Ready. Add files to begin.</source>
+      <translation>Готово. Додайте файли, щоб почати.</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="90" />
@@ -1464,6 +1861,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="320" />
       <source>Reference Image</source>
       <translation>Еталонне зображення</translation>
+    </message>
+    <message>
+      <source>Reference color adjustments ready</source>
+      <translation>Корекція кольорів за еталоном готова</translation>
     </message>
     <message>
       <source>Reference match could not be applied during the current operation.</source>
@@ -1482,6 +1883,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Помилка узгодження з еталоном: %1</translation>
     </message>
     <message>
+      <source>Releasing worker</source>
+      <translation>Звільнення процесу</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="202" />
       <source>Remaining</source>
       <translation>Залишилось</translation>
@@ -1490,6 +1895,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="516" />
       <source>Remove from queue</source>
       <translation>Видалити з черги</translation>
+    </message>
+    <message>
+      <source>Removed %1. Remaining: %2.</source>
+      <translation>Видалено %1. Залишилося: %2.</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="121" />
@@ -1509,6 +1918,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Rendering preview%1…</source>
       <translation>Рендеринг перегляду%1…</translation>
+    </message>
+    <message>
+      <source>Requested up to %1p; received %2.</source>
+      <translation>Запитано до %1p; отримано %2.</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
@@ -1538,25 +1951,41 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/views/FrameInterpolationView.qml" line="215" />
       <source>Reset interpolation settings</source>
-      <translation>Скинути параметри Інтерполяція кадрів</translation>
+      <translation>Скинути налаштування інтерполяції кадрів</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="272" />
       <source>Reset neural rendering settings</source>
-      <translation>Скинути параметри Нейронний рендеринг</translation>
+      <translation>Скинути налаштування нейронного рендерингу</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="501" />
       <source>Reset upscale settings</source>
-      <translation>Скинути параметри Масштабування</translation>
+      <translation>Скинути налаштування масштабування</translation>
     </message>
     <message>
       <source>Resolving source...</source>
       <translation>Визначення джерела...</translation>
     </message>
     <message>
+      <source>Resume</source>
+      <translation>Продовжити</translation>
+    </message>
+    <message>
+      <source>Resuming export from the last committed part…</source>
+      <translation>Відновлення з останньої завершеної частини…</translation>
+    </message>
+    <message>
+      <source>Runtime error: %1</source>
+      <translation>Помилка середовища виконання: %1</translation>
+    </message>
+    <message>
       <source>Runtime initialization failed: %1</source>
       <translation>Помилка ініціалізації: %1</translation>
+    </message>
+    <message>
+      <source>Runtime state: %1</source>
+      <translation>Стан середовища виконання: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1607,6 +2036,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Збереження LUT…</translation>
     </message>
     <message>
+      <source>Saving image</source>
+      <translation>Збереження зображення</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ScaleMethodControls.qml" line="31" />
       <source>Scale</source>
       <translation>Масштаб</translation>
@@ -1640,12 +2073,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Виберіть Застосувати LUT для узгодження кольорів еталона.</translation>
     </message>
     <message>
-      <location filename="../qml/components/CompositionCard.qml" line="137" />
-      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
-      <source>Select NR Control Mask</source>
-      <translation>Вибрати маску керування NR</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ExportDialog.qml" line="175" />
       <source>Select Export Folder</source>
       <translation>Вибрати папку експорту</translation>
@@ -1670,6 +2097,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="91" />
       <source>Select Input Media</source>
       <translation>Вибрати вхідні медіа</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/CompositionCard.qml" line="137" />
+      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
+      <source>Select NR Control Mask</source>
+      <translation>Вибрати маску керування NR</translation>
     </message>
     <message>
       <source>Select a batch processing tab before exporting.</source>
@@ -1732,6 +2165,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Метод підвищення різкості</translation>
     </message>
     <message>
+      <source>Sharpening strength</source>
+      <translation>Інтенсивність підвищення різкості</translation>
+    </message>
+    <message>
       <location filename="../qml/components/SharpeningControls.qml" line="22" />
       <source>Sharpness</source>
       <translation>Різкість</translation>
@@ -1768,6 +2205,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Пропущено перед обробкою</translation>
     </message>
     <message>
+      <source>Software codecs</source>
+      <translation>Програмні кодеки</translation>
+    </message>
+    <message>
+      <source>Some files are in use or could not be removed.</source>
+      <translation>Деякі файли використовуються або їх не вдалося видалити.</translation>
+    </message>
+    <message>
       <source>Source</source>
       <translation>Джерело</translation>
     </message>
@@ -1789,6 +2234,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Типовий</translation>
     </message>
     <message>
+      <source>Standard Upscaling Modes</source>
+      <translation>Стандартні режими масштабування</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="122" />
       <source>Start</source>
       <translation>Почати</translation>
@@ -1801,6 +2250,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Starting...</source>
       <translation>Запуск...</translation>
+    </message>
+    <message>
+      <source>Startup %1 s · switch %2 s</source>
+      <translation>Запуск %1 с · перемикання %2 с</translation>
+    </message>
+    <message>
+      <source>Startup warning: %1</source>
+      <translation>Попередження під час запуску: %1</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="204" />
@@ -1849,8 +2306,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Зупинка...</translation>
     </message>
     <message>
+      <source>Strength</source>
+      <translation>Інтенсивність</translation>
+    </message>
+    <message>
       <source>Style</source>
       <translation>Стиль</translation>
+    </message>
+    <message>
+      <source>Style %1</source>
+      <translation>Стиль %1</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="30" />
@@ -1866,6 +2331,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Ціль %1 FPS</translation>
     </message>
     <message>
+      <source>Target FPS</source>
+      <translation>Цільова частота кадрів</translation>
+    </message>
+    <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
       <location filename="../qml/views/FrameInterpolationView.qml" line="96" />
       <source>Target Output Frame Rate</source>
@@ -1877,9 +2346,29 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Температура</translation>
     </message>
     <message>
+      <source>The active workflow changed. Reopen Export Path.</source>
+      <translation>Активний робочий процес змінився. Відкрийте шлях експорту знову.</translation>
+    </message>
+    <message>
+      <source>The resolved stream differs from the requested height.</source>
+      <translation>Висота отриманого потоку відрізняється від запитаної.</translation>
+    </message>
+    <message>
+      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
+      <translation>Вибраний GPU для FFmpeg/Vulkan недоступний. Виберіть автоматичний режим або інший GPU в налаштуваннях.</translation>
+    </message>
+    <message>
+      <source>The selected GPU is unavailable.</source>
+      <translation>Вибраний GPU недоступний.</translation>
+    </message>
+    <message>
       <location filename="../qml/views/AboutView.qml" line="31" />
       <source>Third-Party Licenses</source>
       <translation>Ліцензії сторонніх компонентів</translation>
+    </message>
+    <message>
+      <source>This JSON file is not a Visual Enhancer settings preset.</source>
+      <translation>Цей JSON-файл не є пресетом налаштувань Visual Enhancer.</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="164" />
@@ -1907,6 +2396,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Тональний відгук</translation>
     </message>
     <message>
+      <source>Total: %1 bytes; available to clean: %2 bytes.</source>
+      <translation>Усього: %1 байт; можна очистити: %2 байт.</translation>
+    </message>
+    <message>
       <source>Ultra</source>
       <translation>Ультра</translation>
     </message>
@@ -1919,6 +2412,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Максимальна продуктивність 3.0×</translation>
     </message>
     <message>
+      <source>Unavailable</source>
+      <translation>Недоступно</translation>
+    </message>
+    <message>
       <location filename="../qml/controls/AppComboBox.qml" line="44" />
       <source>Unavailable: %1</source>
       <translation>Недоступно: %1</translation>
@@ -1929,6 +2426,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Увімкнути звук</translation>
     </message>
     <message>
+      <source>Unsupported preset schema version.</source>
+      <translation>Непідтримувана версія схеми пресета.</translation>
+    </message>
+    <message>
+      <source>Update failed; recovery failed</source>
+      <translation>Оновлення не вдалося; відновлення не вдалося</translation>
+    </message>
+    <message>
+      <source>Update failed—previous settings restored</source>
+      <translation>Оновлення не вдалося — попередні параметри відновлено</translation>
+    </message>
+    <message>
       <source>Updating realtime preview…</source>
       <translation>Оновлення перегляду…</translation>
     </message>
@@ -1936,6 +2445,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/MenuStrip.qml" line="150" />
       <source>Upscale</source>
       <translation>Масштабування</translation>
+    </message>
+    <message>
+      <source>Upscale (Lightweight)</source>
+      <translation>Масштабування (полегшене)</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="514" />
@@ -1960,7 +2473,11 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/SuperResolutionControls.qml" line="15" />
       <location filename="../qml/views/UpscaleView.qml" line="173" />
       <source>VSR Quality</source>
-      <translation>VSR Якість</translation>
+      <translation>Якість VSR</translation>
+    </message>
+    <message>
+      <source>Very high visual quality, with less compression.</source>
+      <translation>Дуже висока якість зображення з меншим стисненням.</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="281" />
@@ -1987,6 +2504,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Відеофайли (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
     </message>
     <message>
+      <source>Video Frame Generation</source>
+      <translation>Генерація кадрів відео</translation>
+    </message>
+    <message>
+      <source>Video GPU selection: %1</source>
+      <translation>Вибраний GPU для відео: %1</translation>
+    </message>
+    <message>
+      <source>Video Super Resolution</source>
+      <translation>Надвисока роздільність відео</translation>
+    </message>
+    <message>
       <source>Video cannot be played natively:</source>
       <translation>Не вдалося відтворити відео безпосередньо:</translation>
     </message>
@@ -1996,6 +2525,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
 </source>
       <translation>Не вдалося відтворити відео безпосередньо:
 </translation>
+    </message>
+    <message>
+      <source>Video complete</source>
+      <translation>Обробку відео завершено</translation>
     </message>
     <message>
       <source>Video duration is unavailable; reload the input and try Auto again.</source>
@@ -2020,6 +2553,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>Гучність</translation>
     </message>
     <message>
+      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
+      <translation>Фільтрація на GPU через Vulkan недоступна. Встановіть актуальний драйвер Vulkan від AMD, Intel або NVIDIA.</translation>
+    </message>
+    <message>
+      <source>Vulkan codecs where supported; software fallback</source>
+      <translation>Кодеки Vulkan за наявності підтримки; інакше програмні кодеки</translation>
+    </message>
+    <message>
       <source>Waiting</source>
       <translation>Очікування</translation>
     </message>
@@ -2042,6 +2583,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="220" />
       <source>Width (px)</source>
       <translation>Ширина (пкс)</translation>
+    </message>
+    <message>
+      <source>Writing cache</source>
+      <translation>Запис кешу</translation>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="228" />
@@ -2099,259 +2644,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS і RTX є торговельними марками NVIDIA Corporation.</translation>
-    </message>
-    <message>
-      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
-      <translation>Кеш у RAM без втрат із резервним зберіганням на диску. Моделі працюють по черзі.</translation>
-    </message>
-    <message>
-      <source>Export paused; GPU memory released</source>
-      <translation>Експорт призупинено; пам’ять GPU звільнено</translation>
-    </message>
-    <message>
-      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
-      <translation>Частина %1 · %2 · %3 FPS · %4 ГБ</translation>
-    </message>
-    <message>
-      <source>Preroll: %1 frames</source>
-      <translation>Попередні кадри: %1</translation>
-    </message>
-    <message>
-      <source>Pausing export; releasing GPU workers…</source>
-      <translation>Призупинення експорту; звільнення процесів GPU…</translation>
-    </message>
-    <message>
-      <source>Resuming export from the last committed part…</source>
-      <translation>Відновлення з останньої завершеної частини…</translation>
-    </message>
-    <message>
-      <source>Loading model</source>
-      <translation>Завантаження моделі</translation>
-    </message>
-    <message>
-      <source>Flushing output</source>
-      <translation>Завершення виведення</translation>
-    </message>
-    <message>
-      <source>Writing cache</source>
-      <translation>Запис кешу</translation>
-    </message>
-    <message>
-      <source>Releasing worker</source>
-      <translation>Звільнення процесу</translation>
-    </message>
-    <message>
-      <source>Committing part</source>
-      <translation>Фіксація частини</translation>
-    </message>
-    <message>
-      <source>Finalizing video</source>
-      <translation>Завершення відео</translation>
-    </message>
-    <message>
-      <source>Startup %1 s · switch %2 s</source>
-      <translation>Запуск %1 с · перемикання %2 с</translation>
-    </message>
-<message>
-      <source>Cache size</source>
-      <translation>Розмір кешу</translation>
-    </message>
-<message>
-      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
-      <translation>Маска керування замінює автоматичну маску. Канали RGB керують інтенсивністю, тоном і структурою.</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
-      <source>Processing Stage %1 of %2 (Part %3)</source>
-      <translation>Обробка етапу %1 з %2 (Частина %3)</translation>
-    </message>
-    <message>
-      <source>Optical Flow Quality</source>
-      <translation>Якість оптичного потоку</translation>
-    </message>
-    <message>
-      <source>%1 (Discrete GPU)</source>
-      <translation>%1 (дискретний GPU)</translation>
-    </message>
-    <message>
-      <source>%1 (Integrated GPU)</source>
-      <translation>%1 (інтегрований GPU)</translation>
-    </message>
-    <message>
-      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
-      <translation>Цільова частота: %1 кадр/с | Обробка: %2 кадр/с | Покращено: %3 | Пропущено під час вибірки: %4 | У буфері: %5 с</translation>
-    </message>
-    <message>
-      <source>%1 · pass %2/%3</source>
-      <translation>%1 · прохід %2/%3</translation>
-    </message>
-    <message>
-      <source>%1. GPU filters: %2.</source>
-      <translation>%1. Фільтри GPU: %2.</translation>
-    </message>
-    <message>
-      <source>AI GPU selection: %1</source>
-      <translation>Вибраний GPU для ШІ: %1</translation>
-    </message>
-    <message>
-      <source>Active: %1 — %2×%3.</source>
-      <translation>Активна: %1 — %2×%3.</translation>
-    </message>
-    <message>
-      <source>Application: %1</source>
-      <translation>Програма: %1</translation>
-    </message>
-    <message>
-      <source>Applying; newer changes pending</source>
-      <translation>Застосування; новіші зміни очікують</translation>
-    </message>
-    <message>
-      <source>Available</source>
-      <translation>Доступний</translation>
-    </message>
-    <message>
-      <source>Buffering: %1</source>
-      <translation>Буферизація: %1</translation>
-    </message>
-    <message>
-      <source>CPU (Software decoding / encoding)</source>
-      <translation>CPU (програмне декодування / кодування)</translation>
-    </message>
-    <message>
-      <source>Config: %1</source>
-      <translation>Конфігурація: %1</translation>
-    </message>
-    <message>
-      <source>Failed: %1</source>
-      <translation>Помилка: %1</translation>
-    </message>
-    <message>
-      <source>Finished processing: %1. Playback available until Stop.</source>
-      <translation>Обробку завершено: %1. Відтворення доступне до натискання «Зупинити».</translation>
-    </message>
-    <message>
-      <source>Finished: %1. %2 frames enhanced.</source>
-      <translation>Завершено: %1. Покращено кадрів: %2.</translation>
-    </message>
-    <message>
-      <source>Logs: %1</source>
-      <translation>Журнали: %1</translation>
-    </message>
-    <message>
-      <source>Missing</source>
-      <translation>Відсутній</translation>
-    </message>
-    <message>
-      <source>Outputs: %1</source>
-      <translation>Результати: %1</translation>
-    </message>
-    <message>
-      <source>Playing: %1</source>
-      <translation>Відтворення: %1</translation>
-    </message>
-    <message>
-      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
-      <translation>Підготовка Neural Rendering: %1x%2 -&gt; %3x%4...</translation>
-    </message>
-    <message>
-      <source>Probing %1...</source>
-      <translation>Перевірка %1...</translation>
-    </message>
-    <message>
-      <source>Processing finished or stopped; changes apply on the next Start.</source>
-      <translation>Обробку завершено або зупинено; зміни буде застосовано під час наступного запуску.</translation>
-    </message>
-    <message>
-      <source>Requested up to %1p; received %2.</source>
-      <translation>Запитано до %1p; отримано %2.</translation>
-    </message>
-    <message>
-      <source>Runtime error: %1</source>
-      <translation>Помилка середовища виконання: %1</translation>
-    </message>
-    <message>
-      <source>Runtime state: %1</source>
-      <translation>Стан середовища виконання: %1</translation>
-    </message>
-    <message>
-      <source>Software codecs</source>
-      <translation>Програмні кодеки</translation>
-    </message>
-    <message>
-      <source>Startup warning: %1</source>
-      <translation>Попередження під час запуску: %1</translation>
-    </message>
-    <message>
-      <source>The resolved stream differs from the requested height.</source>
-      <translation>Висота отриманого потоку відрізняється від запитаної.</translation>
-    </message>
-    <message>
-      <source>Update failed; recovery failed</source>
-      <translation>Оновлення не вдалося; відновлення не вдалося</translation>
-    </message>
-    <message>
-      <source>Update failed—previous settings restored</source>
-      <translation>Оновлення не вдалося — попередні параметри відновлено</translation>
-    </message>
-    <message>
-      <source>Video GPU selection: %1</source>
-      <translation>Вибраний GPU для відео: %1</translation>
-    </message>
-    <message>
-      <source>Vulkan codecs where supported; software fallback</source>
-      <translation>Кодеки Vulkan за наявності підтримки; інакше програмні кодеки</translation>
-    </message>
-    <message>
-      <source>Native DLSSG</source>
-      <translation>Нативний DLSSG</translation>
-    </message>
-    <message>
-      <source>Cascade</source>
-      <translation>Каскад</translation>
-    </message>
-    <message>
-      <source>Area</source>
-      <translation>Усереднення за площею</translation>
-    </message>
-    <message>
-      <source>Bicubic</source>
-      <translation>Бікубічна</translation>
-    </message>
-    <message>
-      <source>Bilinear</source>
-      <translation>Білінійна</translation>
-    </message>
-    <message>
-      <source>Nearest</source>
-      <translation>Найближчий сусід</translation>
-    </message>
-    <message>
-      <source>FFV1 Lossless RGB 10-bit</source>
-      <translation>FFV1 RGB без втрат, 10 біт</translation>
-    </message>
-    <message>
-      <source>Ready</source>
-      <translation>Готово</translation>
-    </message>
-    <message>
-      <source>Initializing</source>
-      <translation>Ініціалізація</translation>
-    </message>
-    <message>
-      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
-      <translation>Вибраний GPU для FFmpeg/Vulkan недоступний. Виберіть автоматичний режим або інший GPU в налаштуваннях.</translation>
-    </message>
-    <message>
-      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
-      <translation>Фільтрація на GPU через Vulkan недоступна. Встановіть актуальний драйвер Vulkan від AMD, Intel або NVIDIA.</translation>
-    </message>
-    <message>
-      <source>%1: %2 (%3)</source>
-      <translation>%1: %2 (%3)</translation>
-    </message>
-    <message>
-      <source>Style %1</source>
-      <translation>Стиль %1</translation>
     </message>
   </context>
 </TS>

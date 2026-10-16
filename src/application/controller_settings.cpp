@@ -4,10 +4,12 @@
 #include "processing/color_analysis.hpp"
 #include "processing/effects.hpp"
 #include <QDateTime>
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QMetaObject>
 #include <QRegularExpression>
+#include <QUuid>
 #include <QtConcurrent/QtConcurrentRun>
 #include <cmath>
 
@@ -79,6 +81,7 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
         if (QFileInfo(path).suffix().compare("cube", Qt::CaseInsensitive) != 0)
             path += ".cube";
         lutSaving_ = true;
+        lutSavedPath_.clear();
         lutSaveStatus_ = "Saving LUT…";
         emit lutSaveChanged();
         const auto settings = settings_;
@@ -96,7 +99,8 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
                 [this, path, error] {
                     lutSaving_ = false;
                     analysisJob_.reset();
-                    lutSaveStatus_ = error.isEmpty() ? "Saved LUT: " + path : error;
+                    lutSavedPath_ = error.isEmpty() ? path : QString{};
+                    lutSaveStatus_ = error;
                     emit lutSaveChanged();
                     emit previewBusyChanged();
                 },
@@ -156,7 +160,7 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
         settingsChanged();
         saveSettings();
         emit upscaleModeChanged();
-        presetStatus_ = "Settings were reset to defaults.";
+        presetStatus_ = QT_TRANSLATE_NOOP("App", "All settings were reset to factory defaults.");
         emit presetStatusChanged();
         return {};
     case Action::resetTabSettings: {
@@ -216,21 +220,30 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
     }
     case Action::exportPreset:
     case Action::exportPresetTo: {
-        const auto name = args[0].toString().trimmed();
+        auto name = args[0].toString().trimmed();
         QString path;
-        if (action == Action::exportPresetTo)
+        if (action == Action::exportPresetTo) {
             path = localPath(args[1].toString());
-        else {
+            if (name.isEmpty()) {
+                name = QFileInfo(path).completeBaseName().trimmed();
+                name.remove(QRegularExpression("[\\x00-\\x1f]"));
+                if (name.isEmpty())
+                    name = "preset_" + QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss");
+                name = name.left(120);
+                if (!name.isEmpty() && name.back().isHighSurrogate()) name.chop(1);
+            }
+        } else {
             QString stem = name;
             stem.replace(QRegularExpression("[^\\p{L}\\p{N}_-]+"), "_");
             stem = stem.left(80);
             if (stem.isEmpty())
                 throw std::runtime_error("Please enter a preset name.");
-            path = QDir(Paths::instance().temporary("settings-preset")).filePath(stem + ".json");
+            path = transientFiles_.filePath("preset-" + QUuid::createUuid().toString(QUuid::WithoutBraces) + "-" + stem + ".json");
         }
         if (auto result = settings_.exportPreset(path, name); !result)
             throw std::runtime_error(result.error().toStdString());
-        presetStatus_ = "Exported preset '" + name + "' to " + QFileInfo(path).fileName();
+        presetStatus_ = QCoreApplication::translate("App", "Exported preset '%1' to %2")
+                            .arg(name, QFileInfo(path).fileName());
         emit presetStatusChanged();
         return path;
     }
@@ -239,11 +252,11 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
             throw std::runtime_error("Stop the current operation before importing a preset.");
         auto result = settings_.importPreset(localPath(args[0].toString()));
         if (!result) {
-            presetStatus_ = "Import failed: " + result.error();
+            presetStatus_ = QCoreApplication::translate("App", "Import failed: %1").arg(translate(result.error()));
             emit presetStatusChanged();
             return false;
         }
-        presetStatus_ = "Imported preset '" + *result + "' successfully.";
+        presetStatus_ = QCoreApplication::translate("App", "Imported preset '%1' successfully.").arg(*result);
         upscaleMode_ = settings_.upscale_mode;
         settingsChanged();
         saveSettings();
@@ -326,13 +339,13 @@ void AppController::analyzeLut(bool fixed, double positionMs, bool matching) {
                         (void)result;
                     }
                     settingsChanged();
-                    status_ = matching ? "Reference color adjustments ready"
-                                       : "Automatic color adjustments applied.";
+                    status_ = matching ? QT_TRANSLATE_NOOP("App", "Reference color adjustments ready")
+                                       : QT_TRANSLATE_NOOP("App", "Automatic color adjustments applied.");
                     if (!autoPreview_)
                         preview();
                 } else
                     status_ = error.isEmpty()
-                                  ? "Color adjustment skipped because the input or color controls changed."
+                                  ? QT_TRANSLATE_NOOP("App", "Color adjustment skipped because the input or color controls changed.")
                                   : error;
                 if (matching)
                     lutReferenceStatus_ = status_;

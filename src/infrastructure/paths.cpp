@@ -1,12 +1,10 @@
 #include "paths.hpp"
-#include <QCoreApplication>
-#include <QDateTime>
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QSet>
 #include <QUrl>
-#include <QUuid>
+#include <QStandardPaths>
 #include <algorithm>
 #include <stdexcept>
 #include <windows.h>
@@ -19,27 +17,10 @@ Paths::Paths() {
         const DWORD length = GetModuleFileNameW(nullptr, executable, DWORD(std::size(executable)));
         if (!length || length >= std::size(executable))
             throw std::runtime_error("Cannot locate the application executable.");
-        QDir directory(QFileInfo(QString::fromWCharArray(executable)).absolutePath());
-        for (int depth = 0; depth < 8; ++depth) {
-            const auto isBundle = [](const QDir& candidate) {
-                return candidate.exists("app/bin/runtime") &&
-                       candidate.exists("app/resources/desktop/qml/Main.qml");
-            };
-            if (isBundle(directory)) {
-                root = directory.absolutePath();
-                break;
-            }
-            QDir bundle(directory.filePath("Visual Enhancer"));
-            if (isBundle(bundle)) {
-                root = bundle.absolutePath();
-                break;
-            }
-            if (!directory.cdUp())
-                break;
-        }
+        // The deployed executables live beside their resources. Development
+        // helpers may select a deployed resource tree with VE_APP_ROOT.
+        root = QFileInfo(QString::fromWCharArray(executable, int(length))).absolutePath();
     }
-    if (root.isEmpty())
-        throw std::runtime_error("Cannot find Visual Enhancer/app. Build and deploy the application first.");
     root = QDir::cleanPath(QFileInfo(root).absoluteFilePath());
 }
 
@@ -48,98 +29,44 @@ const Paths& Paths::instance() {
     return paths;
 }
 QString Paths::at(const QString& relative) const {
-    const auto worker=qEnvironmentVariable("VE_VFX_WORKER_TMP");
-    if(!worker.isEmpty()&&relative.startsWith("data/temp/app/"))return QDir(worker).filePath(relative.mid(14));
     return QDir(root).filePath(relative);
 }
 QString Paths::ffmpeg() const {
-    return at("app/bin/ffmpeg/bin/ffmpeg.exe");
+    return at("bin/ffmpeg/bin/ffmpeg.exe");
 }
 QString Paths::ffprobe() const {
-    return at("app/bin/ffmpeg/bin/ffprobe.exe");
+    return at("bin/ffmpeg/bin/ffprobe.exe");
 }
-QString Paths::temporary(const QString& prefix) const {
-    const auto path = at("data/temp/app/" + prefix + "-" + QUuid::createUuid().toString(QUuid::WithoutBraces));
-    if (!QDir().mkpath(path))
-        throw std::runtime_error("Cannot create the portable temporary folder.");
-    return path;
+namespace {
+QString writableDirectory(QStandardPaths::StandardLocation location, const QString& suffix = {}) {
+    const auto base = QStandardPaths::writableLocation(location);
+    if (base.isEmpty())
+        throw std::runtime_error("Cannot locate per-user application storage.");
+    const auto directory = suffix.isEmpty() ? base : QDir(base).filePath(suffix);
+    if (!QDir().mkpath(directory))
+        throw std::runtime_error(("Cannot create application storage: " + directory).toStdString());
+    return directory;
 }
-QString Paths::encode(const QString& path) const {
-    if (path.isEmpty() || !QFileInfo(path).isAbsolute())
-        return path;
-    const auto relative = QDir(root).relativeFilePath(QFileInfo(path).absoluteFilePath());
-    if (relative == ".")
-        return "${APP_ROOT}";
-    if (QFileInfo(relative).isAbsolute() || relative == ".." || relative.startsWith("../"))
-        return path;
-    return "${APP_ROOT}/" + relative;
+} // namespace
+QString Paths::configurationFile() const {
+    return QDir(writableDirectory(QStandardPaths::AppConfigLocation)).filePath("config.ini");
 }
-QString Paths::decode(const QString& path) const {
-    const auto migrate = [&](const QString& relative) {
-        for (const auto* folder : {"config", "jobs", "logs", "outputs", "temp"}) {
-            const QString prefix = QString::fromLatin1(folder);
-            if (relative == prefix || relative.startsWith(prefix + '/'))
-                return at("data/" + relative);
-        }
-        if (relative == "Video for tests" || relative.startsWith("Video for tests/"))
-            return QDir::cleanPath(QDir(root).filePath("../Tests/Media" + relative.mid(15)));
-        return at(relative);
-    };
-    if (path == "${APP_ROOT}")
-        return root;
-    if (path.startsWith("${APP_ROOT}/")) {
-        const auto relative = path.mid(12);
-        // Older saves prefixed external files on another Windows drive.
-        // Recover drive-qualified paths without accepting relative traversal.
-        const auto normalized = QDir::fromNativeSeparators(relative);
-        if (normalized.size() >= 3 && normalized[0].isLetter() &&
-            normalized[1] == ':' && normalized[2] == '/')
-            return QDir::cleanPath(normalized);
-        if (QFileInfo(relative).isAbsolute() || relative.split('/').contains(".."))
-            return path;
-        return migrate(relative);
-    }
-    // Existing absolute settings may still refer to the former flat workspace.
-    // Only relocate its known data/media folders; external user paths stay valid.
-    const auto oldRoot = QDir(root).absoluteFilePath("..") + '/';
-    const auto normalized = QDir::fromNativeSeparators(path);
-    const auto oldPrefix = QDir::cleanPath(oldRoot) + '/';
-    if (QFileInfo(normalized).isAbsolute() && normalized.startsWith(oldPrefix, Qt::CaseInsensitive)) {
-        const auto relative = normalized.mid(oldPrefix.size());
-        for (const auto* folder : {"config", "jobs", "logs", "outputs", "temp", "Video for tests"}) {
-            const QString prefix = QString::fromLatin1(folder);
-            if (relative == prefix || relative.startsWith(prefix + '/'))
-                return migrate(relative);
-        }
-    }
-    return path;
+QString Paths::cacheDirectory() const {
+    return writableDirectory(QStandardPaths::CacheLocation);
 }
-
+QString Paths::nativeDataDirectory() const {
+    // NGX requires a writable application-data argument, separate from DLL search paths.
+    return writableDirectory(QStandardPaths::AppLocalDataLocation, "NVIDIA");
+}
 void Paths::prepare() const {
-    const QMap<QByteArray, QString> locations{{"TEMP", "data/temp/scratch"},
-                                              {"TMP", "data/temp/scratch"},
-                                              {"TMPDIR", "data/temp/scratch"},
-                                              {"APPDATA", "data/temp/profile/Roaming"},
-                                              {"LOCALAPPDATA", "data/temp/profile/Local"},
-                                              {"XDG_CONFIG_HOME", "data/temp/profile/config"},
-                                              {"XDG_DATA_HOME", "data/temp/profile/data"},
-                                              {"XDG_CACHE_HOME", "data/temp/profile/cache"},
-                                              {"QML_DISK_CACHE_PATH", "data/temp/qml-cache"},
-                                              {"CUDA_CACHE_PATH", "data/temp/cuda-cache"}};
-    for (auto it = locations.begin(); it != locations.end(); ++it) {
-        if (!QDir().mkpath(at(it.value())))
-            throw std::runtime_error("Portable application folders must be writable.");
-        qputenv(it.key().constData(), at(it.value()).toUtf8());
+    for (const auto* relative : {"outputs", "logs"}) {
+        if (!QDir().mkpath(at(relative)))
+            throw std::runtime_error(("Cannot create application folder: " + at(relative)).toStdString());
     }
-    for (const auto& path : {"data/temp/app", "data/config", "data/outputs", "data/logs", "data/jobs"})
-        QDir().mkpath(at(path));
-    qputenv("QT_DISABLE_SHADER_DISK_CACHE", "1");
-    qputenv("QSG_RHI_DISABLE_SHADER_DISK_CACHE", "1");
-    qputenv("QT_MEDIA_BACKEND", "ffmpeg");
 }
 QString localPath(const QString& urlOrPath) {
     const QUrl url(urlOrPath);
-    return Paths::instance().decode(url.isLocalFile() ? url.toLocalFile() : urlOrPath);
+    return url.isLocalFile() ? url.toLocalFile() : urlOrPath;
 }
 bool isVideo(const QString& path) {
     static const QSet<QString> extensions{"mp4", "mkv", "mov",  "avi", "webm", "m4v",

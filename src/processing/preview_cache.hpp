@@ -63,7 +63,9 @@ class PreviewVideoCache {
         return *entry;
     }
     void store(const QByteArray& key,const QString& path,const MediaInfo& info) {
-        const qint64 bytes=QFileInfo(path).size()+QJsonDocument(info.metadata).toJson(QJsonDocument::Compact).size()*4+
+        // This budget is for lookup metadata. Disk files have their own shared
+        // budget; charging them here evicted large clips without removing files.
+        const qint64 bytes=QJsonDocument(info.metadata).toJson(QJsonDocument::Compact).size()*4+
             qint64(path.capacity()+1)*qint64(sizeof(QChar))+key.capacity()+qint64(sizeof(Entry))+1024;
         QMutexLocker lock(&mutex_);
         if (bytes>qint64(entries_.maxCost())*1024) return;
@@ -71,6 +73,11 @@ class PreviewVideoCache {
     }
     [[nodiscard]] qint64 chargedBytes() const {
         QMutexLocker lock(&mutex_); return qint64(entries_.totalCost())*1024;
+    }
+    void removePaths(const QStringList& paths) {
+        QMutexLocker lock(&mutex_);
+        for (const auto& key : entries_.keys())
+            if (paths.contains(entries_.object(key)->path)) entries_.remove(key);
     }
   private:
     mutable QMutex mutex_;
@@ -131,7 +138,7 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
     identity+=QJsonDocument(QJsonObject{{"video",info.video},{"hdr",info.hdr},{"width",info.width},{"height",info.height},
         {"format",info.pixelFormat},{"matrix",info.colorSpace},{"range",info.range},{"primaries",info.primaries},{"transfer",info.transfer},
         {"cache_bits",info.sourceBitDepth},{"ai_gpu",settings.ai_gpu_uuid},{"video_gpu",settings.video_gpu_uuid},{"filter_device",settings.ffmpeg_device}}).toJson(QJsonDocument::Compact);
-    identity+=previewFileIdentity(root+"/app/bin/ffmpeg/bin/ffmpeg.exe");
+    identity+=previewFileIdentity(root+"/bin/ffmpeg/bin/ffmpeg.exe");
     QList<QByteArray> keys;
     for (qsizetype index=0; index<stages.size(); ++index) {
         const auto& stage=stages[index];
@@ -141,7 +148,7 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
             identity+=info.metadata.value("sample_aspect_ratio").toString().toUtf8();
             identity+=QByteArray::number(info.clockwiseRotation());
             const auto values=settings.values();for(auto it=values.begin();it!=values.end();++it)if(it.key().startsWith("vfx_"))relevant.insert(it.key(),it.value());
-            const auto vfxRoot=root+"/app/bin/runtime/vfx/";
+            const auto vfxRoot=root+"/bin/runtime/vfx/";
             identity+=previewFileIdentity(vfxRoot+"neuroframe_engine_video_effects.dll");
             identity+=previewFileIdentity(vfxRoot+"runtime-manifest.json");
             QDirIterator components(vfxRoot,{"*.dll","*.trtpkg"},QDir::Files,QDirIterator::Subdirectories);
@@ -171,13 +178,13 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
             : stage=="dlss_super_resolution" ? "neuroframe_engine_super_resolution.dll"
             : stage=="frame_generation" ? "neuroframe_engine_frame_interpolation.dll" : "neuroframe_engine_upscaling.dll";
         if (!module.isEmpty()) {
-            identity+=previewFileIdentity(root+"/app/bin/runtime/"+module+'/'+binary);
+            identity+=previewFileIdentity(root+"/bin/runtime/"+module+'/'+binary);
             const QString model=stage=="neural_model" ? "nvngx_dlssnr.dll"
                 : stage=="dlss_super_resolution" ? "nvngx_dlss.dll"
                 : stage=="frame_generation" ? "nvngx_dlssg.dll"
                 : stage=="super_resolution" ? "nvngx_vsr.dll"
                 : stage=="rtx_video_hdr" ? "nvngx_truehdr.dll" : QString{};
-            if (!model.isEmpty()) identity+=previewFileIdentity(root+"/app/bin/runtime/"+module+'/'+model);
+            if (!model.isEmpty()) identity+=previewFileIdentity(root+"/bin/runtime/"+module+'/'+model);
         }
         // A final SR output retains more precision than an intermediate card.
         const auto boundary=(finalOutput && index+1==stages.size()) ? QByteArray("final") : QByteArray("intermediate");

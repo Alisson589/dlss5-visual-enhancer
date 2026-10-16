@@ -11,7 +11,7 @@
 #include "infrastructure/paths.hpp"
 #include "infrastructure/log.hpp"
 #include <QElapsedTimer>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -172,7 +172,7 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
     const qint64 count = qint64(std::ceil(duration*fps-1e-9));
     const double ratio = fps/input.fps;
     const int multiple = int(std::lround(ratio));
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/interpolation-XXXXXX"));
+    ScratchDirectory directory(QStringLiteral("interpolation-XXXXXX"));
     if (!directory.isValid()) throw std::runtime_error("Cannot create the interpolation directory.");
     auto info = input; info.fps = fps; info.pixelFormat = info.hdr ? "gbrp10le" : "rgba";
     info.colorSpace="gbr"; info.range="pc";

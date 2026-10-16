@@ -10,9 +10,9 @@ class Paths {
     [[nodiscard]] QString at(const QString& relative) const;
     [[nodiscard]] QString ffmpeg() const;
     [[nodiscard]] QString ffprobe() const;
-    [[nodiscard]] QString temporary(const QString& prefix) const;
-    [[nodiscard]] QString encode(const QString& path) const;
-    [[nodiscard]] QString decode(const QString& path) const;
+    [[nodiscard]] QString configurationFile() const;
+    [[nodiscard]] QString cacheDirectory() const;
+    [[nodiscard]] QString nativeDataDirectory() const;
     void prepare() const;
 
   private:

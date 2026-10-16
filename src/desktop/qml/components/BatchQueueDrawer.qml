@@ -152,7 +152,8 @@ Rectangle {
                 font.weight: Font.DemiBold; color: Theme.textPrimary; anchors.verticalCenter: parent.verticalCenter
             }
             AppBadge {
-                text: drawer.fileCount + (drawer.fileCount === 1 ? qsTranslate("App", " file") : qsTranslate("App", " files"))
+                text: drawer.fileCount === 1 ? qsTranslate("App", "%n file", "", drawer.fileCount)
+                                            : qsTranslate("App", "%n files", "", drawer.fileCount)
                 variant: drawer.fileCount > 0 ? "accent" : "neutral"
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -290,13 +291,15 @@ Rectangle {
             required property real processingFps
             required property real remainingSeconds
             readonly property bool running: itemState === "Running"
+            readonly property bool paused: itemState === "Paused"
             readonly property bool complete: itemState === "Completed" || itemState === "CompletedWithWarnings"
             readonly property bool failed: itemState === "Failed"
             readonly property bool stopped: itemState === "Cancelled" || itemState === "Skipped"
             readonly property real fraction: complete ? 1 : Math.max(0, Math.min(1, progress))
             readonly property color stateColor: failed ? Theme.danger : (complete ? Theme.success : (running ? drawer.processingColor : (stopped ? Theme.warning : Theme.textSecondary)))
-            readonly property string statusText: qsTranslate("App", running ? "Processing" : (complete ? "Completed" : (failed ? "Error" : (stopped ? itemState : "Waiting"))))
+            readonly property string statusText: paused ? qsTranslate("App", "Paused") : qsTranslate("App", running ? "Processing" : (complete ? "Completed" : (failed ? "Error" : (stopped ? itemState : "Waiting"))))
             readonly property string progressTitle: {
+                if (paused) return qsTranslate("App", "Paused")
                 if (failed) return qsTranslate("App", "Failed")
                 if (complete) return qsTranslate("App", "Saved and verified")
                 if (stopped) return itemState === "Skipped" ? qsTranslate("App", "Skipped before processing") : qsTranslate("App", "Stopped by user")
@@ -310,16 +313,18 @@ Rectangle {
             readonly property string metadataText: {
                 var parts = []
                 if (inputDimensions) parts.push(inputDimensions.replace("×", " × "))
-                if (!drawer.imageQueue && frameCount > 0) parts.push(frameCount.toLocaleString(Qt.locale("en_US"), "f", 0) + " frames")
+                if (!drawer.imageQueue && frameCount > 0)
+                    parts.push(frameCount === 1 ? qsTranslate("App", "%n frame", "", frameCount)
+                                               : qsTranslate("App", "%n frames", "", frameCount))
                 var size = drawer.fileSize(fileSizeBytes)
                 if (size) parts.push(size)
-                return parts.join("  ·  ") || (drawer.imageQueue ? "Image" : "Video")
+                return parts.join("  ·  ") || (drawer.imageQueue ? qsTranslate("App", "Image") : qsTranslate("App", "Video"))
             }
             width: queueList.width; height: 84
             color: selected ? Theme.bgSelected : (rowMouse.containsMouse ? Theme.bgInputHover : (index % 2 ? Qt.darker(Theme.bgInput, 1.08) : Theme.bgInput))
             activeFocusOnTab: drawer.canModify
             Accessible.role: Accessible.ListItem
-            Accessible.name: fileName + ", " + statusText + ", " + Math.round(fraction * 100) + " percent"
+            Accessible.name: fileName + ", " + statusText + ", " + Math.round(fraction * 100) + "%"
             Keys.onReturnPressed: { if (drawer.canModify && drawer.appBridge) drawer.appBridge.selectQueueItem(index) }
             Keys.onSpacePressed: { if (drawer.canModify && drawer.appBridge) drawer.appBridge.selectQueueItem(index) }
             Keys.onMenuPressed: rowMenu.openForButton()

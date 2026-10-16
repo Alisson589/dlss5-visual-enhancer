@@ -43,6 +43,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation> 处理 FPS</translation>
     </message>
     <message>
+      <source>%1 (Discrete GPU)</source>
+      <translation>%1（独立 GPU）</translation>
+    </message>
+    <message>
+      <source>%1 (Integrated GPU)</source>
+      <translation>%1（集成 GPU）</translation>
+    </message>
+    <message>
+      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
+      <translation>目标：%1 帧/秒 | 处理：%2 帧/秒 | 已增强：%3 帧 | 采样时跳过：%4 帧 | 已缓冲：%5 秒</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="84" />
       <source>%1 h %2 min</source>
       <translation>%1 时 %2 分</translation>
@@ -67,8 +79,44 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>%1 个源帧</translation>
     </message>
     <message>
+      <source>%1 · pass %2/%3</source>
+      <translation>%1 · 第 %2/%3 遍处理</translation>
+    </message>
+    <message>
+      <source>%1. GPU filters: %2.</source>
+      <translation>%1。GPU 滤镜：%2。</translation>
+    </message>
+    <message>
+      <source>%1: %2 (%3)</source>
+      <translation>%1: %2 (%3)</translation>
+    </message>
+    <message>
       <source>%1… %2%</source>
       <translation>%1… %2%</translation>
+    </message>
+    <message numerus="yes">
+      <source>%n file</source>
+      <translation>
+        <numerusform>%n 个文件</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n files</source>
+      <translation>
+        <numerusform>%n 个文件</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frame</source>
+      <translation>
+        <numerusform>%n 帧</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>%n frames</source>
+      <translation>
+        <numerusform>%n 帧</numerusform>
+      </translation>
     </message>
     <message>
       <source>1 - Low</source>
@@ -116,6 +164,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>渲染、预览或扫描仍在进行中。是否取消并退出？</translation>
     </message>
     <message>
+      <source>AI GPU selection: %1</source>
+      <translation>AI GPU 选择：%1</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="55" />
       <source>AI Processing GPU (Tensor Cores / NGX)</source>
       <translation>AI 处理 GPU (Tensor Cores / NGX)</translation>
@@ -124,6 +176,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="484" />
       <source>Actions for %1</source>
       <translation>%1 的操作</translation>
+    </message>
+    <message>
+      <source>Active: %1 — %2×%3.</source>
+      <translation>已启用：%1 — %2×%3。</translation>
     </message>
     <message>
       <location filename="../qml/components/MediaViewport.qml" line="506" />
@@ -218,6 +274,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>动态颗粒</translation>
     </message>
     <message>
+      <source>Another operation is active; stop it before starting a batch.</source>
+      <translation>另一个操作正在进行；请先停止，再开始批处理。</translation>
+    </message>
+    <message>
+      <source>Application: %1</source>
+      <translation>应用程序：%1</translation>
+    </message>
+    <message>
       <source>Applied to processing</source>
       <translation>已应用于处理</translation>
     </message>
@@ -229,6 +293,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Applying</source>
       <translation>正在应用</translation>
+    </message>
+    <message>
+      <source>Applying; newer changes pending</source>
+      <translation>正在应用；有更新的更改等待应用</translation>
+    </message>
+    <message>
+      <source>Area</source>
+      <translation>区域平均</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="13" />
@@ -276,12 +348,28 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>自动蒙版</translation>
     </message>
     <message>
+      <source>Automatic color adjustments applied.</source>
+      <translation>已应用自动色彩调整。</translation>
+    </message>
+    <message>
+      <source>Automatic scene-cut detection</source>
+      <translation>自动检测场景切换</translation>
+    </message>
+    <message>
+      <source>Available</source>
+      <translation>可用</translation>
+    </message>
+    <message>
       <source>Balanced</source>
       <translation>平衡</translation>
     </message>
     <message>
       <source>Balanced ~1.72×</source>
       <translation>平衡 ~1.72×</translation>
+    </message>
+    <message>
+      <source>Balances visual quality and file size. Size adapts to scene detail.</source>
+      <translation>平衡画质与文件大小。文件大小随场景细节而变化。</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="150" />
@@ -309,6 +397,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>最佳</translation>
     </message>
     <message>
+      <source>Bicubic</source>
+      <translation>双三次</translation>
+    </message>
+    <message>
+      <source>Bilinear</source>
+      <translation>双线性</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="29" />
       <source>Bit Depth</source>
       <translation>位深度</translation>
@@ -323,7 +419,31 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>Browse</source>
       <translation>浏览</translation>
     </message>
-<message>
+    <message>
+      <source>Buffering: %1</source>
+      <translation>正在缓冲：%1</translation>
+    </message>
+    <message>
+      <source>CPU (Software decoding / encoding)</source>
+      <translation>CPU（软件解码 / 编码）</translation>
+    </message>
+    <message>
+      <source>CPU codecs; GPU pixel filters</source>
+      <translation>CPU 编解码器；GPU 像素滤镜</translation>
+    </message>
+    <message>
+      <source>Cache maintenance failed: %1</source>
+      <translation>缓存维护失败：%1</translation>
+    </message>
+    <message>
+      <source>Cache size</source>
+      <translation>缓存大小</translation>
+    </message>
+    <message>
+      <source>Calculating…</source>
+      <translation>正在计算…</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="149" />
       <source>Cancel</source>
       <translation>取消</translation>
@@ -343,6 +463,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Cannot start batch: %1</source>
       <translation>无法开始批处理：%1</translation>
+    </message>
+    <message>
+      <source>Cascade</source>
+      <translation>级联</translation>
     </message>
     <message>
       <source>Changes apply immediately.</source>
@@ -370,6 +494,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>选择参考图像</translation>
     </message>
     <message>
+      <source>Choose an Export Path option.</source>
+      <translation>请选择导出路径选项。</translation>
+    </message>
+    <message>
+      <source>Choose an existing export folder.</source>
+      <translation>请选择已存在的导出文件夹。</translation>
+    </message>
+    <message>
       <source>Choose an existing reference image.</source>
       <translation>请选择已存在的参考图像。</translation>
     </message>
@@ -386,6 +518,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Cinematic</source>
       <translation>电影感</translation>
+    </message>
+    <message>
+      <source>Clean Cache</source>
+      <translation>清理缓存</translation>
+    </message>
+    <message>
+      <source>Cleaning…</source>
+      <translation>正在清理…</translation>
     </message>
     <message>
       <location filename="../qml/components/CompositionCard.qml" line="115" />
@@ -423,6 +563,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>剪贴板中没有可粘贴的图像或文件。</translation>
     </message>
     <message>
+      <source>Close</source>
+      <translation>关闭</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="76" />
       <location filename="../qml/views/UpscaleView.qml" line="390" />
       <source>Codec</source>
@@ -457,9 +601,17 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>色彩匹配</translation>
     </message>
     <message>
+      <source>Color adjustment skipped because the input or color controls changed.</source>
+      <translation>输入或色彩设置已更改，已跳过色彩调整。</translation>
+    </message>
+    <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="46" />
       <source>Coloring</source>
       <translation>调色</translation>
+    </message>
+    <message>
+      <source>Committing part</source>
+      <translation>正在提交分段</translation>
     </message>
     <message>
       <source>Completed</source>
@@ -479,6 +631,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Completed with warnings: %1 completed, %2 failed.</source>
       <translation>完成但有警告：%1 个完成，%2 个失败。</translation>
+    </message>
+    <message>
+      <source>Config: %1</source>
+      <translation>配置：%1</translation>
     </message>
     <message>
       <source>Configure hardware assignment, preview behavior, native layout, and portable settings presets.</source>
@@ -502,6 +658,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>对比度</translation>
     </message>
     <message>
+      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
+      <translation>控制蒙版会替代自动蒙版。RGB 通道控制强度、色调和结构。</translation>
+    </message>
+    <message>
       <location filename="../qml/views/UpscaleView.qml" line="282" />
       <source>Convert SDR to HDR</source>
       <translation>将 SDR 转换为 HDR</translation>
@@ -517,6 +677,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Could not show in Explorer: %1</source>
       <translation>无法在资源管理器中显示：%1</translation>
+    </message>
+    <message>
+      <source>Current previews and active processing files are kept.</source>
+      <translation>保留当前预览和正在处理的文件。</translation>
     </message>
     <message>
       <source>Custom</source>
@@ -575,13 +739,25 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>DLSS-G 引擎</translation>
     </message>
     <message>
+      <source>Deblur Modes</source>
+      <translation>去模糊模式</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="62" />
       <source>Decoding / Encoding Device</source>
       <translation>解码 / 编码设备</translation>
     </message>
     <message>
+      <source>Decoding image</source>
+      <translation>正在解码图像</translation>
+    </message>
+    <message>
       <source>Default</source>
       <translation>默认</translation>
+    </message>
+    <message>
+      <source>Denoise Modes</source>
+      <translation>降噪模式</translation>
     </message>
     <message>
       <source>Download cancelled.</source>
@@ -685,6 +861,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>导出路径</translation>
     </message>
     <message>
+      <source>Export Preset</source>
+      <translation>导出预设</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="136" />
       <source>Export Preset JSON</source>
       <translation>导出 JSON 预设</translation>
@@ -704,6 +884,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>导出失败：%1</translation>
     </message>
     <message>
+      <source>Export paused; GPU memory released</source>
+      <translation>导出已暂停；GPU 内存已释放</translation>
+    </message>
+    <message>
       <source>Exported preset '%1' to %2</source>
       <translation>预设“%1”已导出到 %2</translation>
     </message>
@@ -711,6 +895,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="193" />
       <source>Exposure</source>
       <translation>曝光</translation>
+    </message>
+    <message>
+      <source>FFV1 Lossless RGB 10-bit</source>
+      <translation>FFV1 无损 RGB 10 位</translation>
     </message>
     <message>
       <source>Factory reset restores all DLSS, upscale, interpolation, GPU, mask, and encoding settings. Window geometry remains a desktop preference.</source>
@@ -722,6 +910,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>失败</translation>
     </message>
     <message>
+      <source>Failed: %1</source>
+      <translation>失败：%1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="82" />
       <source>File</source>
       <translation>文件</translation>
@@ -731,9 +923,29 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>文件已不存在：%1</translation>
     </message>
     <message>
+      <source>Finalizing export</source>
+      <translation>正在完成导出</translation>
+    </message>
+    <message>
+      <source>Finalizing video</source>
+      <translation>正在完成视频</translation>
+    </message>
+    <message>
+      <source>Finished processing: %1. Playback available until Stop.</source>
+      <translation>处理已完成：%1。按下“停止”前可继续播放。</translation>
+    </message>
+    <message>
+      <source>Finished: %1. %2 frames enhanced.</source>
+      <translation>已完成：%1。已增强 %2 帧。</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="505" />
       <source>Fit to window</source>
       <translation>适应窗口</translation>
+    </message>
+    <message>
+      <source>Flushing output</source>
+      <translation>正在完成输出</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="181" />
@@ -761,9 +973,17 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>插帧</translation>
     </message>
     <message>
+      <source>Frame-rate mode</source>
+      <translation>帧率模式</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="187" />
       <source>Fullscreen</source>
       <translation>全屏</translation>
+    </message>
+    <message>
+      <source>GPU support and installed models are checked before processing.</source>
+      <translation>处理前将检查 GPU 支持情况和已安装的模型。</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="29" />
@@ -837,6 +1057,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>高</translation>
     </message>
     <message>
+      <source>High visual quality, with moderate compression.</source>
+      <translation>画质较高，压缩程度适中。</translation>
+    </message>
+    <message>
+      <source>High-Bitrate Modes</source>
+      <translation>高码率模式</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ColoringControls.qml" line="209" />
       <source>Highlights</source>
       <translation>高光</translation>
@@ -877,6 +1105,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>图像质量</translation>
     </message>
     <message>
+      <source>Image complete</source>
+      <translation>图像处理完成</translation>
+    </message>
+    <message>
       <source>Images</source>
       <translation>图像</translation>
     </message>
@@ -885,6 +1117,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="324" />
       <source>Images (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</source>
       <translation>图像 (*.png *.jpg *.jpeg *.webp *.tif *.tiff *.bmp *.avif *.heic *.heif *.svg *.dng *.cr2 *.nef *.arw)</translation>
+    </message>
+    <message>
+      <source>Import Preset</source>
+      <translation>导入预设</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="132" />
@@ -907,6 +1143,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Initial settings</source>
       <translation>初始设置</translation>
+    </message>
+    <message>
+      <source>Initializing</source>
+      <translation>正在初始化</translation>
     </message>
     <message>
       <source>Initializing runtime…</source>
@@ -964,6 +1204,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>任务进度</translation>
     </message>
     <message>
+      <source>LUT File</source>
+      <translation>LUT 文件</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ColoringControls.qml" line="89" />
       <source>LUT File (.cube)</source>
       <translation>LUT 文件 (.cube)</translation>
@@ -1000,17 +1244,25 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/CompositionCard.qml" line="108" />
       <location filename="../qml/components/NeuralModelControls.qml" line="233" />
       <source>Load Control Mask...</source>
-      <translation>加载控制遮罩...</translation>
+      <translation>加载控制蒙版...</translation>
     </message>
     <message>
       <source>Loading media…</source>
       <translation>正在加载媒体…</translation>
     </message>
     <message>
+      <source>Loading model</source>
+      <translation>正在加载模型</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MediaViewport.qml" line="627" />
       <location filename="../qml/components/MediaViewport.qml" line="641" />
       <source>Loading preview...</source>
       <translation>正在加载预览...</translation>
+    </message>
+    <message>
+      <source>Loading source metadata</source>
+      <translation>正在加载源元数据</translation>
     </message>
     <message>
       <source>Local</source>
@@ -1031,6 +1283,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="248" />
       <source>Lock Aspect Ratio</source>
       <translation>锁定宽高比</translation>
+    </message>
+    <message>
+      <source>Logs: %1</source>
+      <translation>日志：%1</translation>
+    </message>
+    <message>
+      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
+      <translation>无损 RAM 缓存，内存不足时使用磁盘。模型逐个运行。</translation>
     </message>
     <message>
       <source>Low</source>
@@ -1083,12 +1343,24 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>中间调</translation>
     </message>
     <message>
+      <source>Missing</source>
+      <translation>缺失</translation>
+    </message>
+    <message>
       <source>Mixed images and videos are not allowed — please add only one type at a time.</source>
       <translation>不能混合图像和视频，请每次只添加一种类型。</translation>
     </message>
     <message>
       <source>Mode</source>
       <translation>模式</translation>
+    </message>
+    <message>
+      <source>Mode family</source>
+      <translation>模式组</translation>
+    </message>
+    <message>
+      <source>Model</source>
+      <translation>模型</translation>
     </message>
     <message>
       <location filename="../qml/components/WorkflowStageCard.qml" line="101" />
@@ -1099,6 +1371,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/WorkflowStageCard.qml" line="90" />
       <source>Move %1 up</source>
       <translation>上移 %1</translation>
+    </message>
+    <message>
+      <source>Multiplier</source>
+      <translation>倍率</translation>
     </message>
     <message>
       <location filename="../qml/components/PlaybackVolumeControl.qml" line="60" />
@@ -1127,8 +1403,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>NR 风格</translation>
     </message>
     <message>
+      <source>Native DLSSG</source>
+      <translation>原生 DLSSG</translation>
+    </message>
+    <message>
       <source>Natural</source>
       <translation>自然</translation>
+    </message>
+    <message>
+      <source>Nearest</source>
+      <translation>最近邻</translation>
     </message>
     <message>
       <location filename="../qml/components/HeaderBar.qml" line="132" />
@@ -1223,6 +1507,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>操作仍在进行</translation>
     </message>
     <message>
+      <source>Optical Flow Quality</source>
+      <translation>光流质量</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ExportDialog.qml" line="78" />
       <location filename="../qml/components/MediaViewport.qml" line="410" />
       <location filename="../qml/components/MediaViewport.qml" line="417" />
@@ -1250,6 +1538,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>输出</translation>
     </message>
     <message>
+      <source>Outputs: %1</source>
+      <translation>输出：%1</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="415" />
       <source>Overall job progress</source>
       <translation>任务进度</translation>
@@ -1268,6 +1560,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>打包 10 位 (FP16)</translation>
     </message>
     <message>
+      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
+      <translation>分段 %1 · %2 · %3 FPS · %4 GB</translation>
+    </message>
+    <message>
       <source>Passes</source>
       <translation>处理次数</translation>
     </message>
@@ -1279,6 +1575,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Pause</source>
       <translation>暂停</translation>
+    </message>
+    <message>
+      <source>Paused</source>
+      <translation>已暂停</translation>
+    </message>
+    <message>
+      <source>Pausing export; releasing GPU workers…</source>
+      <translation>正在暂停导出并释放 GPU 进程…</translation>
     </message>
     <message>
       <location filename="../qml/components/RtxVideoHdrControls.qml" line="58" />
@@ -1299,6 +1603,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>性能 2.0×</translation>
     </message>
     <message>
+      <source>Pipeline stages must be text.</source>
+      <translation>处理阶段必须为文本。</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="140" />
       <source>Play</source>
       <translation>播放</translation>
@@ -1307,6 +1615,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/VideoTransportBar.qml" line="362" />
       <source>Playback speed</source>
       <translation>播放速度</translation>
+    </message>
+    <message>
+      <source>Playing: %1</source>
+      <translation>正在播放：%1</translation>
     </message>
     <message>
       <source>Playlist: %1</source>
@@ -1330,8 +1642,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>偏好设置与系统配置</translation>
     </message>
     <message>
+      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
+      <translation>正在准备神经渲染：%1x%2 -&gt; %3x%4...</translation>
+    </message>
+    <message>
       <source>Preparing batch processing…</source>
       <translation>正在准备批处理…</translation>
+    </message>
+    <message>
+      <source>Preroll: %1 frames</source>
+      <translation>预处理：%1 帧</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportSettingsControls.qml" line="100" />
@@ -1348,9 +1668,33 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>预设</translation>
     </message>
     <message>
+      <source>Preset file is not valid UTF-8 JSON.</source>
+      <translation>预设文件不是有效的 UTF-8 JSON。</translation>
+    </message>
+    <message>
+      <source>Preset file is too large; the maximum size is 1 MiB.</source>
+      <translation>预设文件过大；最大大小为 1 MiB。</translation>
+    </message>
+    <message>
+      <source>Preset must contain a valid name and settings object.</source>
+      <translation>预设必须包含有效的名称和设置对象。</translation>
+    </message>
+    <message>
       <location filename="../qml/views/SettingsView.qml" line="98" />
       <source>Preset name (e.g. 4K Master)...</source>
       <translation>预设名称（例如 4K Master）...</translation>
+    </message>
+    <message>
+      <source>Preset name must contain 1 to 120 characters.</source>
+      <translation>预设名称必须包含 1 至 120 个字符。</translation>
+    </message>
+    <message>
+      <source>Preset schema_version must be an integer.</source>
+      <translation>预设的 schema_version 必须为整数。</translation>
+    </message>
+    <message>
+      <source>Presets</source>
+      <translation>预设</translation>
     </message>
     <message>
       <location filename="../qml/components/MenuStrip.qml" line="210" />
@@ -1393,6 +1737,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>上一帧</translation>
     </message>
     <message>
+      <source>Prioritizes quality over file size. Files can be very large.</source>
+      <translation>优先保证画质，而非减小文件大小。文件可能非常大。</translation>
+    </message>
+    <message>
+      <source>Probing %1...</source>
+      <translation>正在分析 %1...</translation>
+    </message>
+    <message>
       <location filename="../qml/components/MenuStrip.qml" line="84" />
       <source>Process</source>
       <translation>处理</translation>
@@ -1403,9 +1755,38 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>处理中</translation>
     </message>
     <message>
+      <source>Processing Cache</source>
+      <translation>处理缓存</translation>
+    </message>
+    <message>
+      <source>Processing NVIDIA VFX</source>
+      <translation>正在使用 NVIDIA VFX 处理</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="285" />
       <source>Processing Stage %1 of %2</source>
       <translation>正在处理第 %1 / %2 阶段</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
+      <source>Processing Stage %1 of %2 (Part %3)</source>
+      <translation>正在处理第 %1 / %2 阶段 (分段 %3)</translation>
+    </message>
+    <message>
+      <source>Processing finished or stopped; changes apply on the next Start.</source>
+      <translation>处理已完成或已停止；更改将在下次启动时生效。</translation>
+    </message>
+    <message>
+      <source>Processing image</source>
+      <translation>正在处理图像</translation>
+    </message>
+    <message>
+      <source>Processing is active. Try again when it finishes.</source>
+      <translation>正在处理，请在完成后重试。</translation>
+    </message>
+    <message>
+      <source>Processing video</source>
+      <translation>正在处理视频</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="371" />
@@ -1448,8 +1829,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>RTX Video HDR</translation>
     </message>
     <message>
+      <source>Ready</source>
+      <translation>就绪</translation>
+    </message>
+    <message>
       <source>Ready.</source>
       <translation>就绪。</translation>
+    </message>
+    <message>
+      <source>Ready. Add files to begin.</source>
+      <translation>已就绪。添加文件即可开始。</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="90" />
@@ -1464,6 +1853,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/ColoringControls.qml" line="320" />
       <source>Reference Image</source>
       <translation>参考图像</translation>
+    </message>
+    <message>
+      <source>Reference color adjustments ready</source>
+      <translation>参考色彩调整已就绪</translation>
     </message>
     <message>
       <source>Reference match could not be applied during the current operation.</source>
@@ -1482,6 +1875,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>参考匹配失败：%1</translation>
     </message>
     <message>
+      <source>Releasing worker</source>
+      <translation>正在释放进程</translation>
+    </message>
+    <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="202" />
       <source>Remaining</source>
       <translation>剩余</translation>
@@ -1490,6 +1887,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="516" />
       <source>Remove from queue</source>
       <translation>从队列移除</translation>
+    </message>
+    <message>
+      <source>Removed %1. Remaining: %2.</source>
+      <translation>已清理 %1。剩余：%2。</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="121" />
@@ -1509,6 +1910,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Rendering preview%1…</source>
       <translation>正在渲染预览%1…</translation>
+    </message>
+    <message>
+      <source>Requested up to %1p; received %2.</source>
+      <translation>请求最高 %1p；已接收 %2。</translation>
     </message>
     <message>
       <location filename="../qml/components/ColoringControls.qml" line="176" />
@@ -1538,25 +1943,41 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <location filename="../qml/views/FrameInterpolationView.qml" line="215" />
       <source>Reset interpolation settings</source>
-      <translation>重置 插帧 设置</translation>
+      <translation>重置插帧设置</translation>
     </message>
     <message>
       <location filename="../qml/views/NeuralRenderingView.qml" line="272" />
       <source>Reset neural rendering settings</source>
-      <translation>重置 神经渲染 设置</translation>
+      <translation>重置神经渲染设置</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="501" />
       <source>Reset upscale settings</source>
-      <translation>重置 放大 设置</translation>
+      <translation>重置放大设置</translation>
     </message>
     <message>
       <source>Resolving source...</source>
       <translation>正在解析源...</translation>
     </message>
     <message>
+      <source>Resume</source>
+      <translation>继续</translation>
+    </message>
+    <message>
+      <source>Resuming export from the last committed part…</source>
+      <translation>正在从上一个完成的分段恢复导出…</translation>
+    </message>
+    <message>
+      <source>Runtime error: %1</source>
+      <translation>运行时错误：%1</translation>
+    </message>
+    <message>
       <source>Runtime initialization failed: %1</source>
       <translation>运行环境初始化失败：%1</translation>
+    </message>
+    <message>
+      <source>Runtime state: %1</source>
+      <translation>运行时状态：%1</translation>
     </message>
     <message>
       <location filename="../qml/components/ExportDialog.qml" line="77" />
@@ -1607,6 +2028,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>正在保存 LUT…</translation>
     </message>
     <message>
+      <source>Saving image</source>
+      <translation>正在保存图像</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ScaleMethodControls.qml" line="31" />
       <source>Scale</source>
       <translation>倍率</translation>
@@ -1640,12 +2065,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>选择“应用 LUT”以通过色彩调整匹配参考。</translation>
     </message>
     <message>
-      <location filename="../qml/components/CompositionCard.qml" line="137" />
-      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
-      <source>Select NR Control Mask</source>
-      <translation>选择 NR 控制遮罩</translation>
-    </message>
-    <message>
       <location filename="../qml/components/ExportDialog.qml" line="175" />
       <source>Select Export Folder</source>
       <translation>选择导出文件夹</translation>
@@ -1670,6 +2089,12 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/DropZone.qml" line="91" />
       <source>Select Input Media</source>
       <translation>选择输入媒体</translation>
+    </message>
+    <message>
+      <location filename="../qml/components/CompositionCard.qml" line="137" />
+      <location filename="../qml/components/NeuralModelControls.qml" line="262" />
+      <source>Select NR Control Mask</source>
+      <translation>选择 NR 控制蒙版</translation>
     </message>
     <message>
       <source>Select a batch processing tab before exporting.</source>
@@ -1732,6 +2157,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>锐化方法</translation>
     </message>
     <message>
+      <source>Sharpening strength</source>
+      <translation>锐化强度</translation>
+    </message>
+    <message>
       <location filename="../qml/components/SharpeningControls.qml" line="22" />
       <source>Sharpness</source>
       <translation>锐度</translation>
@@ -1768,6 +2197,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>处理前已跳过</translation>
     </message>
     <message>
+      <source>Software codecs</source>
+      <translation>软件编解码器</translation>
+    </message>
+    <message>
+      <source>Some files are in use or could not be removed.</source>
+      <translation>部分文件正在使用或无法删除。</translation>
+    </message>
+    <message>
       <source>Source</source>
       <translation>源</translation>
     </message>
@@ -1789,6 +2226,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>默认</translation>
     </message>
     <message>
+      <source>Standard Upscaling Modes</source>
+      <translation>标准放大模式</translation>
+    </message>
+    <message>
       <location filename="../qml/components/VideoTransportBar.qml" line="122" />
       <source>Start</source>
       <translation>开始</translation>
@@ -1801,6 +2242,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     <message>
       <source>Starting...</source>
       <translation>正在启动...</translation>
+    </message>
+    <message>
+      <source>Startup %1 s · switch %2 s</source>
+      <translation>启动 %1 秒 · 切换 %2 秒</translation>
+    </message>
+    <message>
+      <source>Startup warning: %1</source>
+      <translation>启动警告：%1</translation>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="204" />
@@ -1849,8 +2298,16 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>正在停止...</translation>
     </message>
     <message>
+      <source>Strength</source>
+      <translation>强度</translation>
+    </message>
+    <message>
       <source>Style</source>
       <translation>风格</translation>
+    </message>
+    <message>
+      <source>Style %1</source>
+      <translation>风格 %1</translation>
     </message>
     <message>
       <location filename="../qml/views/AboutView.qml" line="30" />
@@ -1866,6 +2323,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>目标 %1 FPS</translation>
     </message>
     <message>
+      <source>Target FPS</source>
+      <translation>目标帧率</translation>
+    </message>
+    <message>
       <location filename="../qml/components/FrameGenerationControls.qml" line="14" />
       <location filename="../qml/views/FrameInterpolationView.qml" line="96" />
       <source>Target Output Frame Rate</source>
@@ -1877,9 +2338,29 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>色温</translation>
     </message>
     <message>
+      <source>The active workflow changed. Reopen Export Path.</source>
+      <translation>当前工作流程已更改。请重新打开“导出路径”。</translation>
+    </message>
+    <message>
+      <source>The resolved stream differs from the requested height.</source>
+      <translation>解析出的流高度与请求的高度不同。</translation>
+    </message>
+    <message>
+      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
+      <translation>所选的 FFmpeg/Vulkan GPU 不可用。请在设置中选择“自动”或其他 GPU。</translation>
+    </message>
+    <message>
+      <source>The selected GPU is unavailable.</source>
+      <translation>所选 GPU 不可用。</translation>
+    </message>
+    <message>
       <location filename="../qml/views/AboutView.qml" line="31" />
       <source>Third-Party Licenses</source>
       <translation>第三方许可证</translation>
+    </message>
+    <message>
+      <source>This JSON file is not a Visual Enhancer settings preset.</source>
+      <translation>此 JSON 文件不是 Visual Enhancer 设置预设。</translation>
     </message>
     <message>
       <location filename="../qml/views/SettingsView.qml" line="164" />
@@ -1907,6 +2388,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>色调响应</translation>
     </message>
     <message>
+      <source>Total: %1 bytes; available to clean: %2 bytes.</source>
+      <translation>总计：%1 字节；可清理：%2 字节。</translation>
+    </message>
+    <message>
       <source>Ultra</source>
       <translation>超高</translation>
     </message>
@@ -1919,6 +2404,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>超级性能 3.0×</translation>
     </message>
     <message>
+      <source>Unavailable</source>
+      <translation>不可用</translation>
+    </message>
+    <message>
       <location filename="../qml/controls/AppComboBox.qml" line="44" />
       <source>Unavailable: %1</source>
       <translation>不可用：%1</translation>
@@ -1929,6 +2418,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>取消静音</translation>
     </message>
     <message>
+      <source>Unsupported preset schema version.</source>
+      <translation>不支持此预设架构版本。</translation>
+    </message>
+    <message>
+      <source>Update failed; recovery failed</source>
+      <translation>更新失败；恢复失败</translation>
+    </message>
+    <message>
+      <source>Update failed—previous settings restored</source>
+      <translation>更新失败 — 已恢复先前的设置</translation>
+    </message>
+    <message>
       <source>Updating realtime preview…</source>
       <translation>正在更新实时预览…</translation>
     </message>
@@ -1936,6 +2437,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/components/MenuStrip.qml" line="150" />
       <source>Upscale</source>
       <translation>放大</translation>
+    </message>
+    <message>
+      <source>Upscale (Lightweight)</source>
+      <translation>放大（轻量）</translation>
     </message>
     <message>
       <location filename="../qml/views/UpscaleView.qml" line="514" />
@@ -1963,6 +2468,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>VSR 质量</translation>
     </message>
     <message>
+      <source>Very high visual quality, with less compression.</source>
+      <translation>画质极高，压缩程度较低。</translation>
+    </message>
+    <message>
       <location filename="../qml/components/ColoringControls.qml" line="281" />
       <source>Vibrance</source>
       <translation>自然饱和度</translation>
@@ -1987,6 +2496,18 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>视频文件 (*.mp4 *.mkv *.mov *.avi *.webm)</translation>
     </message>
     <message>
+      <source>Video Frame Generation</source>
+      <translation>视频帧生成</translation>
+    </message>
+    <message>
+      <source>Video GPU selection: %1</source>
+      <translation>视频 GPU 选择：%1</translation>
+    </message>
+    <message>
+      <source>Video Super Resolution</source>
+      <translation>视频超分辨率</translation>
+    </message>
+    <message>
       <source>Video cannot be played natively:</source>
       <translation>无法原生播放视频：</translation>
     </message>
@@ -1996,6 +2517,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
 </source>
       <translation>无法原生播放视频：
 </translation>
+    </message>
+    <message>
+      <source>Video complete</source>
+      <translation>视频处理完成</translation>
     </message>
     <message>
       <source>Video duration is unavailable; reload the input and try Auto again.</source>
@@ -2020,6 +2545,14 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <translation>音量</translation>
     </message>
     <message>
+      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
+      <translation>Vulkan GPU 滤镜不可用。请安装 AMD、Intel 或 NVIDIA 的最新 Vulkan 驱动程序。</translation>
+    </message>
+    <message>
+      <source>Vulkan codecs where supported; software fallback</source>
+      <translation>支持时使用 Vulkan 编解码器；否则使用软件编解码器</translation>
+    </message>
+    <message>
       <source>Waiting</source>
       <translation>等待中</translation>
     </message>
@@ -2042,6 +2575,10 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/UpscaleView.qml" line="220" />
       <source>Width (px)</source>
       <translation>宽度（像素）</translation>
+    </message>
+    <message>
+      <source>Writing cache</source>
+      <translation>正在写入缓存</translation>
     </message>
     <message>
       <location filename="../qml/Main.qml" line="228" />
@@ -2099,259 +2636,6 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <location filename="../qml/views/AboutView.qml" line="38" />
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk。NVIDIA、DLSS 和 RTX 是 NVIDIA Corporation 的商标。</translation>
-    </message>
-    <message>
-      <source>Lossless RAM cache with disk fallback. Models run one at a time.</source>
-      <translation>无损 RAM 缓存，内存不足时使用磁盘。模型逐个运行。</translation>
-    </message>
-    <message>
-      <source>Export paused; GPU memory released</source>
-      <translation>导出已暂停；GPU 内存已释放</translation>
-    </message>
-    <message>
-      <source>Part %1 · %2 · %3 FPS · %4 GB</source>
-      <translation>分段 %1 · %2 · %3 FPS · %4 GB</translation>
-    </message>
-    <message>
-      <source>Preroll: %1 frames</source>
-      <translation>预处理：%1 帧</translation>
-    </message>
-    <message>
-      <source>Pausing export; releasing GPU workers…</source>
-      <translation>正在暂停导出并释放 GPU 进程…</translation>
-    </message>
-    <message>
-      <source>Resuming export from the last committed part…</source>
-      <translation>正在从上一个完成的分段恢复导出…</translation>
-    </message>
-    <message>
-      <source>Loading model</source>
-      <translation>正在加载模型</translation>
-    </message>
-    <message>
-      <source>Flushing output</source>
-      <translation>正在完成输出</translation>
-    </message>
-    <message>
-      <source>Writing cache</source>
-      <translation>正在写入缓存</translation>
-    </message>
-    <message>
-      <source>Releasing worker</source>
-      <translation>正在释放进程</translation>
-    </message>
-    <message>
-      <source>Committing part</source>
-      <translation>正在提交分段</translation>
-    </message>
-    <message>
-      <source>Finalizing video</source>
-      <translation>正在完成视频</translation>
-    </message>
-    <message>
-      <source>Startup %1 s · switch %2 s</source>
-      <translation>启动 %1 秒 · 切换 %2 秒</translation>
-    </message>
-<message>
-      <source>Cache size</source>
-      <translation>缓存大小</translation>
-    </message>
-<message>
-      <source>Control Mask replaces Automatic Mask. RGB channels control intensity, tone, and structure.</source>
-      <translation>控制蒙版会替代自动蒙版。RGB 通道控制强度、色调和结构。</translation>
-    </message>
-    <message>
-      <location filename="../qml/components/BatchQueueDrawer.qml" line="307" />
-      <source>Processing Stage %1 of %2 (Part %3)</source>
-      <translation>正在处理第 %1 / %2 阶段 (分段 %3)</translation>
-    </message>
-    <message>
-      <source>Optical Flow Quality</source>
-      <translation>光流质量</translation>
-    </message>
-    <message>
-      <source>%1 (Discrete GPU)</source>
-      <translation>%1（独立 GPU）</translation>
-    </message>
-    <message>
-      <source>%1 (Integrated GPU)</source>
-      <translation>%1（集成 GPU）</translation>
-    </message>
-    <message>
-      <source>%1 fps target | %2 fps processing | %3 enhanced | %4 sampled out | %5s buffered</source>
-      <translation>目标：%1 帧/秒 | 处理：%2 帧/秒 | 已增强：%3 帧 | 采样时跳过：%4 帧 | 已缓冲：%5 秒</translation>
-    </message>
-    <message>
-      <source>%1 · pass %2/%3</source>
-      <translation>%1 · 第 %2/%3 遍处理</translation>
-    </message>
-    <message>
-      <source>%1. GPU filters: %2.</source>
-      <translation>%1。GPU 滤镜：%2。</translation>
-    </message>
-    <message>
-      <source>AI GPU selection: %1</source>
-      <translation>AI GPU 选择：%1</translation>
-    </message>
-    <message>
-      <source>Active: %1 — %2×%3.</source>
-      <translation>已启用：%1 — %2×%3。</translation>
-    </message>
-    <message>
-      <source>Application: %1</source>
-      <translation>应用程序：%1</translation>
-    </message>
-    <message>
-      <source>Applying; newer changes pending</source>
-      <translation>正在应用；有更新的更改等待应用</translation>
-    </message>
-    <message>
-      <source>Available</source>
-      <translation>可用</translation>
-    </message>
-    <message>
-      <source>Buffering: %1</source>
-      <translation>正在缓冲：%1</translation>
-    </message>
-    <message>
-      <source>CPU (Software decoding / encoding)</source>
-      <translation>CPU（软件解码 / 编码）</translation>
-    </message>
-    <message>
-      <source>Config: %1</source>
-      <translation>配置：%1</translation>
-    </message>
-    <message>
-      <source>Failed: %1</source>
-      <translation>失败：%1</translation>
-    </message>
-    <message>
-      <source>Finished processing: %1. Playback available until Stop.</source>
-      <translation>处理已完成：%1。按下“停止”前可继续播放。</translation>
-    </message>
-    <message>
-      <source>Finished: %1. %2 frames enhanced.</source>
-      <translation>已完成：%1。已增强 %2 帧。</translation>
-    </message>
-    <message>
-      <source>Logs: %1</source>
-      <translation>日志：%1</translation>
-    </message>
-    <message>
-      <source>Missing</source>
-      <translation>缺失</translation>
-    </message>
-    <message>
-      <source>Outputs: %1</source>
-      <translation>输出：%1</translation>
-    </message>
-    <message>
-      <source>Playing: %1</source>
-      <translation>正在播放：%1</translation>
-    </message>
-    <message>
-      <source>Preparing Neural Rendering: %1x%2 -&gt; %3x%4...</source>
-      <translation>正在准备 Neural Rendering：%1x%2 -&gt; %3x%4...</translation>
-    </message>
-    <message>
-      <source>Probing %1...</source>
-      <translation>正在分析 %1...</translation>
-    </message>
-    <message>
-      <source>Processing finished or stopped; changes apply on the next Start.</source>
-      <translation>处理已完成或已停止；更改将在下次启动时生效。</translation>
-    </message>
-    <message>
-      <source>Requested up to %1p; received %2.</source>
-      <translation>请求最高 %1p；已接收 %2。</translation>
-    </message>
-    <message>
-      <source>Runtime error: %1</source>
-      <translation>运行时错误：%1</translation>
-    </message>
-    <message>
-      <source>Runtime state: %1</source>
-      <translation>运行时状态：%1</translation>
-    </message>
-    <message>
-      <source>Software codecs</source>
-      <translation>软件编解码器</translation>
-    </message>
-    <message>
-      <source>Startup warning: %1</source>
-      <translation>启动警告：%1</translation>
-    </message>
-    <message>
-      <source>The resolved stream differs from the requested height.</source>
-      <translation>解析出的流高度与请求的高度不同。</translation>
-    </message>
-    <message>
-      <source>Update failed; recovery failed</source>
-      <translation>更新失败；恢复失败</translation>
-    </message>
-    <message>
-      <source>Update failed—previous settings restored</source>
-      <translation>更新失败 — 已恢复先前的设置</translation>
-    </message>
-    <message>
-      <source>Video GPU selection: %1</source>
-      <translation>视频 GPU 选择：%1</translation>
-    </message>
-    <message>
-      <source>Vulkan codecs where supported; software fallback</source>
-      <translation>支持时使用 Vulkan 编解码器；否则使用软件编解码器</translation>
-    </message>
-    <message>
-      <source>Native DLSSG</source>
-      <translation>原生 DLSSG</translation>
-    </message>
-    <message>
-      <source>Cascade</source>
-      <translation>级联</translation>
-    </message>
-    <message>
-      <source>Area</source>
-      <translation>区域平均</translation>
-    </message>
-    <message>
-      <source>Bicubic</source>
-      <translation>双三次</translation>
-    </message>
-    <message>
-      <source>Bilinear</source>
-      <translation>双线性</translation>
-    </message>
-    <message>
-      <source>Nearest</source>
-      <translation>最近邻</translation>
-    </message>
-    <message>
-      <source>FFV1 Lossless RGB 10-bit</source>
-      <translation>FFV1 无损 RGB 10 位</translation>
-    </message>
-    <message>
-      <source>Ready</source>
-      <translation>就绪</translation>
-    </message>
-    <message>
-      <source>Initializing</source>
-      <translation>正在初始化</translation>
-    </message>
-    <message>
-      <source>The selected FFmpeg/Vulkan GPU is unavailable. Choose Automatic or another GPU in Settings.</source>
-      <translation>所选的 FFmpeg/Vulkan GPU 不可用。请在设置中选择“自动”或其他 GPU。</translation>
-    </message>
-    <message>
-      <source>Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.</source>
-      <translation>Vulkan GPU 滤镜不可用。请安装 AMD、Intel 或 NVIDIA 的最新 Vulkan 驱动程序。</translation>
-    </message>
-    <message>
-      <source>%1: %2 (%3)</source>
-      <translation>%1: %2 (%3)</translation>
-    </message>
-    <message>
-      <source>Style %1</source>
-      <translation>风格 %1</translation>
     </message>
   </context>
 </TS>

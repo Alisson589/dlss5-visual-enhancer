@@ -6,7 +6,7 @@
 #include <QFileInfo>
 #include <QRegularExpression>
 #include <QSaveFile>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <QtEndian>
 #include <algorithm>
 #include <array>
@@ -212,7 +212,7 @@ ImageMetadata readImageMetadata(const QString& source, JobControl& control) {
         }
     }
     const auto data =
-        runProcess(Paths::instance().at("app/bin/exiv2/exiv2.exe"), {"-ea-", source}, &control, 30000).output;
+        runProcess(Paths::instance().at("bin/exiv2/exiv2.exe"), {"-ea-", source}, &control, 30000).output;
     if (data.size() > 16 * 1024 * 1024)
         throw std::runtime_error("Image metadata exceeds the supported size.");
     for (qsizetype at = 7; at + 4 <= data.size();) {
@@ -301,11 +301,11 @@ void writeImageMetadata(const QString& destination, const ImageMetadata& metadat
     }
     if (metadata.exif.isEmpty() && metadata.xmp.isEmpty())
         return;
-    QTemporaryDir temporary(Paths::instance().at("data/temp/app/metadata-XXXXXX"));
+    ScratchDirectory temporary(QStringLiteral("metadata-XXXXXX"));
     if (!temporary.isValid())
         throw std::runtime_error("Cannot create the metadata directory.");
     save(temporary.filePath(QFileInfo(destination).completeBaseName() + ".exv"), exv(metadata));
-    const auto result = runProcess(Paths::instance().at("app/bin/exiv2/exiv2.exe"),
+    const auto result = runProcess(Paths::instance().at("bin/exiv2/exiv2.exe"),
                                    {"-ieix", "-l", temporary.path(), destination}, &control, 30000);
     if (result.exitCode)
         throw std::runtime_error(QString::fromUtf8(result.error).toStdString());

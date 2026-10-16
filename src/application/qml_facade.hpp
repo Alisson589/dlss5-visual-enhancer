@@ -6,6 +6,15 @@
 #include <QVariantMap>
 namespace ve {
 enum class Property {
+    processingCacheBytes,
+    processingCacheReclaimableBytes,
+    processingCacheBusy,
+    processingCacheCleaning,
+    processingCacheReady,
+    canCleanProcessingCache,
+    processingCacheSizeText,
+    processingCacheStatus,
+    processingCacheDetails,
     activeTab,
     nrMode,
     workflowStages,
@@ -211,6 +220,8 @@ enum class Property {
     fullLog
 };
 enum class Action {
+    refreshProcessingCache,
+    cleanProcessingCache,
     setVfxSetting,
     setLutFile,
     setLutAdjustment,
@@ -261,6 +272,15 @@ enum class Action {
 // Stable facade for the existing QML. Rendering logic lives in feature services.
 class QmlFacade : public QObject {
     Q_OBJECT
+    Q_PROPERTY(qint64 processingCacheBytes READ processingCacheBytes NOTIFY processingCacheChanged)
+    Q_PROPERTY(qint64 processingCacheReclaimableBytes READ processingCacheReclaimableBytes NOTIFY processingCacheChanged)
+    Q_PROPERTY(bool processingCacheBusy READ processingCacheBusy NOTIFY processingCacheChanged)
+    Q_PROPERTY(bool processingCacheCleaning READ processingCacheCleaning NOTIFY processingCacheChanged)
+    Q_PROPERTY(bool processingCacheReady READ processingCacheReady NOTIFY processingCacheChanged)
+    Q_PROPERTY(bool canCleanProcessingCache READ canCleanProcessingCache NOTIFY processingCacheChanged)
+    Q_PROPERTY(QString processingCacheSizeText READ processingCacheSizeText NOTIFY processingCacheChanged)
+    Q_PROPERTY(QString processingCacheStatus READ processingCacheStatus NOTIFY processingCacheChanged)
+    Q_PROPERTY(QString processingCacheDetails READ processingCacheDetails NOTIFY processingCacheChanged)
     Q_PROPERTY(QVariantMap vfxSettings READ vfxSettings NOTIFY settingsUpdated)
     Q_PROPERTY(QString vfxStatus READ vfxStatus NOTIFY vfxStatusChanged)
     Q_PROPERTY(QString activeTab READ activeTab WRITE write_activeTab NOTIFY activeTabChanged)
@@ -1007,7 +1027,19 @@ class QmlFacade : public QObject {
                 {QVariant::fromValue(a0), QVariant::fromValue(a1), QVariant::fromValue(a2)});
     }
     Q_INVOKABLE void clearLogDisplay() { execute(Action::clearLogDisplay, {}); }
+    qint64 processingCacheBytes() const { return read(Property::processingCacheBytes).toLongLong(); }
+    qint64 processingCacheReclaimableBytes() const { return read(Property::processingCacheReclaimableBytes).toLongLong(); }
+    bool processingCacheBusy() const { return read(Property::processingCacheBusy).toBool(); }
+    bool processingCacheCleaning() const { return read(Property::processingCacheCleaning).toBool(); }
+    bool processingCacheReady() const { return read(Property::processingCacheReady).toBool(); }
+    bool canCleanProcessingCache() const { return read(Property::canCleanProcessingCache).toBool(); }
+    QString processingCacheSizeText() const { return read(Property::processingCacheSizeText).toString(); }
+    QString processingCacheStatus() const { return read(Property::processingCacheStatus).toString(); }
+    QString processingCacheDetails() const { return read(Property::processingCacheDetails).toString(); }
+    Q_INVOKABLE void refreshProcessingCache() { execute(Action::refreshProcessingCache, {}); }
+    Q_INVOKABLE void cleanProcessingCache() { execute(Action::cleanProcessingCache, {}); }
   signals:
+    void processingCacheChanged();
     void activeTabChanged();
     void nrModeChanged();
     void upscaleModeChanged();

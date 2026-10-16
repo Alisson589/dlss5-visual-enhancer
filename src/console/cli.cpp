@@ -332,7 +332,7 @@ int runCli(const QStringList& arguments) {
             return 0;
         }
         const auto target =
-            QFileInfo(localPath(args.options.value("--output", Paths::instance().at("data/outputs"))))
+            QFileInfo(localPath(args.options.value("--output", Paths::instance().at("outputs"))))
                 .absoluteFilePath();
         QStringList paths;
         for (const auto& input : args.inputs) {

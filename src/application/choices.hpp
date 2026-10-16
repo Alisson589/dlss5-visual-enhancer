@@ -1,5 +1,6 @@
 #pragma once
 #include "qml_facade.hpp"
+#include <QCoreApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <optional>
@@ -18,11 +19,13 @@ inline std::optional<QVariant> staticChoices(Property property) {
                    R"json([{"value":"en_US","label":"English (US)","fontFamily":"Segoe UI"},{"value":"ar","label":"العربية","fontFamily":"Segoe UI"},{"value":"de","label":"Deutsch","fontFamily":"Segoe UI"},{"value":"es","label":"Español","fontFamily":"Segoe UI"},{"value":"fr","label":"Français","fontFamily":"Segoe UI"},{"value":"hi","label":"हिन्दी","fontFamily":"Nirmala UI"},{"value":"ja","label":"日本語","fontFamily":"Yu Gothic UI"},{"value":"ko","label":"한국어","fontFamily":"Malgun Gothic"},{"value":"pl","label":"Polski","fontFamily":"Segoe UI"},{"value":"uk","label":"Українська","fontFamily":"Segoe UI"},{"value":"zh_CN","label":"中文 (简体)","fontFamily":"Microsoft YaHei UI"},{"value":"zh_TW","label":"中文 (繁體)","fontFamily":"Microsoft JhengHei UI"}])json")
             .array()
             .toVariantList();
-    case Property::nrStyleChoices:
-        return QJsonDocument::fromJson(
-                   R"json([{"label":"Style 0","value":"Style 0"},{"label":"Style 1","value":"Style 1"},{"label":"Style 2","value":"Style 2"}])json")
-            .array()
-            .toVariantList();
+    case Property::nrStyleChoices: {
+        QVariantList choices;
+        for (int style = 0; style <= 2; ++style)
+            choices.append(QVariantMap{{"label", QCoreApplication::translate("App", "Style %1").arg(style)},
+                                      {"value", QString("Style %1").arg(style)}});
+        return choices;
+    }
     case Property::nrScaleChoices:
         return QJsonDocument::fromJson(
                    R"json([{"label":"Source (Original)","value":1.0},{"label":"200%","value":2.0},{"label":"175%","value":1.75},{"label":"150%","value":1.5},{"label":"125%","value":1.25},{"label":"75%","value":0.75},{"label":"50%","value":0.5},{"label":"25%","value":0.25}])json")
@@ -71,20 +74,14 @@ inline std::optional<QVariant> staticChoices(Property property) {
             .array()
             .toVariantList();
     case Property::fiPreviewLengthChoices:
-        return QJsonDocument::fromJson(
-                   R"json([{"label":"1 s","value":"1"},{"label":"3 s","value":"3"},{"label":"5 s","value":"5"},{"label":"10 s","value":"10"},{"label":"20 s","value":"20"},{"label":"30 s","value":"30"}])json")
-            .array()
-            .toVariantList();
     case Property::upscalePreviewLengthChoices:
-        return QJsonDocument::fromJson(
-                   R"json([{"label":"1 s","value":"1"},{"label":"3 s","value":"3"},{"label":"5 s","value":"5"},{"label":"10 s","value":"10"},{"label":"20 s","value":"20"},{"label":"30 s","value":"30"}])json")
-            .array()
-            .toVariantList();
-    case Property::nrPreviewLengthChoices:
-        return QJsonDocument::fromJson(
-                   R"json([{"label":"1 s","value":"1"},{"label":"3 s","value":"3"},{"label":"5 s","value":"5"},{"label":"10 s","value":"10"},{"label":"20 s","value":"20"},{"label":"30 s","value":"30"}])json")
-            .array()
-            .toVariantList();
+    case Property::nrPreviewLengthChoices: {
+        QVariantList choices;
+        for (int seconds : {1, 3, 5, 10, 20, 30})
+            choices.append(QVariantMap{{"label", QCoreApplication::translate("App", "%1 s").arg(seconds)},
+                                      {"value", QString::number(seconds)}});
+        return choices;
+    }
     case Property::imageSizeModeChoices:
         return QJsonDocument::fromJson(R"json(["Scale factor","Custom dimensions"])json")
             .array()

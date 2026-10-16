@@ -7,7 +7,7 @@
 #include "processing/effects.hpp"
 #include "processing/preview_cache.hpp"
 #include <QDir>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <QTransform>
 #include <QThread>
 #include <cmath>
@@ -189,7 +189,7 @@ QImage decodeProcessedVideoPreview(const QString& path, const MediaInfo& source,
     return fromRgbaBytes(bytes, source.width, source.height);
 }
 QImage toneMapVideoPreview(const QImage& pixels, const MediaInfo& colors, JobControl& control, const QString& selection) {
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/hdr-preview-XXXXXX"));
+    ScratchDirectory directory(QStringLiteral("hdr-preview-XXXXXX"));
     if (!directory.isValid()) throw std::runtime_error("Cannot create the HDR preview directory.");
     const auto path = directory.filePath("frame.mkv");
     auto output = colors;

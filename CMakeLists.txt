@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(VisualEnhancer VERSION 16.0.0 LANGUAGES C CXX RC)
+project(VisualEnhancer VERSION 16.5.0 LANGUAGES C CXX RC)
 
 if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_CXX_COMPILER_ARCHITECTURE_ID STREQUAL "x64")
     message(FATAL_ERROR "Visual Enhancer requires a Windows MSVC x64 toolchain.")
@@ -56,6 +56,7 @@ target_link_libraries(ve_libraw PRIVATE ws2_32 zlibstatic ve_jpeg)
 add_library(ve_core STATIC
     src/configuration/settings.cpp
     src/infrastructure/paths.cpp
+    src/infrastructure/processing_cache.cpp
     src/infrastructure/process.cpp
     src/infrastructure/log.cpp
     src/infrastructure/vulkan_device.cpp
@@ -95,6 +96,7 @@ target_compile_definitions(ve_core PUBLIC NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _
 add_library(ve_desktop STATIC
     src/application/qml_facade.hpp
     src/application/controller.cpp
+    src/application/controller_cache.cpp
     src/application/controller_settings.cpp
     src/application/controller_workflows.cpp
     src/presentation/batch_model.cpp
@@ -102,7 +104,7 @@ add_library(ve_desktop STATIC
     src/presentation/preview_player.cpp
     src/presentation/window_chrome.cpp
 )
-target_link_libraries(ve_desktop PUBLIC ve_core Qt6::Qml Qt6::Quick Qt6::QuickControls2 Qt6::Multimedia dwmapi shell32 user32)
+target_link_libraries(ve_desktop PUBLIC ve_core Qt6::Qml Qt6::Quick Qt6::QuickControls2 Qt6::Multimedia dwmapi shell32 user32 propsys ole32)
 
 function(ve_windows_identity target description filename icon identity)
     set(VE_ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${icon}")
@@ -119,40 +121,20 @@ function(ve_windows_identity target description filename icon identity)
         "/MANIFESTINPUT:${CMAKE_CURRENT_BINARY_DIR}/${target}.manifest")
 endfunction()
 
-add_executable(visual_enhancer WIN32 src/application/main.cpp src/launcher/runtime_paths.qrc)
-set_target_properties(visual_enhancer PROPERTIES OUTPUT_NAME "Visual Enhancer.app")
+add_executable(visual_enhancer WIN32 src/application/main.cpp src/infrastructure/runtime_paths.qrc)
+set_target_properties(visual_enhancer PROPERTIES OUTPUT_NAME "Visual Enhancer")
 target_link_libraries(visual_enhancer PRIVATE ve_desktop)
-ve_windows_identity(visual_enhancer "Visual Enhancer" "Visual Enhancer.app.exe"
+ve_windows_identity(visual_enhancer "Visual Enhancer" "Visual Enhancer.exe"
     src/desktop/app.ico Merserk.VisualEnhancer)
 
-add_executable(ve_cli src/console/main.cpp src/console/cli.cpp src/launcher/runtime_paths.qrc)
-set_target_properties(ve_cli PROPERTIES OUTPUT_NAME "VE_CLI.app")
+add_executable(ve_cli src/console/main.cpp src/console/cli.cpp src/infrastructure/runtime_paths.qrc)
+set_target_properties(ve_cli PROPERTIES OUTPUT_NAME "VE_CLI")
 target_link_libraries(ve_cli PRIVATE ve_core shell32)
-ve_windows_identity(ve_cli "Visual Enhancer CLI" "VE_CLI.app.exe"
+ve_windows_identity(ve_cli "Visual Enhancer CLI" "VE_CLI.exe"
     src/console/cmd.ico Merserk.VisualEnhancer.CLI)
 
-# Public entry points start ordinary executables beside their dependencies in app/.
-add_executable(visual_enhancer_launcher WIN32 src/launcher/main.cpp)
-set_target_properties(visual_enhancer_launcher PROPERTIES OUTPUT_NAME "Visual Enhancer")
-target_compile_definitions(visual_enhancer_launcher PRIVATE "VE_LAUNCH_TARGET=L\"Visual Enhancer.app.exe\"")
-add_dependencies(visual_enhancer_launcher visual_enhancer)
-ve_windows_identity(visual_enhancer_launcher "Visual Enhancer" "Visual Enhancer.exe"
-    src/desktop/app.ico Merserk.VisualEnhancer.Launcher)
-add_executable(ve_cli_launcher src/launcher/main.cpp)
-set_target_properties(ve_cli_launcher PROPERTIES OUTPUT_NAME "VE_CLI")
-target_compile_definitions(ve_cli_launcher PRIVATE VE_CONSOLE_LAUNCHER "VE_LAUNCH_TARGET=L\"VE_CLI.app.exe\"")
-add_dependencies(ve_cli_launcher ve_cli)
-ve_windows_identity(ve_cli_launcher "Visual Enhancer CLI" "VE_CLI.exe"
-    src/console/cmd.ico Merserk.VisualEnhancer.CLI.Launcher)
-foreach(target visual_enhancer_launcher ve_cli_launcher)
-    set_target_properties(${target} PROPERTIES AUTOMOC OFF AUTORCC OFF MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    target_compile_definitions(${target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
-    target_compile_options(${target} PRIVATE /W4 /permissive- /utf-8 /Zc:__cplusplus /EHsc)
-    target_link_libraries(${target} PRIVATE user32 shell32)
-endforeach()
-
 if(MSVC)
-    foreach(target ve_core ve_desktop visual_enhancer ve_cli visual_enhancer_launcher ve_cli_launcher)
+    foreach(target ve_core ve_desktop visual_enhancer ve_cli)
         target_compile_options(${target} PRIVATE /guard:cf /sdl /GS)
     endforeach()
     foreach(target ve_libraw zlibstatic)
@@ -161,7 +143,7 @@ if(MSVC)
     foreach(target ve_core ve_desktop visual_enhancer ve_cli)
         target_compile_options(${target} PRIVATE /W4 /permissive- /utf-8 /Zc:__cplusplus /EHsc)
     endforeach()
-    foreach(target visual_enhancer ve_cli visual_enhancer_launcher ve_cli_launcher)
+    foreach(target visual_enhancer ve_cli)
         target_link_options(${target} PRIVATE /GUARD:CF /DYNAMICBASE /HIGHENTROPYVA /NXCOMPAT /CETCOMPAT)
     endforeach()
 endif()
@@ -170,31 +152,55 @@ option(BUILD_TESTING "Build the permanent unit and contract tests" OFF)
 include(CTest)
 if(BUILD_TESTING)
     find_package(Qt6 6.12...<6.13 REQUIRED COMPONENTS Test)
-    find_program(VE_PWSH_EXECUTABLE NAMES pwsh REQUIRED)
-    add_executable(ve_launcher_probe "${VE_TEST_ROOT}/launcher_probe.cpp")
-    set_target_properties(ve_launcher_probe PROPERTIES AUTOMOC OFF AUTORCC OFF
-        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    target_compile_definitions(ve_launcher_probe PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
-    add_test(NAME launcher_contracts COMMAND "${VE_PWSH_EXECUTABLE}" -NoProfile -File
-        "${VE_TEST_ROOT}/launcher_tests.ps1" -Launcher "$<TARGET_FILE:ve_cli_launcher>"
-        -Probe "$<TARGET_FILE:ve_launcher_probe>")
-    set_tests_properties(launcher_contracts PROPERTIES TIMEOUT 45)
-    add_executable(ve_tests "${VE_TEST_ROOT}/native_tests.cpp")
-    target_link_libraries(ve_tests PRIVATE ve_desktop Qt6::Test)
-    target_compile_definitions(ve_tests PRIVATE VE_TEST_VIDEO_PREVIEW_CACHE)
     get_filename_component(VE_QT_RUNTIME_ROOT "${Qt6_DIR}/../../.." ABSOLUTE)
-    add_test(NAME native_contracts COMMAND $<TARGET_FILE:ve_tests> -o -,txt)
-    add_test(NAME windows_chrome COMMAND $<TARGET_FILE:ve_tests> nativeMaximizeAndRestore -o -,txt)
-    set_tests_properties(windows_chrome PROPERTIES
-        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-        ENVIRONMENT "QT_QPA_PLATFORM=windows;QT_PLUGIN_PATH=${VE_QT_RUNTIME_ROOT}/plugins"
-        ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${VE_QT_RUNTIME_ROOT}/bin"
-        TIMEOUT 45)
-    set_tests_properties(native_contracts PROPERTIES
+    add_executable(ve_storage_tests "${VE_TEST_ROOT}/storage_tests.cpp")
+    target_link_libraries(ve_storage_tests PRIVATE ve_desktop Qt6::Test)
+    add_executable(ve_processing_cache_tests "${VE_TEST_ROOT}/processing_cache_tests.cpp")
+    target_link_libraries(ve_processing_cache_tests PRIVATE ve_desktop Qt6::Test)
+    add_executable(ve_translation_tests "${VE_TEST_ROOT}/translation_tests.cpp")
+    target_link_libraries(ve_translation_tests PRIVATE ve_desktop Qt6::Test)
+    target_compile_options(ve_translation_tests PRIVATE /utf-8)
+    target_compile_definitions(ve_translation_tests PRIVATE
+        VE_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src"
+        VE_TRANSLATION_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/desktop/translations"
+        VE_LUPDATE="${VE_QT_RUNTIME_ROOT}/bin/lupdate.exe")
+    add_executable(ve_desktop_smoke "${VE_TEST_ROOT}/desktop_smoke.cpp")
+    target_link_libraries(ve_desktop_smoke PRIVATE ve_desktop Qt6::Test)
+    ve_windows_identity(ve_desktop_smoke "Visual Enhancer Desktop Smoke" "ve_desktop_smoke.exe"
+        src/desktop/app.ico Merserk.VisualEnhancer.Tests)
+    add_executable(ve_vfx_storage_smoke "${VE_TEST_ROOT}/vfx_storage_smoke.cpp")
+    target_link_libraries(ve_vfx_storage_smoke PRIVATE ve_desktop)
+    add_executable(ve_cli_cancel_probe "${VE_TEST_ROOT}/cli_cancel_probe.cpp")
+    set_target_properties(ve_cli_cancel_probe PROPERTIES AUTOMOC OFF AUTORCC OFF)
+    target_compile_definitions(ve_cli_cancel_probe PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    target_link_libraries(ve_cli_cancel_probe PRIVATE user32)
+    add_test(NAME storage_contracts COMMAND $<TARGET_FILE:ve_storage_tests> -o -,txt)
+    add_test(NAME processing_cache_contracts COMMAND $<TARGET_FILE:ve_processing_cache_tests> -o -,txt)
+    add_test(NAME translation_contracts COMMAND $<TARGET_FILE:ve_translation_tests> -o -,txt)
+    set_tests_properties(storage_contracts processing_cache_contracts translation_contracts PROPERTIES
         WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
         ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_PLUGIN_PATH=${VE_QT_RUNTIME_ROOT}/plugins"
         ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${VE_QT_RUNTIME_ROOT}/bin"
         TIMEOUT 60)
+    if(EXISTS "${VE_TEST_ROOT}/native_tests.cpp")
+        add_executable(ve_tests "${VE_TEST_ROOT}/native_tests.cpp")
+        target_link_libraries(ve_tests PRIVATE ve_desktop Qt6::Test)
+        target_compile_definitions(ve_tests PRIVATE VE_TEST_VIDEO_PREVIEW_CACHE)
+        add_test(NAME native_contracts COMMAND $<TARGET_FILE:ve_tests> -o -,txt)
+        add_test(NAME windows_chrome COMMAND $<TARGET_FILE:ve_tests> nativeMaximizeAndRestore -o -,txt)
+        set_tests_properties(windows_chrome PROPERTIES
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            ENVIRONMENT "QT_QPA_PLATFORM=windows;QT_PLUGIN_PATH=${VE_QT_RUNTIME_ROOT}/plugins"
+            ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${VE_QT_RUNTIME_ROOT}/bin"
+            TIMEOUT 45)
+        set_tests_properties(native_contracts PROPERTIES
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_PLUGIN_PATH=${VE_QT_RUNTIME_ROOT}/plugins"
+            ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:${VE_QT_RUNTIME_ROOT}/bin"
+            TIMEOUT 60)
+    else()
+        message(WARNING "Legacy native/window test sources are absent; storage contracts remain enabled.")
+    endif()
 endif()
 
 # tools/deploy.ps1 packages only the runnable application and its resources.

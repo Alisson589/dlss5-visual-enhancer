@@ -27,11 +27,11 @@
 
 namespace ve {
 namespace {
-using NativeInit = int(__cdecl*)(int, const wchar_t*, char*, int);
+using NativeInit = int(__cdecl*)(int, const wchar_t*, const wchar_t*, char*, int);
 class Module {
   public:
     Module(const QString& folder, const QString& filename, const QString& prefix)
-        : directory_(Paths::instance().at("app/bin/runtime/" + folder)), filename_(filename), prefix_(prefix) {}
+        : directory_(Paths::instance().at("bin/runtime/" + folder)), filename_(filename), prefix_(prefix) {}
     template <class Function> [[nodiscard]] Function function(const char* name) {
         std::call_once(load_, [this] {
             const auto path = QDir::toNativeSeparators(directory_ + '/' + filename_).toStdWString();
@@ -50,8 +50,10 @@ class Module {
             return;
         prepareCudaPrimaryContext(ordinal);
         std::array<char, 4096> error{};
-        const auto init = function<NativeInit>((prefix_ + "_init").toUtf8().constData());
-        if (!init(ordinal, reinterpret_cast<const wchar_t*>(directory_.utf16()), error.data(),
+        const auto init = function<NativeInit>((prefix_ + "_init_v2").toUtf8().constData());
+        const auto data = Paths::instance().nativeDataDirectory();
+        if (!init(ordinal, reinterpret_cast<const wchar_t*>(directory_.utf16()),
+                  reinterpret_cast<const wchar_t*>(data.utf16()), error.data(),
                   int(error.size())))
             throw std::runtime_error(error.data());
         initialized_ = true;

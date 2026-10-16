@@ -6,19 +6,34 @@
 #include "media/packet_stream.hpp"
 #include "processing/preview_cache.hpp"
 #include <QVideoFrameFormat>
+#include <QSet>
+#include <QScopeGuard>
 #include <algorithm>
 #include <cmath>
 #include <cstring>
 
 namespace ve {
+namespace { QSet<PreviewPlayer*> players; }
 PreviewPlayer::PreviewPlayer(QObject* parent)
     : QObject(parent), thread_([this](std::stop_token stop) { decode(stop); }) {
+    players.insert(this);
     timer_.setInterval(5);
     connect(&timer_, &QTimer::timeout, this, &PreviewPlayer::tick);
     timer_.start();
 }
 PreviewPlayer::~PreviewPlayer() {
     close();
+    if (thread_.joinable()) thread_.join();
+    players.remove(this);
+}
+QStringList PreviewPlayer::processingFilesInUse() {
+    QStringList paths;
+    for (auto* player : players) {
+        if (!player->closed_ && player->source_.isLocalFile()) paths.append(player->source_.toLocalFile());
+        std::lock_guard lock(player->mutex_);
+        if (!player->decodingPath_.isEmpty()) paths.append(player->decodingPath_);
+    }
+    return paths;
 }
 void PreviewPlayer::setState(int state) {
     if (state_ != state) {
@@ -165,7 +180,9 @@ void PreviewPlayer::decode(std::stop_token stop) {
             request_.reset();
             control = std::make_shared<JobControl>();
             control_ = control;
+            decodingPath_ = request.path;
         }
+        const auto releasePath = qScopeGuard([this] { std::lock_guard lock(mutex_); decodingPath_.clear(); });
         if (request.path.isEmpty())
             continue;
         const auto generation = request.generation;

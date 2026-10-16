@@ -12,7 +12,7 @@
 #include <QElapsedTimer>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QTemporaryDir>
+#include "infrastructure/scratch.hpp"
 #include <algorithm>
 #include <limits>
 #include <utility>
@@ -116,7 +116,7 @@ bool renderVfxVideo(const RenderRequest& request,const MediaInfo& input,const Se
     }else if(!input.hdr){outputInfo.primaries="bt709";outputInfo.transfer="bt470m";}
     outputInfo.colorSpace=outputInfo.hdr?"bt2020nc":"bt709";outputInfo.range="tv";
     if(request.preview){settings.codec="FFV1 Lossless RGB 10-bit";settings.container="MKV";}
-    QTemporaryDir directory(Paths::instance().at("data/temp/app/vfx-XXXXXX"));if(!directory.isValid())throw std::runtime_error("Cannot create VFX delivery directory.");
+    ScratchDirectory directory(QStringLiteral("vfx-XXXXXX"));if(!directory.isValid())throw std::runtime_error("Cannot create VFX delivery directory.");
     const auto video=directory.filePath(settings.codec.startsWith("ProRes")?"video.mov":"video.mkv");
     const bool sole=std::all_of(estimate.stages.begin(),estimate.stages.end(),[](const QString& stage){return isVfxStage(stage);});
     const bool sameGpu=settings.video_gpu_uuid=="auto"||gpuOrdinal(settings.video_gpu_uuid)==gpu;
@@ -151,7 +151,7 @@ bool renderVfxVideo(const RenderRequest& request,const MediaInfo& input,const Se
             if(gpuEncoder){auto pixels=frame->pixels.toVideo(*pool,gpuEncoder->pixelFormat()==VideoPixelFormat::P010,outputInfo);pixels.pts=frame->pts;pixels.duration=frame->span;pixels.timeBase=frame->base;gpuEncoder->write(pixels);}
             else hostEncoder->write(frame->pixels.toHost(outputInfo.hdr||outputInfo.precisionBits()>8),frame->pts,frame->span,frame->base);
             ++written;actualDuration=std::max(actualDuration,(frame->time+frame->duration).seconds());
-            if(progress)progress({duration>0?std::min(.98,actualDuration/duration):0.,"Processing NVIDIA VFX",written,qint64(std::ceil(duration*estimate.fps)),elapsed.elapsed()>0?written*1000./elapsed.elapsed():0.});
+            if(progress)progress({duration>0?std::min(.98,actualDuration/duration):0.,QT_TRANSLATE_NOOP("App", "Processing NVIDIA VFX"),written,qint64(std::ceil(duration*estimate.fps)),elapsed.elapsed()>0?written*1000./elapsed.elapsed():0.});
         }
         if(gpuEncoder)gpuEncoder->finish();else hostEncoder->finish();
         info("vfx",QString("Path: CUDA decode -> VFX -> ")+(gpuEncoder?"NVENC":"host encoder"));
@@ -166,7 +166,7 @@ bool renderVfxVideo(const RenderRequest& request,const MediaInfo& input,const Se
         while(auto frame=pipeline.read()){
             control.checkpoint();if(duration>0&&frame->seconds()>=duration-1e-9)break;
             encoder.write(frame->image,frame->pts,frame->duration,frame->timeBase);++written;actualDuration=std::max(actualDuration,frame->seconds()+frame->duration*double(frame->timeBase.numerator)/frame->timeBase.denominator);
-            if(progress)progress({duration>0?std::min(.98,actualDuration/duration):0.,"Processing NVIDIA VFX",written,qint64(std::ceil(duration*estimate.fps)),elapsed.elapsed()>0?written*1000./elapsed.elapsed():0.});
+            if(progress)progress({duration>0?std::min(.98,actualDuration/duration):0.,QT_TRANSLATE_NOOP("App", "Processing NVIDIA VFX"),written,qint64(std::ceil(duration*estimate.fps)),elapsed.elapsed()>0?written*1000./elapsed.elapsed():0.});
         }
         encoder.finish();info("vfx","Path: host boundaries with GPU VFX processing");
     }

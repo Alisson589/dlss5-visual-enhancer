@@ -7,11 +7,22 @@ param(
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Release.ps1')
 $root = (Resolve-Path -LiteralPath $PackageRoot).Path
+foreach ($obsolete in @('app', 'data', 'Visual Enhancer.app.exe', 'VE_CLI.app.exe', 'qt.conf')) {
+    if (Test-Path -LiteralPath (Join-Path $root $obsolete)) { throw "Obsolete package layout: $obsolete" }
+}
+$qtSuffix = if (Test-Path -LiteralPath (Join-Path $root 'Qt6Cored.dll')) { 'd' } else { '' }
+foreach ($required in @('resources/desktop/qml/Main.qml', 'resources/desktop/app.ico',
+    'resources/shaders', "platforms/qwindows$qtSuffix.dll", "platforms/qoffscreen$qtSuffix.dll",
+    "Qt6Core$qtSuffix.dll", "Qt6Gui$qtSuffix.dll", "Qt6Quick$qtSuffix.dll", 'qml/QtQuick/Controls/Basic',
+    'bin/ffmpeg/bin/ffmpeg.exe', 'bin/ffmpeg/bin/ffprobe.exe', 'bin/avif/avifenc.exe',
+    'bin/avif/avifdec.exe', 'bin/exiv2/exiv2.exe', 'LICENSE.txt', 'THIRD-PARTY-NOTICES.txt')) {
+    if (-not (Test-Path -LiteralPath (Join-Path $root $required))) { throw "Missing package dependency: $required" }
+}
 $owned = @(Get-VeOwnedBinaries $root)
 $ownedPaths = @($owned.FullName)
 $releaseVersion = $owned[0].VersionInfo.ProductVersion
 $inventory = foreach ($file in (Get-ChildItem -LiteralPath $root -Recurse -File |
-    Where-Object { $_.Extension -in @('.exe', '.dll') } | Sort-Object FullName)) {
+    Where-Object { $_.Extension -in @('.exe', '.dll') -and -not $_.FullName.StartsWith((Join-Path $root 'outputs') + '\', [StringComparison]::OrdinalIgnoreCase) -and -not $_.FullName.StartsWith((Join-Path $root 'logs') + '\', [StringComparison]::OrdinalIgnoreCase) } | Sort-Object FullName)) {
     $isOwned = $file.FullName -in $ownedPaths
     $signature = Get-AuthenticodeSignature -LiteralPath $file.FullName
     $security = Get-VePeSecurity $file.FullName
@@ -25,6 +36,8 @@ $inventory = foreach ($file in (Get-ChildItem -LiteralPath $root -Recurse -File 
         if ($file.Extension -eq '.exe' -and $file.VersionInfo.ProductVersion -ne $releaseVersion) {
             throw "Inconsistent application release version: $($file.Name)"
         }
+        if (($file.Name -eq 'Visual Enhancer.exe' -and $security.subsystem -ne 2) -or
+            ($file.Name -eq 'VE_CLI.exe' -and $security.subsystem -ne 3)) { throw "Incorrect application subsystem: $($file.Name)" }
         if ($RequireSignatures -and ($signature.Status -ne 'Valid' -or -not $signature.TimeStamperCertificate)) {
             throw "A trusted, timestamped signature is required: $($file.Name)"
         }
@@ -46,18 +59,26 @@ $inventory = foreach ($file in (Get-ChildItem -LiteralPath $root -Recurse -File 
     }
 }
 $report = [ordered]@{
-    schema_version = 1
+    schema_version = 2
     product = 'Visual Enhancer'
     release_version = $releaseVersion
     generated_utc = [DateTime]::UtcNow.ToString('o')
     signatures_required = [bool]$RequireSignatures
+    layout = 'Direct GUI and CLI executables; root outputs/logs; per-user settings and caches.'
     neural_rendering = 'Private NVIDIA interface; existing temporary nvngx.dll caller alias retained for compatibility.'
     binaries = @($inventory)
 }
 if ($OutputDirectory) {
     New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
     $report | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'binary-inventory.json') -Encoding utf8
-    @($inventory | ForEach-Object { "$($_.sha256)  $($_.path)" }) |
+    $payload = @(Get-ChildItem -LiteralPath $root -Recurse -File | Where-Object {
+        -not $_.FullName.StartsWith((Join-Path $root 'outputs') + '\', [StringComparison]::OrdinalIgnoreCase) -and
+        -not $_.FullName.StartsWith((Join-Path $root 'logs') + '\', [StringComparison]::OrdinalIgnoreCase)
+    } | Sort-Object FullName | ForEach-Object {
+        [pscustomobject]@{ path = [IO.Path]::GetRelativePath($root, $_.FullName).Replace('\','/'); size_bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() }
+    })
+    $payload | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'package-files.json') -Encoding utf8
+    @($payload | ForEach-Object { "$($_.sha256)  $($_.path)" }) |
         Set-Content -LiteralPath (Join-Path $OutputDirectory 'SHA256SUMS.txt') -Encoding utf8
     Write-Host "Inventory and SHA-256 hashes: $OutputDirectory"
 }
