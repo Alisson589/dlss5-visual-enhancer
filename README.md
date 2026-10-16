@@ -1,6 +1,6 @@
 # Visual Enhancer
 
-[![Downloads](https://img.shields.io/github/downloads/Merserk/dlss5-visual-enhancer/total.svg?style=flat-square&label=Downloads)](https://github.com/Merserk/dlss5-visual-enhancer/releases) ![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat-square&logo=windows11&logoColor=white) ![DLSS](https://img.shields.io/badge/DLSS%205-Neural%20Rendering-76B900?style=flat-square) ![DLSS Frame Generation](https://img.shields.io/badge/DLSS-Frame%20Generation-76B900?style=flat-square&logo=nvidia&logoColor=white) ![RTX Video](https://img.shields.io/badge/RTX-Video-76B900?style=flat-square&logo=nvidia&logoColor=white) [![Patreon](https://img.shields.io/badge/Patreon-Merserk-FF424D?style=flat-square&logo=patreon&logoColor=white)](https://www.patreon.com/Merserk)
+[![Downloads](https://img.shields.io/github/downloads/Merserk/dlss5-visual-enhancer/total.svg?style=flat-square&label=Downloads)](https://github.com/Merserk/dlss5-visual-enhancer/releases) ![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat-square&logo=windows11&logoColor=white) ![DLSS](https://img.shields.io/badge/DLSS%205-Neural%20Rendering-76B900?style=flat-square) ![DLSS Super Resolution](https://img.shields.io/badge/DLSS-Super%20Resolution-76B900?style=flat-square&logo=nvidia&logoColor=white) ![DLSS Frame Generation](https://img.shields.io/badge/DLSS-Frame%20Generation-76B900?style=flat-square&logo=nvidia&logoColor=white) ![RTX Video](https://img.shields.io/badge/RTX-Video-76B900?style=flat-square&logo=nvidia&logoColor=white) ![NVIDIA Video Effects (VFX)](https://img.shields.io/badge/NVIDIA-Video%20Effects%20%28VFX%29-76B900?style=flat-square&logo=nvidia&logoColor=white) [![Patreon](https://img.shields.io/badge/Patreon-Merserk-FF424D?style=flat-square&logo=patreon&logoColor=white)](https://www.patreon.com/Merserk)
 
 **Visual Enhancer** is a portable Windows application for AI-assisted image and video enhancement on NVIDIA RTX GPUs. Its configurable pipelines combine **NVIDIA DLSS 5 Neural Rendering** through the **Neuroframe Engine**, scaling, **DLSS Super Resolution**, **RTX Video Super Resolution**, coloring, sharpening, and film grain. Video processing also offers **RTX Video HDR**, **DLSS Frame Generation**, **Video Super Resolution**, **Video Frame Generation**, and **Upscale (Lightweight)** as separate stages. Arrange the effects, compare previews, and export single files or batches.
 
@@ -82,6 +82,21 @@ NVIDIA NVENC export requires an encoder supported by the selected RTX GPU. AV1 h
 **Settings** contains interface language, AI Processing GPU, Decoding / Encoding Device, Realtime Preview, and preset import/export. Select the AI GPU separately from the device used for video decoding and encoding.
 
 Use the processing cards for individual effects and **Export Settings** for image format, bit depth, video codec, container, quality, and **Preserve / Export 10-bit HDR**. The Export dialog selects the destination and filename. Portable settings, outputs, logs, and temporary files are stored under `data/`; the default output folder is `data/outputs/`, and logs are in `data/logs/`.
+
+## Supported languages
+
+- English (US)
+- &lrm;العربية
+- Deutsch
+- Español
+- Français
+- हिन्दी
+- 日本語
+- 한국어
+- Polski
+- Українська
+- 中文 (简体)
+- 中文 (繁體)
 
 ## Command line
 
