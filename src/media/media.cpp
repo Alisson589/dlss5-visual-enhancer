@@ -3,6 +3,7 @@
 #include "image_codecs.hpp"
 #include "image_metadata.hpp"
 #include "png_encoder.hpp"
+#include "resolution.hpp"
 #include "infrastructure/log.hpp"
 #include "infrastructure/paths.hpp"
 #include "infrastructure/process.hpp"
@@ -39,14 +40,19 @@ void requireSuccess(const ProcessResult& result) {
         throw std::runtime_error(QString::fromUtf8(result.error).right(6000).toStdString());
 }
 QImage readRaster(QImageReader& reader) {
+    configureImageDecoding();
+    if (reader.size().isValid()) requireResolution(reader.size(), "Input image");
     reader.setAutoTransform(true);
     auto image=reader.read();
     if (image.isNull()) return {};
+    requireResolution(image.size(), "Decoded image");
     if (image.depth()<=32) {
         if (image.colorSpace().isValid()) image.convertToColorSpace(QColorSpace::SRgb);
         image.setColorSpace(QColorSpace::SRgb);
     }
-    return image.convertToFormat(image.depth()<=32 ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
+    auto result = image.convertToFormat(image.depth()<=32 ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
+    requireImageAllocation(result, "Image conversion");
+    return result;
 }
 } // namespace
 int MediaInfo::precisionBits() const {
@@ -60,6 +66,13 @@ int MediaInfo::precisionBits() const {
     }
     const auto declared = metadata.value("bits_per_raw_sample").toVariant().toInt();
     return declared > 0 ? declared : hdr ? 10 : 8;
+}
+double MediaInfo::presentationStartSeconds() const {
+    bool valid=false;
+    const auto stream=metadata.value("start_time").toVariant().toDouble(&valid);
+    if(valid&&std::isfinite(stream))return stream;
+    const auto format=metadata.value("source_format").toObject().value("start_time").toVariant().toDouble(&valid);
+    return valid&&std::isfinite(format)?format:0.;
 }
 int MediaInfo::clockwiseRotation() const {
     int display = metadata.value("tags").toObject().value("rotate").toVariant().toInt();
@@ -186,21 +199,25 @@ MediaInfo probeMedia(const QString& path, JobControl* control, const QStringList
 QByteArray rgbaBytes(const QImage& image, bool sixteenBit) {
     const auto converted =
         image.convertToFormat(sixteenBit ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
+    requireImageAllocation(converted, "Packed image conversion");
     const qsizetype stride = qsizetype(converted.width()) * (sixteenBit ? 8 : 4);
-    QByteArray result(stride * converted.height(), Qt::Uninitialized);
+    QByteArray result(imageByteCount(converted.size(),sixteenBit ? 8 : 4), Qt::Uninitialized);
     for (int y = 0; y < converted.height(); ++y)
         std::memcpy(result.data() + stride * y, converted.constScanLine(y), static_cast<size_t>(stride));
     return result;
 }
 QImage fromRgbaBytes(const QByteArray& bytes, int width, int height, bool sixteenBit) {
-    const auto expected = qsizetype(width) * height * (sixteenBit ? 8 : 4);
+    const auto expected = imageByteCount({width, height}, sixteenBit ? 8 : 4);
     if (bytes.size() != expected)
         throw std::runtime_error("Decoder returned an incomplete image.");
-    return QImage(reinterpret_cast<const uchar*>(bytes.constData()), width, height,
+    auto image = QImage(reinterpret_cast<const uchar*>(bytes.constData()), width, height,
                   width * (sixteenBit ? 8 : 4), sixteenBit ? QImage::Format_RGBA64 : QImage::Format_RGBA8888)
         .copy();
+    requireImageAllocation(image, "Decoded image allocation");
+    return image;
 }
 QImage decodeImage(const QString& path, JobControl& control) {
+    configureImageDecoding();
     control.checkpoint();
     if (isRawImage(path))
         return decodeRawImage(path, control);
@@ -213,14 +230,20 @@ QImage decodeImage(const QString& path, JobControl& control) {
         if (!directory.isValid()) throw std::runtime_error("Cannot create the AVIF decoder directory.");
         const auto decoded = directory.filePath("decoded.png");
         const auto result = runProcess(Paths::instance().at("bin/avif/avifdec.exe"),
-                                       {"--depth", wide ? "16" : "8", "--png-compress", "1", path, decoded}, &control, 0);
+                                       // libavif 1.4.2's CLI rejects pixel limits above its
+                                       // compiled 268435456 maximum. Retain that feature limit.
+                                       {"--depth", wide ? "16" : "8", "--dimension-limit", QString::number(maximumImageDimension),
+                                        "--png-compress", "1", path, decoded}, &control, 0);
         requireSuccess(result);
         QImageReader reader(decoded);
+        if (reader.size().isValid()) requireResolution(reader.size(), "AVIF image");
         reader.setAutoTransform(true);
         auto image = reader.read();
         if (image.isNull())
             throw std::runtime_error(reader.errorString().toStdString());
-        return image.convertToFormat(wide ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
+        auto converted = image.convertToFormat(wide ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
+        requireImageAllocation(converted, "AVIF image conversion");
+        return converted;
     }
     QImageReader reader(path);
     auto image = readRaster(reader);
@@ -228,6 +251,7 @@ QImage decodeImage(const QString& path, JobControl& control) {
         return image;
     }
     const auto info = probeMedia(path, &control);
+    requireResolution({info.width, info.height}, "Input image");
     const auto process = runProcess(
         Paths::instance().ffmpeg(),
         {"-v", "error", "-i", path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba64le", "pipe:1"},
@@ -259,6 +283,8 @@ QImage decodeVideoFrame(const QString& path, double seconds, JobControl& control
 void encodeImage(const QString& path, const QImage& pixels, const QString& format, int quality, int bitDepth,
                  JobControl& control, const QString& metadataSource, const QString& note) {
     control.checkpoint();
+    requireResolution(pixels.size(), "Output image");
+    if (format == "WebP") requireResolution(pixels.size(), "WebP format", 16383);
     ImageMetadata metadata;
     try {
         metadata = readImageMetadata(metadataSource, control);
@@ -273,6 +299,7 @@ void encodeImage(const QString& path, const QImage& pixels, const QString& forma
     auto image = pixels.convertToFormat(bitDepth == 16 && (format == "PNG" || format == "TIFF" || format=="AVIF")
                                             ? QImage::Format_RGBA64
                                             : QImage::Format_RGBA8888);
+    requireImageAllocation(image, "Output image conversion");
     if (!image.colorSpace().isValid())
         image.setColorSpace(QColorSpace::SRgb);
     metadata.icc = image.colorSpace().iccProfile();

@@ -1,4 +1,5 @@
 #include "host_video.hpp"
+#include "resolution.hpp"
 #include "av_api.hpp"
 #include "cuda_video.hpp"
 #include "native_frame.hpp"
@@ -68,6 +69,21 @@ void retainHdrMetadata(AVCodecParameters* parameters, const MediaInfo& info) {
     }
 }
 } // namespace
+void retainStaticHdrMetadata(AVCodecParameters* parameters,const MediaInfo& info) {
+    retainHdrMetadata(parameters,info);
+}
+void copyStaticHdrMetadata(AVFrame* frame,const AVCodecParameters* parameters) {
+    auto& api=av::Api::get();
+    for(int index=0;index<parameters->nb_coded_side_data;++index){
+        const auto& side=parameters->coded_side_data[index];
+        if(side.type!=AV_PKT_DATA_MASTERING_DISPLAY_METADATA&&side.type!=AV_PKT_DATA_CONTENT_LIGHT_LEVEL)continue;
+        const auto type=side.type==AV_PKT_DATA_MASTERING_DISPLAY_METADATA?AV_FRAME_DATA_MASTERING_DISPLAY_METADATA:AV_FRAME_DATA_CONTENT_LIGHT_LEVEL;
+        if(api.av_frame_get_side_data(frame,type))continue;
+        auto* retained=api.av_frame_new_side_data(frame,type,side.size);
+        if(!retained)throw std::bad_alloc{};
+        std::memcpy(retained->data,side.data,side.size);
+    }
+}
 QString ffv1PreviewPixelFormat(const MediaInfo& info) {
     const auto bits = std::max(info.precisionBits(), info.hdr ? 10 : 8);
     if (bits == 8) return "bgr0";
@@ -232,7 +248,7 @@ struct HostVideoDecoder::Impl {
             av::check(api.avformat_find_stream_info(format, nullptr), "Probe host source");
             stream = api.av_find_best_stream(format, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
             av::check(stream, "Find host video stream");
-            if (timelinePacking) {
+            {
                 const auto* track=format->streams[stream];
                 if (track->start_time!=AV_NOPTS_VALUE)
                     timestampOffset=track->start_time*av_q2d(track->time_base);
@@ -367,6 +383,7 @@ std::optional<TimedImage> HostVideoDecoder::read() {
         QImage image(destination->data[0], destination->width, destination->height, destination->linesize[0],
             s.bits > 8 ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
         image = s.rotation ? image.transformed(QTransform().rotate(s.rotation), Qt::FastTransformation) : image.copy();
+        requireImageAllocation(image, "Decoded video image allocation");
         return TimedImage{image, pts, duration, base};
     }
 }
@@ -438,7 +455,7 @@ struct HostVideoEncoder::Impl {
             stream->time_base = codec->time_base; stream->avg_frame_rate = codec->framerate;
             stream->sample_aspect_ratio=codec->sample_aspect_ratio;
             av::check(api.avcodec_parameters_from_context(stream->codecpar, codec), "Describe host output");
-            if (name == "ffv1") retainHdrMetadata(stream->codecpar, info);
+            retainStaticHdrMetadata(stream->codecpar, info);
             av::check(api.avio_open(&format->pb, path.toUtf8().constData(), AVIO_FLAG_WRITE), "Open host video output");
             if (name!="ffv1") api.av_dict_set(&options,"video_track_timescale","60000000",0);
             av::check(api.avformat_write_header(format, &options), "Write host video header");
@@ -486,6 +503,7 @@ struct HostVideoEncoder::Impl {
         destination->duration = api.av_rescale_q(duration, {timeBase.numerator, timeBase.denominator}, codec->time_base);
         if(explicitDurations)durations[destination->pts]=destination->duration;
         destination->pict_type=forceIntra ? AV_PICTURE_TYPE_I : AV_PICTURE_TYPE_NONE;
+        copyStaticHdrMetadata(destination,stream->codecpar);
         av::check(api.avcodec_send_frame(codec, destination), "Submit host encoder pixels");
         packets();
     }

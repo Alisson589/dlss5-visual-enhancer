@@ -543,8 +543,8 @@ Rectangle {
                         closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnPressOutside
                         background: Rectangle { color: Theme.bgSurface; radius: Theme.radiusMedium; border.color: Theme.borderActive }
                         RowAction { text: qsTranslate("App", "Preview file"); menuIcon: "preview"; enabled: drawer.canModify; onTriggered: { if (drawer.appBridge) drawer.appBridge.selectQueueItem(queueRow.index) } }
-                        RowAction { text: qsTranslate("App", "Open source folder"); menuIcon: "folder"; onTriggered: { if (drawer.appBridge) drawer.appBridge.openFolder(queueRow.inputPath) } }
-                        RowAction { objectName: "queueRevealOutput"; text: qsTranslate("App", "Show output in Explorer"); menuIcon: "reveal_in_explorer"; enabled: queueRow.outputPath !== ""; onTriggered: { if (drawer.appBridge) drawer.appBridge.openFolder(queueRow.outputPath) } }
+                        RowAction { objectName: "queueRevealInput"; text: qsTranslate("App", "Show input in Explorer"); menuIcon: "reveal_in_explorer"; onTriggered: { if (drawer.appBridge) drawer.appBridge.showInExplorer(queueRow.inputPath) } }
+                        RowAction { objectName: "queueRevealOutput"; text: qsTranslate("App", "Show output in Explorer"); menuIcon: "reveal_in_explorer"; enabled: queueRow.outputPath !== ""; onTriggered: { if (drawer.appBridge) drawer.appBridge.showInExplorer(queueRow.outputPath) } }
                         QQC2.MenuSeparator { contentItem: Rectangle { implicitHeight: 1; color: Theme.borderSubtle } }
                         RowAction { objectName: "queueRemoveItem"; text: qsTranslate("App", "Remove from queue"); menuIcon: "trash"; enabled: drawer.canModify; onTriggered: { if (drawer.appBridge) drawer.appBridge.removeQueueItem(queueRow.index) } }
                     }

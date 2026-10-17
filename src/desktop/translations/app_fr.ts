@@ -1498,8 +1498,8 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier dans une app
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="513" />
-      <source>Open source folder</source>
-      <translation>Ouvrir le dossier source</translation>
+      <source>Show input in Explorer</source>
+      <translation>Afficher le fichier d’entrée dans l’Explorateur</translation>
     </message>
     <message>
       <source>Opened containing folder for %1.</source>
@@ -2641,5 +2641,13 @@ Image fixe affichée. Parcourez avec &lt; &gt; ou ouvrez le fichier dans une app
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS et RTX sont des marques de NVIDIA Corporation.</translation>
     </message>
-  </context>
+      <message>
+      <source>DLSS Ray Reconstruction</source>
+      <translation>DLSS Ray Reconstruction</translation>
+    </message>
+    <message>
+      <source>Imported images and videos use estimated material guides. Results depend on the source.</source>
+      <translation>Les images et vidéos importées utilisent des données de matériaux estimées. Les résultats dépendent de la source.</translation>
+    </message>
+</context>
 </TS>

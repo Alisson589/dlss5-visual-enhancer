@@ -9,6 +9,14 @@
 
 namespace ve {
 class PreviewFrameCache;
+inline int reconstructionHistoryFrames(const Settings& settings,const QStringList& stages) {
+    if(stages.contains("dlss_ray_reconstruction"))return 32;
+    return stages.contains("dlss_super_resolution")?(settings.upscale_dlss_mode=="DLAA"?8:18):0;
+}
+inline bool rrNeedsGeneratedHistory(const QStringList& stages) {
+    const auto fi=stages.indexOf("frame_generation"),rr=stages.indexOf("dlss_ray_reconstruction");
+    return fi>=0&&rr>fi;
+}
 enum class Workflow { NeuralRendering, Upscale, FrameInterpolation };
 struct PipelineEstimate {
     int width = 0, height = 0;
@@ -32,6 +40,7 @@ struct RenderRequest {
     double seconds = 0; // Zero exports the complete source.
     PreviewFrameCache* stillSources = nullptr; // Optional reuse of the original decoded preview image.
     bool isolatedVfxWorker = false; // Set only by the internal worker, independently of Qt's storage identity.
+    bool temporalContextIncluded = false; // Internal guard for bounded RR clip overlap.
 };
 struct RenderResult {
     QString input, output, report;

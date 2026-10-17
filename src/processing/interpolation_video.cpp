@@ -4,6 +4,7 @@
 #include "vfx_native.hpp"
 #include "media/av_api.hpp"
 #include "media/cuda_video.hpp"
+#include "media/native_rgb.hpp"
 #include "media/frame_time.hpp"
 #include "media/host_video.hpp"
 #include "media/video_delivery.hpp"
@@ -61,8 +62,13 @@ class InterpolationDelivery {
         if (cudaEncoding_ && !settings_.codec.contains("NVIDIA NVENC")) settings_.codec+=" (NVIDIA NVENC)";
         neuralDelivery_=cudaEncoding_ && !after.isEmpty() && after.back()=="neural_model";
         if (neuralDelivery_) after.removeLast();
+        if(cudaEncoding_&&!preview_&&after==QStringList{"dlss_ray_reconstruction"}){
+            rr_=std::make_unique<NativeEngines::RayReconstruction>(QSize(pixels_.width,pixels_.height),
+                settings_.rr_optical_flow_quality,false,true,nativeMediaTransfer(pixels_.transfer));
+            after.clear();output_.pixelFormat="rgba64le";
+        }
         if (!after.isEmpty()) {
-            output_.pixelFormat=after.back()=="dlss_super_resolution" || after.back()=="neural_model" ? "rgba64le" : "gbrp10le";
+            output_.pixelFormat=after.back()=="dlss_super_resolution" || after.back()=="dlss_ray_reconstruction" || after.back()=="neural_model" ? "rgba64le" : "gbrp10le";
             post_=std::make_unique<FramePipeline>(settings, pixels_, after, !neuralDelivery_);
             capacity_=videoBatchCapacity({std::max(pixels_.width, output_.width), std::max(pixels_.height, output_.height)});
         }
@@ -86,7 +92,11 @@ class InterpolationDelivery {
         control_.checkpoint();
         ensureEncoder();
         if (gpu_) {
-            auto frame=selected.pixels.toVideo(*pool_, gpu_->pixelFormat()==VideoPixelFormat::P010, pixels_.hdr ? 2u : 1u, 0);
+            const bool reset=!rrSegment_||*rrSegment_!=selected.segment;
+            auto frame=rr_?rr_->process(selected.pixels.toRgb(),*pool_,gpu_->pixelFormat()==VideoPixelFormat::P010,
+                reset,quint32(index),float(1000.*base_.numerator/base_.denominator)):
+                selected.pixels.toVideo(*pool_, gpu_->pixelFormat()==VideoPixelFormat::P010, pixels_.hdr ? 2u : 1u, 0);
+            rrSegment_=selected.segment;
             frame.pts=index; frame.duration=1; frame.timeBase=base_;
             gpu_->write(frame);
         } else {
@@ -106,6 +116,7 @@ class InterpolationDelivery {
         if (gpu_) gpu_->finish();
         else if (neural_) neural_->finish();
         else host_->finish();
+        if(rr_)ve::info("dlssrr","FG -> RR FP16 RGB device counters: "+rr_->diagnostics());
     }
   private:
     void ensureEncoder() {
@@ -146,6 +157,8 @@ class InterpolationDelivery {
     std::vector<QImage> images_;
     std::vector<qint64> indices_;
     std::unique_ptr<FramePipeline> post_;
+    std::unique_ptr<NativeEngines::RayReconstruction> rr_;
+    std::optional<int> rrSegment_;
     std::unique_ptr<CudaFramePool> pool_;
     std::unique_ptr<HostVideoEncoder> host_;
     std::unique_ptr<CudaVideoEncoder> gpu_;
@@ -154,10 +167,20 @@ class InterpolationDelivery {
 } // namespace
 bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& input, const Settings& configured,
     const PipelineEstimate& estimate, const QString& destination, JobControl& control, const ProgressCallback& progress) {
-    if (estimate.stages.isEmpty() || estimate.stages.front() != "frame_generation" || input.width%2 || input.height%2)
+    const bool rrBefore=estimate.stages==QStringList{"dlss_ray_reconstruction","frame_generation"};
+    const bool rrAfter=estimate.stages==QStringList{"frame_generation","dlss_ray_reconstruction"};
+    const bool rrCombined=rrBefore||rrAfter;
+    if (estimate.stages.isEmpty() || (!rrBefore&&estimate.stages.front() != "frame_generation") || input.width%2 || input.height%2)
         return false;
     auto settings=configured;
     if (request.preview) { settings.codec="FFV1 Lossless RGB 10-bit"; settings.container="MKV"; }
+    const bool cudaEncoding = settings.codec.contains("NVIDIA NVENC") ||
+        (settings.ffmpeg_device != "cpu" && QStringList{"H.264", "H.265", "AV1"}.contains(settings.codec));
+    if(rrCombined&&(request.preview||!cudaEncoding||
+        (input.hdr?input.primaries!="bt2020"||input.colorSpace!="bt2020nc"||
+            !QStringList{"smpte2084","arib-std-b67"}.contains(input.transfer):
+            input.primaries!="bt709"||input.colorSpace!="bt709"||
+            !QStringList{"bt709","gamma22","bt470m"}.contains(input.transfer))))return false;
     const int ordinal = gpuOrdinal(settings.ai_gpu_uuid);
     const auto devices = detectGpus();
     const auto selected = std::ranges::find_if(devices, [ordinal](const Gpu& gpu) { return gpu.index == ordinal; });
@@ -175,9 +198,9 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
     ScratchDirectory directory(QStringLiteral("interpolation-XXXXXX"));
     if (!directory.isValid()) throw std::runtime_error("Cannot create the interpolation directory.");
     auto info = input; info.fps = fps; info.pixelFormat = info.hdr ? "gbrp10le" : "rgba";
+    if(rrBefore){info.width=estimate.width;info.height=estimate.height;}
+    if(rrCombined)info.pixelFormat="rgba64le";
     info.colorSpace="gbr"; info.range="pc";
-    const bool cudaEncoding = settings.codec.contains("NVIDIA NVENC") ||
-        (settings.ffmpeg_device != "cpu" && QStringList{"H.264", "H.265", "AV1"}.contains(settings.codec));
     const auto video = directory.filePath(settings.codec.startsWith("ProRes") ? "video.mov" : request.preview ? "video.mkv" : "video.nut");
     QElapsedTimer elapsed; elapsed.start();
     qint64 decoded = 0;
@@ -188,7 +211,10 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
         auto frame = decoder->read();
         if (!frame) throw std::runtime_error("The source contains no decodable video frames.");
         sourceTimeOrigin=decoder->timeOrigin();
-        NativeEngines::instance().prepare(ordinal, {"frame_generation"});
+        NativeEngines::instance().prepare(ordinal, rrCombined?estimate.stages:QStringList{"frame_generation"});
+        std::unique_ptr<NativeEngines::RayReconstruction> rrSource;
+        if(rrBefore)rrSource=std::make_unique<NativeEngines::RayReconstruction>(QSize(input.width,input.height),
+            settings.rr_optical_flow_quality,false,true,nativeMediaTransfer(input.transfer));
         const auto maximum = NativeEngines::Interpolation::nativeMaximum();
         const bool native = !input.variableFrameRate && std::abs(ratio-multiple)<1e-7 && multiple>=2 && multiple<=maximum;
         if (fps>input.fps && settings.frame_interpolation_engine == "Native DLSSG" && !native)
@@ -200,11 +226,12 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
         std::vector<InterpolationStage> stages;
         for (int level=0; level<levels; ++level) stages.push_back({std::make_unique<NativeEngines::Interpolation>(
             QSize(info.width, info.height), generated, info.hdr, settings.frame_interpolation_optical_flow_quality,
-            false, level == levels-1 ? 64 : 0), {}, generated});
+            rrCombined, level == levels-1 ? 64 : 0), {}, generated});
         // Source resampling still needs the native RGB conversion, but generates no frames.
         if (stages.empty()) stages.push_back({std::make_unique<NativeEngines::Interpolation>(
-            QSize(info.width, info.height), 1, info.hdr, settings.frame_interpolation_optical_flow_quality, false, 64), {}, 0});
-        InterpolationDelivery delivery(video, settings, info, estimate, decoder->device(), cudaEncoding, ordinal, base, count, control, progress, request.preview);
+            QSize(info.width, info.height), 1, info.hdr, settings.frame_interpolation_optical_flow_quality, rrCombined, 64), {}, 0});
+        auto deliveryEstimate=estimate;if(rrBefore)deliveryEstimate.stages={"frame_generation"};
+        InterpolationDelivery delivery(video, settings, info, deliveryEstimate, decoder->device(), cudaEncoding, ordinal, base, count, control, progress, request.preview);
         auto writeSelected = [&](const TimedSurface& selected, qint64 index) {
             delivery.write(selected,index);
         };
@@ -231,8 +258,13 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
             if (request.seconds>0 && time.seconds()>=duration-1e-9) break;
             if (lastTime && (time<=*lastTime || time-*lastTime>nominal.fraction(2,1))) ++segment;
             frame->rotation = uint32_t((rotation%360+360)%360);
-            auto result = stages.front().session->evaluate(*frame, input,
-                stages.front().previous && segment != stages.front().previous->segment, true);
+            const bool discontinuity=stages.front().previous&&segment!=stages.front().previous->segment;
+            NativeEngines::Interpolation::Result result;
+            if(rrSource){
+                const auto interval=lastTime?(time-*lastTime).seconds():nominal.seconds();
+                auto rgb=rrSource->processRgb(*frame,!decoded||discontinuity,quint32(decoded),float(std::clamp(interval*1000.,.01,1000.)));
+                result=stages.front().session->evaluate(rgb,discontinuity,true);
+            }else result=stages.front().session->evaluate(*frame,input,discontinuity,true);
             if (levels == 0) result.generated.clear();
             auto items = stages.front().push(std::move(result), time, segment);
             segment = stages.front().previous->segment;
@@ -244,6 +276,7 @@ bool renderInterpolationVideo(const RenderRequest& request, const MediaInfo& inp
         if (request.seconds > 0) actualDuration = std::min(actualDuration, request.seconds);
         writer.finish(qint64(std::ceil(actualDuration*fps-1e-9)));
         delivery.finish();
+        if(rrSource)ve::info("dlssrr","RR -> FG FP16 RGB device counters: "+rrSource->diagnostics());
         ve::info("video", "Interpolation streamed through temporal stages directly to the selected encoder.");
     } catch (const CudaUnavailable& error) {
         if (decoded) throw;

@@ -19,6 +19,7 @@ struct MediaInfo {
     [[nodiscard]] QString description() const;
     [[nodiscard]] int clockwiseRotation() const;
     [[nodiscard]] int precisionBits() const;
+    [[nodiscard]] double presentationStartSeconds() const;
     // Set by processing routes that explicitly retain the source pixel aspect.
     [[nodiscard]] QSize outputSampleAspectRatio() const;
 };

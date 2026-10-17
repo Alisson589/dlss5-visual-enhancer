@@ -1,4 +1,5 @@
 #include "vfx_native.hpp"
+#include "media/resolution.hpp"
 #include "native_engines.hpp"
 #include "infrastructure/paths.hpp"
 #include "infrastructure/process.hpp"
@@ -102,7 +103,7 @@ VfxFrameDescV2 vfxDescriptor(const QImage& input,const MediaInfo& colors){
     auto f=descriptor<VfxFrameDescV2>();f.memory_type=VFX_HOST;f.pixel_format=input.format()==QImage::Format_RGBA64?VFX_RGBA16:VFX_RGBA8;f.width=input.width();f.height=input.height();f.planes[0]=reinterpret_cast<uint64_t>(input.constBits());f.strides[0]=input.bytesPerLine();colorDescription(f,colors);f.color_range=1;return f;
 }
 QSize vfxSpatialSize(QSize input,const Settings& s){
-    if(!input.isValid())throw std::runtime_error("Invalid VFX input dimensions.");
+    requireResolution(input, "VFX input");
     double w=input.width(),h=input.height();
     if(s.vfx_vsr_enabled&&!restores(s)){
         if(s.vfx_size_mode=="Scale factor"){w*=s.vfx_scale_factor;h*=s.vfx_scale_factor;}
@@ -115,8 +116,7 @@ QSize vfxSpatialSize(QSize input,const Settings& s){
         w*=s.vfx_upscale_scale;h*=s.vfx_upscale_scale;
         if(std::abs(w-std::round(w))>1e-6||std::abs(h-std::round(h))>1e-6)throw std::runtime_error("Lightweight Upscale requires exact integral dimensions; choose a different scale.");
     }
-    if(w>16384||h>16384)throw std::runtime_error("VFX output exceeds 16384 pixels.");
-    return {int(std::round(w)),int(std::round(h))};
+    return {checkedDimension(std::round(w)),checkedDimension(std::round(h))};
 }
 double vfxFrameRate(double source,const Settings& s){
     if(!s.vfx_frame_generation_enabled)return source;
@@ -142,8 +142,9 @@ QImage vfxDisplayAspect(const QImage& pixels,const MediaInfo& source){
     auto colors=source;retainVfxPixelAspect(colors,source);const auto ratio=colors.outputSampleAspectRatio();
     if(ratio.width()==ratio.height())return pixels;
     const double width=double(pixels.width())*ratio.width()/ratio.height();
-    if(width<=0||width>16384)throw std::runtime_error("VFX preview display aspect exceeds its image limit.");
-    return pixels.scaled(int(std::round(width)),pixels.height(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    auto result = pixels.scaled(checkedDimension(std::round(width)),pixels.height(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    requireImageAllocation(result, "VFX display aspect conversion");
+    return result;
 }
 void VideoEffects::initialize(int ordinal){
     prepareCudaPrimaryContext(ordinal);auto& api=Api::get();std::lock_guard lock(api.mutex);Error error{};

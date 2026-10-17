@@ -1,4 +1,5 @@
 #include "cuda_video.hpp"
+#include "host_video.hpp"
 #include "av_api.hpp"
 #include "configuration/settings.hpp"
 #include "infrastructure/windows_runtime.hpp"
@@ -7,6 +8,7 @@
 #include <cmath>
 #include <map>
 #include <mutex>
+#include <cstring>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -130,7 +132,7 @@ struct CudaVideoDecoder::Impl {
     AVPacket* packet = nullptr;
     int stream = -1;
     bool draining = false;
-    double start = 0;
+    double start = 0, timestampOffset=0;
     qint64 origin = AV_NOPTS_VALUE;
     Impl(const QString& path, int ordinal, double seconds, JobControl& job) : control(job), start(seconds) {
         try {
@@ -143,8 +145,11 @@ struct CudaVideoDecoder::Impl {
             check(api.avformat_open_input(&format, path.toUtf8().constData(), nullptr, nullptr), "Open source");
             check(api.avformat_find_stream_info(format, nullptr), "Probe source");
             prepareDecoder(ordinal);
+            const auto* track=format->streams[stream];
+            if(track->start_time!=AV_NOPTS_VALUE)timestampOffset=track->start_time*av_q2d(track->time_base);
+            else if(format->start_time!=AV_NOPTS_VALUE)timestampOffset=double(format->start_time)/AV_TIME_BASE;
             if (start > 0)
-                check(api.avformat_seek_file(format, -1, INT64_MIN, qint64(std::max(0., start - .002) * AV_TIME_BASE),
+                check(api.avformat_seek_file(format, -1, INT64_MIN, qint64((timestampOffset+std::max(0., start - .002)) * AV_TIME_BASE),
                                              INT64_MAX, 0), "Seek NVDEC source");
         } catch (const Cancelled&) { release(); throw; }
         catch (const std::exception& e) { release(); throw CudaUnavailable(e.what()); }
@@ -271,7 +276,7 @@ std::optional<CudaVideoFrame> CudaVideoDecoder::read() {
             if (output.pts == AV_NOPTS_VALUE)
                 throw std::runtime_error("Decoded video frame has no presentation timestamp.");
             const double seconds = output.pts * double(output.timeBase.numerator) / output.timeBase.denominator;
-            if (seconds + .002 < s.start)
+            if (seconds + .002 < s.start+s.timestampOffset)
                 continue;
             if (s.origin == AV_NOPTS_VALUE) s.origin = output.pts;
             output.pts -= s.origin;
@@ -378,6 +383,7 @@ struct CudaVideoEncoder::Impl {
             stream->time_base = codec->time_base;
             stream->avg_frame_rate = codec->framerate;
             check(api.avcodec_parameters_from_context(stream->codecpar, codec), "Describe encoded stream");
+            retainStaticHdrMetadata(stream->codecpar,info);
             check(api.avio_open(&format->pb, path.toUtf8().constData(), AVIO_FLAG_WRITE), "Open video destination");
             api.av_dict_set(&options,"video_track_timescale","60000000",0);
             check(api.avformat_write_header(format, &options), "Write video header");
@@ -437,6 +443,9 @@ void CudaVideoEncoder::write(const CudaVideoFrame& frame) {
     av->duration = s.api.av_rescale_q(frame.duration, sourceBase, s.codec->time_base);
     if(s.explicitDurations)s.durations[av->pts]=av->duration;
     if(s.codec->chroma_sample_location!=AVCHROMA_LOC_UNSPECIFIED)av->chroma_location=s.codec->chroma_sample_location;
+    // NVENC reads static HDR SEI from submitted frames. Also retain the same
+    // values on codec parameters for containers with native HDR metadata.
+    copyStaticHdrMetadata(av,s.stream->codecpar);
     check(s.api.avcodec_send_frame(s.codec, av), "Submit NVENC frame");
     s.packets();
 }

@@ -10,6 +10,7 @@ struct RtxvFrameDescV1;
 
 namespace ve {
 struct CudaVideoFrame;
+struct GpuRgbFrame;
 class CudaFramePool;
 struct MediaInfo;
 class JobControl;
@@ -29,6 +30,7 @@ class NativeEngines {
     [[nodiscard]] QImage neural(const QImage& input, const Settings& settings, bool video, bool reset);
     class NeuralRendering;
     class SuperResolution;
+    class RayReconstruction;
     class RtxVideo;
     class Interpolation;
 
@@ -69,6 +71,25 @@ class NativeEngines::SuperResolution {
     QSize output_;
     bool still_=false, wideOutput_=false;
 };
+class NativeEngines::RayReconstruction {
+  public:
+    RayReconstruction(QSize size, const QString& flowQuality, bool still, bool wideOutput = false,
+                    quint32 colorTransfer = 0, bool alpha = false);
+    ~RayReconstruction();
+    [[nodiscard]] QImage process(const QImage& input, bool reset, quint32 phase = 0, float frameTimeMs = 0);
+    [[nodiscard]] CudaVideoFrame process(const CudaVideoFrame& input, CudaFramePool& pool,
+                                         bool p010, bool reset, quint32 phase = 0, float frameTimeMs = 0);
+    [[nodiscard]] GpuRgbFrame processRgb(const CudaVideoFrame& input,bool reset,quint32 phase=0,float frameTimeMs=0);
+    [[nodiscard]] CudaVideoFrame process(const GpuRgbFrame& input,CudaFramePool& pool,
+                                         bool p010,bool reset,quint32 phase=0,float frameTimeMs=0);
+    [[nodiscard]] QString diagnostics() const;
+
+  private:
+    void* session_ = nullptr;
+    QSize output_;
+    bool still_=false, wideOutput_=false;
+    quint32 transfer_=0;
+};
 class NativeEngines::RtxVideo {
   public:
     RtxVideo(QSize input, QSize output, const Settings& settings, bool hdr, bool video, bool wideInput = false);
@@ -93,6 +114,7 @@ class NativeEngines::Interpolation {
         [[nodiscard]] QImage toHost() const;
         [[nodiscard]] QImage toHostRgb10() const;
         [[nodiscard]] CudaVideoFrame toVideo(CudaFramePool& pool, bool p010, uint32_t matrix, uint32_t range) const;
+        [[nodiscard]] GpuRgbFrame toRgb() const;
         [[nodiscard]] explicit operator bool() const { return bool(state_); }
       private:
         struct Storage;
@@ -109,15 +131,16 @@ class NativeEngines::Interpolation {
                   bool highPrecision = false, int surfacePoolSize = 0);
     ~Interpolation();
     [[nodiscard]] std::vector<QImage> process(const QImage& input, bool reset);
-    [[nodiscard]] Result evaluate(const QImage& input, bool reset = false, bool detectCuts = true);
+    [[nodiscard]] Result evaluate(const QImage& input, bool reset = false, bool detectCuts = true,quint32 transfer=0xffffffffu);
     [[nodiscard]] Result evaluate(const CudaVideoFrame& input, const MediaInfo& colors, bool reset = false,
                                   bool detectCuts = true);
     [[nodiscard]] Result evaluate(const Surface& input, bool reset = false, bool detectCuts = false);
+    [[nodiscard]] Result evaluate(const GpuRgbFrame& input,bool reset=false,bool detectCuts=true);
     [[nodiscard]] static int nativeMaximum();
 
   private:
     [[nodiscard]] Result evaluateDescriptor(const FrameDescriptorV1& descriptor, bool reset, bool detectCuts);
-    [[nodiscard]] Result copyCurrentInput(Result result, const FrameDescriptorV1& descriptor);
+    [[nodiscard]] Result copyCurrentInput(Result result, const FrameDescriptorV1& descriptor,quint32 transfer=1);
     [[nodiscard]] Surface own(void* surface);
     std::shared_ptr<State> state_;
     QSize size_;

@@ -9,7 +9,8 @@ class VideoStillPreview {
     [[nodiscard]] QImage process(const QImage &input, Settings settings, MediaInfo info,
                                  const QStringList &stages, PreviewFrameCache &cache,
                                  const QByteArray &identity, JobControl &control,
-                                 const std::vector<TimedImage>& temporal = {}, double generatedSeconds=-1);
+                                 const std::vector<TimedImage>& temporal = {}, double generatedSeconds=-1,
+                                 const QString& sourceMediaPath={});
 
   private:
     HostPreviewBoundary display_;

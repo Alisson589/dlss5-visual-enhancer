@@ -68,6 +68,7 @@ Item {
         if (id === "neural_model") return qsTranslate("App", "DLSS Neural Rendering")
         if (id === "scale_method") return qsTranslate("App", "Scaling")
         if (id === "dlss_super_resolution") return qsTranslate("App", "DLSS Super Resolution")
+        if (id === "dlss_ray_reconstruction") return qsTranslate("App", "DLSS Ray Reconstruction")
         if (id === "super_resolution") return qsTranslate("App", "RTX Super Resolution")
         if (id === "rtx_video_hdr") return qsTranslate("App", "RTX Video HDR")
         if (id === "vfx_vsr") return qsTranslate("App", "Video Super Resolution")
@@ -82,6 +83,7 @@ Item {
     Component { id: neuralControls; NeuralModelControls { appBridge: root.appBridge } }
     Component { id: scaleControls; ScaleMethodControls { appBridge: root.appBridge } }
     Component { id: dlssControls; DlssSuperResolutionControls { appBridge: root.appBridge } }
+    Component { id: rrControls; RayReconstructionControls { appBridge: root.appBridge } }
     Component { id: superControls; SuperResolutionControls { appBridge: root.appBridge } }
     Component { id: hdrControls; RtxVideoHdrControls { appBridge: root.appBridge } }
     Component { id: vfxControls; VfxControls { appBridge: root.appBridge; stageId: parent ? parent.effectStage : "" } }
@@ -199,6 +201,8 @@ Item {
                                 width: contentCol.width
                                 appBridge: root.appBridge
                                 stageId: model.stageKey
+                                collapsible: stageId !== "dlss_ray_reconstruction" || !root.isImage
+                                hasControls: stageId !== "dlss_ray_reconstruction" || !root.isImage
                                 stageEnabled: model.enabledValue
                                 stageIndex: index
                                 stageCount: root.workflowRepeater ? root.workflowRepeater.count : 0
@@ -238,13 +242,14 @@ Item {
                                     width: parent.width
                                     property string effectStage: stageCard.stageId
                                     property bool visited: false
-                                    readonly property bool expanded: !stageCard.collapsed
+                                    readonly property bool expanded: stageCard.expanded
                                     active: visited
                                     onExpandedChanged: { if (expanded) visited = true }
                                     Component.onCompleted: { if (expanded) visited = true }
                                     sourceComponent: stageId === "neural_model" ? neuralControls
                                                    : stageId === "scale_method" ? scaleControls
                                                    : stageId === "dlss_super_resolution" ? dlssControls
+                                                   : stageId === "dlss_ray_reconstruction" ? rrControls
                                                    : stageId === "super_resolution" ? superControls
                                                    : stageId === "rtx_video_hdr" ? hdrControls
                                                    : stageId.indexOf("vfx_") === 0 ? vfxControls

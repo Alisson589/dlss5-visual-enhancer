@@ -11,7 +11,10 @@ Item {
     property int stageIndex: 0
     property int stageCount: 0
     property var stageRepeater: null
+    property bool collapsible: true
+    property bool hasControls: true
     property bool collapsed: true
+    readonly property bool expanded: hasControls && (!collapsible || !collapsed)
     property real dragOffset: 0
     property real slotOffset: 0
     property int dragTarget: stageIndex
@@ -23,7 +26,7 @@ Item {
     signal dragFinished(string stageId, int targetIndex)
 
     implicitWidth: 320
-    implicitHeight: header.height + (collapsed ? 0 : contentContainer.childrenRect.height + 24)
+    implicitHeight: header.height + (expanded ? contentContainer.childrenRect.height + 24 : 0)
     z: dragging ? 100 : 0
     scale: dragging ? 1.018 : 1.0
     transform: [
@@ -67,7 +70,7 @@ Item {
 
         Text {
             id: titleText
-            width: Math.max(70, parent.width - 40 - 22 * 3 - 3 * 4)
+            width: Math.max(70, parent.width - 40 - 22 * (card.collapsible ? 3 : 2) - 3 * (card.collapsible ? 4 : 3))
             height: parent.height
             verticalAlignment: Text.AlignVCenter
             text: card.title
@@ -79,7 +82,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.OpenHandCursor
-                onClicked: card.collapsed = !card.collapsed
+                onClicked: { if (card.collapsible) card.collapsed = !card.collapsed }
             }
         }
 
@@ -106,11 +109,13 @@ Item {
             }
         }
         AppIconButton {
+            visible: card.collapsible
+            enabled: card.collapsible
             iconName: card.collapsed ? "chevron_right" : "chevron_left"
             buttonSize: 22
             anchors.verticalCenter: parent.verticalCenter
             tooltipText: (card.collapsed ? qsTranslate("App", "Expand %1") : qsTranslate("App", "Collapse %1")).arg(card.title)
-            onClicked: card.collapsed = !card.collapsed
+            onClicked: { if (card.collapsible) card.collapsed = !card.collapsed }
         }
 
         DragHandler {
@@ -160,7 +165,7 @@ Item {
     }
 
     Rectangle {
-        visible: !card.collapsed
+        visible: card.expanded
         x: 12
         y: header.height
         width: parent.width - 24
@@ -169,7 +174,7 @@ Item {
     }
     Item {
         id: contentContainer
-        visible: !card.collapsed
+        visible: card.expanded
         x: 12
         y: header.height + 12
         width: parent.width - 24

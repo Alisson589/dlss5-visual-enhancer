@@ -127,6 +127,7 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
             "local_structure_strength","skin_structure_strength","automatic_mask","nr_mask"}},
         {"scale_method",{"upscaling_factor","image_scaling_filter","video_scaling_filter"}},
         {"dlss_super_resolution",{"upscale_dlss_mode","upscale_dlss_preset","upscale_image_dlss_mode","upscale_image_dlss_preset","upscale_optical_flow_quality"}},
+        {"dlss_ray_reconstruction",{"rr_optical_flow_quality"}},
         {"super_resolution",{"upscale_vsr_quality","upscale_size_mode","upscale_scale_factor","upscale_width","upscale_height","upscale_aspect_lock",
             "upscale_image_vsr_quality","upscale_image_size_mode","upscale_image_scale_factor","upscale_image_width","upscale_image_height","upscale_image_aspect_lock"}},
         {"rtx_video_hdr",{"upscale_hdr_contrast","upscale_hdr_saturation","upscale_hdr_middle_gray","upscale_hdr_peak_luminance","upscale_hdr_precision"}},
@@ -143,6 +144,7 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
     for (qsizetype index=0; index<stages.size(); ++index) {
         const auto& stage=stages[index];
         QVariantMap relevant;
+        if(stage=="dlss_ray_reconstruction")identity+="/rr-native-1x-abi2/rr-guides-v2/fixed-still-video/scene-v2/full-fingerprint/streamed-parked-32-v3/single-still/";
         for (const auto& field : fields.value(stage)) relevant.insert(field,settings.value(field));
         if(isVfxStage(stage)||(hasVfxStages(settings.stages(true))&&QStringList{"super_resolution","rtx_video_hdr"}.contains(stage))){
             identity+=info.metadata.value("sample_aspect_ratio").toString().toUtf8();
@@ -172,15 +174,18 @@ inline QList<QByteArray> previewStageKeys(QByteArray identity, const Settings& s
             identity+=QByteArray::number(pixels.cacheKey());
         }
         const QString module=stage=="neural_model" ? "dlssnr" : stage=="dlss_super_resolution" ? "dlsssr"
+            : stage=="dlss_ray_reconstruction" ? "dlssrr"
             : stage=="super_resolution" || stage=="rtx_video_hdr" ? "rtx_video"
             : stage=="frame_generation" ? "dlssg" : QString{};
         const QString binary=stage=="neural_model" ? "neuroframe_engine_neural_rendering.dll"
             : stage=="dlss_super_resolution" ? "neuroframe_engine_super_resolution.dll"
+            : stage=="dlss_ray_reconstruction" ? "neuroframe_engine_ray_reconstruction.dll"
             : stage=="frame_generation" ? "neuroframe_engine_frame_interpolation.dll" : "neuroframe_engine_upscaling.dll";
         if (!module.isEmpty()) {
             identity+=previewFileIdentity(root+"/bin/runtime/"+module+'/'+binary);
             const QString model=stage=="neural_model" ? "nvngx_dlssnr.dll"
                 : stage=="dlss_super_resolution" ? "nvngx_dlss.dll"
+                : stage=="dlss_ray_reconstruction" ? "nvngx_dlssd.dll"
                 : stage=="frame_generation" ? "nvngx_dlssg.dll"
                 : stage=="super_resolution" ? "nvngx_vsr.dll"
                 : stage=="rtx_video_hdr" ? "nvngx_truehdr.dll" : QString{};

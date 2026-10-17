@@ -28,7 +28,7 @@ inline std::optional<QVariant> staticChoices(Property property) {
     }
     case Property::nrScaleChoices:
         return QJsonDocument::fromJson(
-                   R"json([{"label":"Source (Original)","value":1.0},{"label":"200%","value":2.0},{"label":"175%","value":1.75},{"label":"150%","value":1.5},{"label":"125%","value":1.25},{"label":"75%","value":0.75},{"label":"50%","value":0.5},{"label":"25%","value":0.25}])json")
+                   R"json([{"label":"Source (Original)","value":1.0},{"label":"1600%","value":16.0},{"label":"800%","value":8.0},{"label":"400%","value":4.0},{"label":"300%","value":3.0},{"label":"200%","value":2.0},{"label":"175%","value":1.75},{"label":"150%","value":1.5},{"label":"125%","value":1.25},{"label":"75%","value":0.75},{"label":"50%","value":0.5},{"label":"25%","value":0.25}])json")
             .array()
             .toVariantList();
     case Property::imageScalingFilterChoices:

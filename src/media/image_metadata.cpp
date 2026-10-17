@@ -171,6 +171,25 @@ void save(const QString& path, const QByteArray& data) {
     if (!file.open(QIODevice::WriteOnly) || file.write(data) != data.size() || !file.commit())
         throw std::runtime_error(file.errorString().toStdString());
 }
+void insertMetadata(const QString& path, qsizetype prefixBytes, const QByteArray& chunks, JobControl& control) {
+    if (chunks.isEmpty()) return;
+    QFile input(path);
+    QSaveFile output(path);
+    if (!input.open(QIODevice::ReadOnly) || !output.open(QIODevice::WriteOnly))
+        throw std::runtime_error("Cannot open image for metadata insertion.");
+    const auto prefix=input.read(prefixBytes);
+    if (prefix.size()!=prefixBytes || output.write(prefix)!=prefix.size() || output.write(chunks)!=chunks.size())
+        throw std::runtime_error("Cannot write image metadata.");
+    while (!input.atEnd()) {
+        control.checkpoint();
+        const auto block=input.read(8*1024*1024);
+        if (block.isEmpty() || output.write(block)!=block.size())
+            throw std::runtime_error("Cannot copy image data while inserting metadata.");
+    }
+    input.close();
+    control.checkpoint();
+    if (!output.commit()) throw std::runtime_error(output.errorString().toStdString());
+}
 } // namespace
 QString mergeRenderDescription(const QString& existing, const QString& note) {
     if (existing.isEmpty())
@@ -266,7 +285,7 @@ void writeImageMetadata(const QString& destination, const ImageMetadata& metadat
         QFile input(destination);
         if (!input.open(QIODevice::ReadOnly))
             throw std::runtime_error(input.errorString().toStdString());
-        const auto original = input.readAll();
+        const auto original = input.read(2);
         input.close();
         if (!original.startsWith(QByteArray::fromHex("ffd8")))
             throw std::runtime_error("Invalid JPEG image.");
@@ -281,13 +300,13 @@ void writeImageMetadata(const QString& destination, const ImageMetadata& metadat
             payload += metadata.icc.mid(index * 65519, 65519);
             chunks += segment(0xe2, payload);
         }
-        save(destination, original.left(2) + chunks + original.mid(2));
+        insertMetadata(destination,2,chunks,control);
     }
     if (QFileInfo(destination).suffix().compare("png", Qt::CaseInsensitive) == 0) {
         QFile input(destination);
         if (!input.open(QIODevice::ReadOnly))
             throw std::runtime_error(input.errorString().toStdString());
-        const auto original = input.readAll();
+        const auto original = input.read(33);
         input.close();
         if (!original.startsWith(QByteArray::fromHex("89504e470d0a1a0a")) || original.size() < 33)
             throw std::runtime_error("Invalid PNG image.");
@@ -296,7 +315,7 @@ void writeImageMetadata(const QString& destination, const ImageMetadata& metadat
             chunks += pngChunk("eXIf", metadata.exif);
         if (!metadata.xmp.isEmpty())
             chunks += pngChunk("iTXt", QByteArray("XML:com.adobe.xmp\0\0\0\0\0", 22) + metadata.xmp);
-        save(destination, original.left(33) + chunks + original.mid(33));
+        insertMetadata(destination,33,chunks,control);
         return;
     }
     if (metadata.exif.isEmpty() && metadata.xmp.isEmpty())

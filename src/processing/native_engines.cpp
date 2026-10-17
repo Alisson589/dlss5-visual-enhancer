@@ -1,4 +1,5 @@
 #include "native_engines.hpp"
+#include "media/resolution.hpp"
 #include "frame_interpolation/dlssg_bridge.h"
 #include "infrastructure/log.hpp"
 #include "infrastructure/paths.hpp"
@@ -6,9 +7,11 @@
 #include "media/image_codecs.hpp"
 #include "media/native_frame.hpp"
 #include "media/cuda_video.hpp"
+#include "media/native_rgb.hpp"
 #include "neural_rendering/dlss5nr_bridge.h"
 #include "rtx_video/rtx_video_bridge.h"
 #include "super_resolution/dlss_bridge.h"
+#include "ray_reconstruction/dlssrr_bridge.h"
 #include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
@@ -160,6 +163,7 @@ Dlss5NrRenderParamsV11 neuralParameters(const Settings& settings, QSize size, bo
 struct NativeEngines::Impl {
     Module nr{"dlssnr", "neuroframe_engine_neural_rendering.dll", "dlss5nr"};
     Module sr{"dlsssr", "neuroframe_engine_super_resolution.dll", "dlsssr"};
+    Module rr{"dlssrr", "neuroframe_engine_ray_reconstruction.dll", "dlssrr"};
     Module rtx{"rtx_video", "neuroframe_engine_upscaling.dll", "rtxv"};
     Module fi{"dlssg", "neuroframe_engine_frame_interpolation.dll", "fi"};
     std::recursive_mutex mutex;
@@ -224,22 +228,26 @@ void NativeEngines::prepare(int ordinal, const QStringList& stages) {
     impl_->ordinal = ordinal;
     if (stages.contains("neural_model") || stages.contains("dlss_super_resolution"))
         impl_->sr.initialize(ordinal); // Register NGX search paths before feature 18 creates its device.
-    if (stages.contains("neural_model")) impl_->nr.initialize(ordinal);
     if (stages.contains("frame_generation")) impl_->fi.initialize(ordinal);
+    if (stages.contains("dlss_ray_reconstruction")) {
+        impl_->rr.initialize(ordinal);
+        if(impl_->rr.function<uint32_t(__cdecl*)()>("dlssrr_abi_version")()!=2)
+            throw std::runtime_error("DLSS Ray Reconstruction requires native-resolution ABI 2.");
+    }
+    if (stages.contains("neural_model")) impl_->nr.initialize(ordinal);
     if (stages.contains("super_resolution") || stages.contains("rtx_video_hdr")) impl_->rtx.initialize(ordinal);
     using Abi = uint32_t(__cdecl*)();
-    if (impl_->nr.function<Abi>("dlss5nr_frame_abi_version")() != 11 ||
-        impl_->sr.function<Abi>("dlsssr_abi_version")() != 4)
+    const bool nr=stages.contains("neural_model"),sr=stages.contains("dlss_super_resolution");
+    if ((nr && impl_->nr.function<Abi>("dlss5nr_frame_abi_version")() != 11) ||
+        ((nr||sr) && impl_->sr.function<Abi>("dlsssr_abi_version")() != 4))
         throw std::runtime_error("The bundled NVIDIA engines use an incompatible ABI.");
-    impl_->diagnostics = "Neural Rendering " + impl_->nr.version() + " (ABI 11)\nDLSS Super Resolution " +
-                         impl_->sr.version() + " (ABI 4)";
-    for (auto* module : {&impl_->fi, &impl_->rtx}) {
-        try {
-            impl_->diagnostics += '\n' + module->version();
-        } catch (const std::exception& error) {
-            impl_->diagnostics += '\n' + QString::fromUtf8(error.what());
-        }
-    }
+    QStringList diagnostics;
+    if(nr)diagnostics<<"Neural Rendering "+impl_->nr.version()+" (ABI 11)";
+    if(nr||sr)diagnostics<<"DLSS Super Resolution "+impl_->sr.version()+" (ABI 4)";
+    if(stages.contains("dlss_ray_reconstruction"))diagnostics<<"DLSS Ray Reconstruction "+impl_->rr.version()+" (ABI 2, 1x)";
+    if(stages.contains("frame_generation"))diagnostics<<"Frame Generation "+impl_->fi.version();
+    if(stages.contains("super_resolution")||stages.contains("rtx_video_hdr"))diagnostics<<"RTX Video "+impl_->rtx.version();
+    impl_->diagnostics=diagnostics.join('\n');
     info("runtime", impl_->diagnostics);
 }
 QString NativeEngines::diagnostics() const {
@@ -419,6 +427,7 @@ QImage NativeEngines::SuperResolution::process(const QImage& input, bool reset, 
         ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
     const bool eightBit=still_ && !wideOutput_ && source.depth()<=32;
     QImage output(output_,eightBit ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
+    requireImageAllocation(output, "DLSS output allocation");
     FrameDesc frame{sizeof(FrameDesc),
                     4,
                     source.constBits(),
@@ -439,6 +448,147 @@ QImage NativeEngines::SuperResolution::process(const QImage& input, bool reset, 
           error);
     output.setColorSpace(input.colorSpace());
     return output;
+}
+NativeEngines::RayReconstruction::RayReconstruction(QSize size, const QString& flowQuality, bool still,
+                                                bool wideOutput, quint32 colorTransfer, bool alpha)
+    : output_(size),still_(still),wideOutput_(wideOutput),transfer_(colorTransfer) {
+    auto& impl = *instance().impl_;
+    std::lock_guard lock(impl.mutex);
+    impl.rr.initialize(impl.ordinal);
+    DlssRrSessionDesc descriptor{
+        sizeof(DlssRrSessionDesc),
+        2,
+        uint32_t(size.width()),
+        uint32_t(size.height()),
+        uint32_t(still),
+        flowIndex(flowQuality), colorTransfer, colorTransfer>=5?2u:1u, 0u, alpha ? 1u : 0u};
+    std::array<char, 4096> error{};
+    using Create = void*(__cdecl*)(const DlssRrSessionDesc*, char*, int);
+    session_ =
+        impl.rr.function<Create>("dlssrr_session_create")(&descriptor, error.data(), int(error.size()));
+    check(session_ != nullptr, error);
+}
+NativeEngines::RayReconstruction::~RayReconstruction() {
+    if (session_) {
+        auto& impl = *instance().impl_;
+        std::lock_guard lock(impl.mutex);
+        impl.rr.function<void(__cdecl*)(void*)>("dlssrr_session_release")(session_);
+    }
+}
+QImage NativeEngines::RayReconstruction::process(const QImage& input, bool reset, quint32 phase, float frameTimeMs) {
+    auto& impl = *instance().impl_;
+    std::lock_guard lock(impl.mutex);
+    const auto source = input.convertToFormat(input.format() == QImage::Format_RGBA8888
+        ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
+    const bool eightBit=still_ && !wideOutput_ && source.depth()<=32;
+    QImage output(output_,eightBit ? QImage::Format_RGBA8888 : QImage::Format_RGBA64);
+    requireImageAllocation(output, "DLSS output allocation");
+    DlssRrFrameDesc frame{sizeof(DlssRrFrameDesc),
+                    2,
+                    source.constBits(),
+                    uint32_t(source.bytesPerLine()),
+                    output.bits(),
+                    uint32_t(output.bytesPerLine()),
+                    uint32_t(reset),
+                    phase,
+                    source.format() == QImage::Format_RGBA8888 ? 1u : 2u,
+                    eightBit ? 1u : 2u, frameTimeMs};
+    DlssRrFrameResult result{};
+    result.size = sizeof(result);
+    result.abi = 2;
+    std::array<char, 4096> error{};
+    using Process = int(__cdecl*)(void*, const DlssRrFrameDesc*, DlssRrFrameResult*, char*, int);
+    check(impl.rr.function<Process>("dlssrr_process_rgba16f")(session_, &frame, &result, error.data(),
+                                                              int(error.size())),
+          error);
+    output.setColorSpace(input.colorSpace());
+    return output;
+}
+CudaVideoFrame NativeEngines::RayReconstruction::process(const CudaVideoFrame& input, CudaFramePool& pool,
+                                                       bool p010, bool reset, quint32 phase, float frameTimeMs) {
+    if(!input.owner || input.memory!=FrameMemory::Cuda)
+        throw std::runtime_error("Ray Reconstruction requires owned CUDA decoder planes.");
+    auto& impl=*instance().impl_;
+    std::lock_guard lock(impl.mutex);
+    DlssRrCudaFrameDesc frame{};
+    frame.size=sizeof(frame);frame.abi=2;frame.width=uint32_t(input.size.width());frame.height=uint32_t(input.size.height());
+    frame.pixel_format=input.format==VideoPixelFormat::P010?5u:4u;
+    frame.y_pointer=input.planes[0];frame.uv_pointer=input.planes[1];frame.y_stride=input.strides[0];frame.uv_stride=input.strides[1];
+    frame.color_matrix=input.colorMatrix;frame.color_range=input.colorRange;frame.rotation=input.rotation;
+    frame.reset=uint32_t(reset);frame.phase=phase;frame.output_p010=uint32_t(p010);
+    frame.video_color=1;frame.chroma_location=input.chromaLocation;frame.frame_time_ms=frameTimeMs;
+    DlssRrFrameResult result{};result.size=sizeof(result);result.abi=2;
+    void* surface=nullptr;
+    std::array<char,4096> error{};
+    using Process=int(__cdecl*)(void*,const DlssRrCudaFrameDesc*,DlssRrFrameResult*,void**,char*,int);
+    check(impl.rr.function<Process>("dlssrr_process_cuda_yuv")(session_,&frame,&result,&surface,error.data(),int(error.size())),error);
+    // A surface owns its allocation independently of the session. AVBufferRef
+    // keeps it alive through NVENC reordering and flush, including exceptions.
+    const auto release=impl.rr.function<void(__cdecl*)(void*)>("dlssrr_cuda_surface_release");
+    std::shared_ptr<void> owner(surface,[release](void* value){release(value);});
+    DlssRrCudaSurfaceDesc desc{};desc.size=sizeof(desc);desc.abi=2;
+    using Describe=int(__cdecl*)(void*,DlssRrCudaSurfaceDesc*);
+    if(!impl.rr.function<Describe>("dlssrr_cuda_surface_desc")(surface,&desc) ||
+       desc.width!=uint32_t(output_.width()) || desc.height!=uint32_t(output_.height()) || desc.pixel_format!=(p010?5u:4u))
+        throw std::runtime_error("Ray Reconstruction returned an incompatible device surface.");
+    auto output=pool.wrap(std::move(owner),{desc.y_pointer,desc.uv_pointer,0},{desc.stride,desc.stride,0},input.colorMatrix,input.colorRange);
+    output.pts=input.pts;output.duration=input.duration;output.timeBase=input.timeBase;
+    return output;
+}
+QString NativeEngines::RayReconstruction::diagnostics() const {
+    auto& impl=*instance().impl_;
+    std::lock_guard lock(impl.mutex);
+    std::array<char,4096> value{};
+    using Status=int(__cdecl*)(void*,char*,int);
+    if(!impl.rr.function<Status>("dlssrr_session_status")(session_,value.data(),int(value.size())))
+        throw std::runtime_error("Cannot read Ray Reconstruction delivery counters.");
+    return QString::fromUtf8(value.data());
+}
+GpuRgbFrame NativeEngines::RayReconstruction::processRgb(const CudaVideoFrame& input,bool reset,quint32 phase,float frameTimeMs) {
+    if(!input.owner||input.memory!=FrameMemory::Cuda)throw std::runtime_error("RR RGB delivery requires owned CUDA input.");
+    auto& impl=*instance().impl_;std::lock_guard lock(impl.mutex);
+    DlssRrCudaFrameDesc frame{};frame.size=sizeof(frame);frame.abi=2;
+    frame.width=uint32_t(input.size.width());frame.height=uint32_t(input.size.height());
+    frame.pixel_format=input.format==VideoPixelFormat::P010?5u:4u;
+    frame.y_pointer=input.planes[0];frame.uv_pointer=input.planes[1];frame.y_stride=input.strides[0];frame.uv_stride=input.strides[1];
+    frame.color_matrix=input.colorMatrix;frame.color_range=input.colorRange;frame.rotation=input.rotation;
+    frame.reset=uint32_t(reset);frame.phase=phase;frame.output_p010=2;frame.video_color=1;
+    frame.chroma_location=input.chromaLocation;frame.frame_time_ms=frameTimeMs;
+    DlssRrFrameResult result{};result.size=sizeof(result);result.abi=2;
+    void* surface=nullptr;std::array<char,4096> error{};
+    using Process=int(__cdecl*)(void*,const DlssRrCudaFrameDesc*,DlssRrFrameResult*,void**,char*,int);
+    check(impl.rr.function<Process>("dlssrr_process_cuda_yuv")(session_,&frame,&result,&surface,error.data(),int(error.size())),error);
+    const auto release=impl.rr.function<void(__cdecl*)(void*)>("dlssrr_cuda_surface_release");
+    std::shared_ptr<void> owner(surface,[release](void* value){release(value);});
+    DlssRrCudaSurfaceDesc desc{};desc.size=sizeof(desc);desc.abi=2;
+    using Describe=int(__cdecl*)(void*,DlssRrCudaSurfaceDesc*);
+    if(!impl.rr.function<Describe>("dlssrr_cuda_surface_desc")(surface,&desc)||desc.pixel_format!=2||desc.uv_pointer||
+       desc.width!=uint32_t(output_.width())||desc.height!=uint32_t(output_.height()))
+        throw std::runtime_error("RR returned an incompatible RGB surface.");
+    return {std::move(owner),output_,desc.y_pointer,desc.stride,transfer_,transfer_>=5?2u:1u,bool(result.reserved&1u)};
+}
+CudaVideoFrame NativeEngines::RayReconstruction::process(const GpuRgbFrame& input,CudaFramePool& pool,
+                                                       bool p010,bool reset,quint32 phase,float frameTimeMs) {
+    if(!input.owner||!input.pointer||input.transfer!=transfer_)
+        throw std::runtime_error("RR RGB input requires an owned surface with the session's transfer function.");
+    auto& impl=*instance().impl_;std::lock_guard lock(impl.mutex);
+    DlssRrCudaRgbFrameDesc frame{};frame.size=sizeof(frame);frame.abi=2;
+    frame.width=uint32_t(input.size.width());frame.height=uint32_t(input.size.height());frame.pointer=input.pointer;
+    frame.stride=input.stride;frame.reset=uint32_t(reset||input.historyReset);frame.phase=phase;
+    frame.output_format=uint32_t(p010);frame.frame_time_ms=frameTimeMs;
+    frame.color_matrix=input.primaries==2?2u:1u;frame.color_range=0;
+    DlssRrFrameResult result{};result.size=sizeof(result);result.abi=2;
+    void* surface=nullptr;std::array<char,4096> error{};
+    using Process=int(__cdecl*)(void*,const DlssRrCudaRgbFrameDesc*,DlssRrFrameResult*,void**,char*,int);
+    check(impl.rr.function<Process>("dlssrr_process_cuda_rgba16f")(session_,&frame,&result,&surface,error.data(),int(error.size())),error);
+    const auto release=impl.rr.function<void(__cdecl*)(void*)>("dlssrr_cuda_surface_release");
+    std::shared_ptr<void> owner(surface,[release](void* value){release(value);});
+    DlssRrCudaSurfaceDesc desc{};desc.size=sizeof(desc);desc.abi=2;
+    using Describe=int(__cdecl*)(void*,DlssRrCudaSurfaceDesc*);
+    if(!impl.rr.function<Describe>("dlssrr_cuda_surface_desc")(surface,&desc)||desc.pixel_format!=(p010?5u:4u)||
+       desc.width!=uint32_t(output_.width())||desc.height!=uint32_t(output_.height()))
+        throw std::runtime_error("RR returned an incompatible RGB delivery surface.");
+    return pool.wrap(std::move(owner),{desc.y_pointer,desc.uv_pointer,0},{desc.stride,desc.stride,0},frame.color_matrix,frame.color_range);
 }
 NativeEngines::RtxVideo::RtxVideo(QSize input, QSize output, const Settings& settings, bool hdr, bool video, bool wideInput)
     : output_(output), hdr_(hdr), packed_(video && wideInput), floatHdr_(hdr && settings.upscale_hdr_precision == "FP16"), video_(video) {
@@ -522,6 +672,7 @@ QImage NativeEngines::RtxVideo::evaluate(const RtxvFrameDescV1& from) {
     auto& impl=*instance().impl_;
     std::lock_guard lock(impl.mutex);
     QImage output(output_, hdr_ && floatHdr_ ? QImage::Format_RGBA16FPx4 : QImage::Format_RGBA8888);
+    requireImageAllocation(output, "RTX Video output allocation");
     auto descriptor = [](const QImage& image, int format) {
         RtxvFrameDescV1 frame{};
         frame.struct_size = sizeof(frame);
@@ -589,6 +740,7 @@ struct NativeEngines::Interpolation::State {
 struct NativeEngines::Interpolation::Surface::Storage {
     void* handle = nullptr;
     FrameDescriptorV1 descriptor{};
+    quint32 mediaTransfer=1;
     std::shared_ptr<Interpolation::State> session;
     ~Storage() {
         if (!handle) return;
@@ -599,8 +751,7 @@ struct NativeEngines::Interpolation::Surface::Storage {
 };
 NativeEngines::Interpolation::Interpolation(QSize size, int generated, bool hdr, const QString& flowQuality,
                                             bool highPrecision, int surfacePoolSize)
-    : state_(std::make_shared<State>()), size_(size), hdr_(hdr), floating_(hdr) {
-    Q_UNUSED(highPrecision);
+    : state_(std::make_shared<State>()), size_(size), hdr_(hdr), floating_(hdr||highPrecision) {
     auto& impl = *instance().impl_;
     std::lock_guard lock(impl.mutex);
     impl.fi.initialize(impl.ordinal);
@@ -641,7 +792,7 @@ std::vector<QImage> NativeEngines::Interpolation::process(const QImage& input, b
     for (const auto& surface : result.generated) output.push_back(surface.toHost());
     return output;
 }
-NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(const QImage& input, bool reset, bool detectCuts) {
+NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(const QImage& input, bool reset, bool detectCuts,quint32 transfer) {
     const auto source =
         input.convertToFormat(floating_ ? QImage::Format_RGBA16FPx4 : QImage::Format_RGBA8888);
     FrameDescriptorV1 frame{};
@@ -655,11 +806,11 @@ NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(cons
     frame.strides[0] = uint32_t(source.bytesPerLine());
     frame.color_matrix = hdr_ ? 2u : 1u;
     frame.color_range = 1;
-    frame.color_primaries = hdr_ ? 9u : 1u;
+    frame.color_primaries = hdr_ ? 2u : 1u;
     frame.color_transfer = hdr_ ? 16u : 1u;
     frame.reserved[0] = 1;
     frame.reserved[1] = 1;
-    return copyCurrentInput(evaluateDescriptor(frame, reset, detectCuts), frame);
+    return copyCurrentInput(evaluateDescriptor(frame, reset, detectCuts), frame,transfer==0xffffffffu?(hdr_?5u:1u):transfer);
 }
 NativeEngines::Interpolation::Surface NativeEngines::Interpolation::own(void* handle) {
     if (!handle) throw std::runtime_error("DLSSG returned an empty surface.");
@@ -720,9 +871,9 @@ NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(
     frame.color_transfer = colors.transfer == "iec61966-2-1" ? 1u : colors.transfer == "bt470m" ? 2u
         : colors.transfer == "bt470bg" ? 3u : colors.transfer == "linear" ? 4u : 0u;
     frame.rotation = input.rotation; frame.reserved[0] = 1; frame.reserved[1] = input.chromaLocation;
-    return copyCurrentInput(evaluateDescriptor(frame, reset, detectCuts), frame);
+    return copyCurrentInput(evaluateDescriptor(frame, reset, detectCuts), frame,nativeMediaTransfer(colors.transfer));
 }
-NativeEngines::Interpolation::Result NativeEngines::Interpolation::copyCurrentInput(Result result, const FrameDescriptorV1& frame) {
+NativeEngines::Interpolation::Result NativeEngines::Interpolation::copyCurrentInput(Result result, const FrameDescriptorV1& frame,quint32 transfer) {
     auto& impl = *instance().impl_;
     std::lock_guard lock(impl.mutex);
     std::array<char, 4096> error{};
@@ -730,12 +881,14 @@ NativeEngines::Interpolation::Result NativeEngines::Interpolation::copyCurrentIn
     auto* handle = impl.fi.function<Copy>("fi_session_copy_input_rgb")(state_->session, error.data(), int(error.size()));
     check(handle != nullptr, error);
     result.source = own(handle);
+    result.source.state_->mediaTransfer=transfer;
     // Describing a surface only supplies its layout. Preserve interpretation separately.
     auto& descriptor = result.source.state_->descriptor;
     descriptor.color_matrix = frame.color_matrix; descriptor.color_range = frame.color_range;
     descriptor.color_primaries = frame.color_primaries; descriptor.color_transfer = frame.color_transfer;
     descriptor.reserved[0] = 1; descriptor.reserved[1] = frame.reserved[1];
     for (auto& surface : result.generated) {
+        surface.state_->mediaTransfer=transfer;
         auto& generated = surface.state_->descriptor;
         generated.color_matrix = descriptor.color_matrix; generated.color_range = descriptor.color_range;
         generated.color_primaries = descriptor.color_primaries; generated.color_transfer = descriptor.color_transfer;
@@ -749,6 +902,7 @@ NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(
     auto result = evaluateDescriptor(input.state_->descriptor, reset, detectCuts);
     result.source = input;
     for (auto& surface : result.generated) {
+        surface.state_->mediaTransfer=input.state_->mediaTransfer;
         auto& descriptor = surface.state_->descriptor;
         const auto& from = input.state_->descriptor;
         descriptor.color_matrix = from.color_matrix; descriptor.color_range = from.color_range;
@@ -757,6 +911,22 @@ NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(
     }
     return result;
 }
+NativeEngines::Interpolation::Result NativeEngines::Interpolation::evaluate(const GpuRgbFrame& input,bool reset,bool detectCuts) {
+    if(!floating_||!input.owner||!input.pointer||input.transfer>6||input.primaries>2)
+        throw std::runtime_error("RGB interpolation requires an owned encoded FP16 surface and FP16 session.");
+    FrameDescriptorV1 frame{};frame.struct_size=sizeof(frame);frame.abi_version=4;frame.memory_type=2;frame.pixel_format=2;
+    frame.width=uint32_t(input.size.width());frame.height=uint32_t(input.size.height());frame.planes[0]=input.pointer;frame.strides[0]=input.stride;
+    frame.color_matrix=input.primaries==2?2u:1u;frame.color_range=1;frame.color_primaries=input.primaries;
+    static constexpr uint32_t transfers[]={1,0,4,2,3,0,0};frame.color_transfer=transfers[input.transfer];
+    frame.reserved[0]=1;frame.reserved[1]=1;
+    return copyCurrentInput(evaluateDescriptor(frame,reset||input.historyReset,detectCuts),frame,input.transfer);
+}
+GpuRgbFrame NativeEngines::Interpolation::Surface::toRgb() const {
+    if(!state_||state_->descriptor.pixel_format!=2)
+        throw std::runtime_error("RGB reconstruction requires an owned FP16 interpolation surface.");
+    const auto& frame=state_->descriptor;
+    return {state_,{int(frame.width),int(frame.height)},frame.planes[0],frame.strides[0],state_->mediaTransfer,frame.color_primaries,false};
+}
 QImage NativeEngines::Interpolation::Surface::toHost() const {
     if (!state_) throw std::runtime_error("Cannot download a released DLSSG surface.");
     auto& impl = *instance().impl_;
@@ -764,6 +934,7 @@ QImage NativeEngines::Interpolation::Surface::toHost() const {
     const auto& descriptor = state_->descriptor;
     QImage pixels(int(descriptor.width), int(descriptor.height), descriptor.pixel_format == 2
         ? QImage::Format_RGBA16FPx4 : QImage::Format_RGBA8888);
+    requireImageAllocation(pixels, "Frame Generation output allocation");
     std::array<char, 4096> error{};
     using Copy = int(__cdecl*)(void*, void*, uint32_t, char*, int);
     check(impl.fi.function<Copy>("fi_surface_copy_rgb_to_host")(state_->handle, pixels.bits(),

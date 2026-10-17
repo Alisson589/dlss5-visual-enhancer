@@ -165,6 +165,11 @@ QVariant AppController::read(Property property) const {
             cards.append(QVariantMap{{"id", stage}, {"enabled", active.contains(stage)}});
         return cards;
     }
+    case Property::rrSettings: {
+        QVariantMap result;const auto values=settings_.values();
+        for(auto it=values.begin();it!=values.end();++it)if(it.key().startsWith("rr_"))result.insert(it.key(),it.value());
+        return result;
+    }
     case Property::vfxSettings: {
         QVariantMap result;const auto values=settings_.values();
         for(auto it=values.begin();it!=values.end();++it)if(it.key().startsWith("vfx_"))result.insert(it.key(),it.value());
@@ -548,6 +553,7 @@ QVariant AppController::execute(Action action, const QVariantList& args) {
         case Action::refreshProcessingCache: updateProcessingCache(); return {};
         case Action::cleanProcessingCache: updateProcessingCache(true); return {};
         case Action::setVfxSetting:
+        case Action::setRrSetting:
         case Action::setLutFile:
         case Action::setLutAdjustment:
         case Action::resetLutAdjustments:

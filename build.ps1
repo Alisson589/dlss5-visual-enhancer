@@ -8,15 +8,28 @@ param(
     [string]$Destination,
     [string]$NativeBuildRoot,
     [string]$RuntimeSource,
+    [switch]$RebuildNative,
     [string]$CertificateThumbprint,
     [string]$TimestampServer = 'http://timestamp.digicert.com',
-    [switch]$MachineCertificateStore
+    [switch]$MachineCertificateStore,
+    [switch]$RequireSignatures,
+    [switch]$ScanDefender,
+    [string]$OutputDirectory,
+    [switch]$StageOnly
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'tools/Toolchain.ps1')
 $resolvedQt = Resolve-VeQtRoot $QtRoot
 $resolvedBuild = Resolve-VePath $BuildDir $PSScriptRoot
 $generator = Get-VeVisualStudioGenerator
+if ($RebuildNative) {
+    $nativeRoot = Join-Path (Split-Path -Parent $PSScriptRoot) 'native (dev)'
+    $nativeShell = (Get-Process -Id $PID).Path
+    foreach ($feature in @('neural_rendering', 'super_resolution', 'ray_reconstruction', 'frame_interpolation', 'rtx_video', 'video_effects')) {
+        Invoke-VeCommand $nativeShell @('-NoProfile', '-File', (Join-Path $nativeRoot "modules/$feature/build_bridge.ps1"), '-NoDeploy')
+    }
+    $NativeBuildRoot = Join-Path $nativeRoot 'modules'
+}
 $testOption = if ($Test) { 'ON' } else { 'OFF' }
 Write-Host "Building C++23 with $generator and Qt at $resolvedQt"
 Invoke-VeCommand 'cmake' @('-S', $PSScriptRoot, '-B', $resolvedBuild, '-G', $generator, '-A', 'x64',
@@ -34,5 +47,6 @@ if ($Deploy) {
         -Configuration $Configuration -Destination $Destination -NativeBuildRoot $NativeBuildRoot `
         -RuntimeSource $RuntimeSource `
         -CertificateThumbprint $CertificateThumbprint `
-        -TimestampServer $TimestampServer -MachineCertificateStore:$MachineCertificateStore
+        -TimestampServer $TimestampServer -MachineCertificateStore:$MachineCertificateStore `
+        -RequireSignatures:$RequireSignatures -ScanDefender:$ScanDefender -OutputDirectory $OutputDirectory -StageOnly:$StageOnly
 }

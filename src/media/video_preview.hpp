@@ -30,6 +30,9 @@ class VideoFrameReader {
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
+// Select VFR context timestamps without retaining decoded image history.
+[[nodiscard]] double reconstructionContextStart(const QString& path,const MediaInfo& info,double selectedSeconds,
+    int precedingFrames,JobControl& control,int ordinal,bool preferCuda);
 // Timeline stills retain the decoder's source precision. Posters use the
 // reference's inexpensive JPEG path; neither operation opens native sessions.
 [[nodiscard]] QImage decodeTimelineFrame(const QString &path, const MediaInfo &source, double seconds,

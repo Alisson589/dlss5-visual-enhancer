@@ -18,6 +18,7 @@
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSaveFile>
+#include <QScopeGuard>
 #include <QTemporaryDir>
 #include <QUuid>
 #include <QUrl>
@@ -25,8 +26,27 @@
 #include <algorithm>
 #include <cmath>
 #include <windows.h>
+#include <shlobj.h>
 
 namespace ve {
+namespace {
+bool selectFileInExplorer(const QString& path) {
+    if (path.isEmpty()) return false;
+    const auto initialized = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+    if (FAILED(initialized) && initialized != RPC_E_CHANGED_MODE) return false;
+    const auto apartment = qScopeGuard([initialized] {
+        if (SUCCEEDED(initialized)) CoUninitialize();
+    });
+    const auto native = QDir::toNativeSeparators(QFileInfo(path).absoluteFilePath()).toStdWString();
+    PIDLIST_ABSOLUTE raw = nullptr;
+    const auto parsed = SHParseDisplayName(native.c_str(), nullptr, &raw, 0, nullptr);
+    const auto item = qScopeGuard([raw] { CoTaskMemFree(raw); });
+    // A single absolute item with cidl=0 opens its parent and selects it.
+    // No file association is invoked, and paths need no command-line quoting.
+    return SUCCEEDED(parsed) && SUCCEEDED(SHOpenFolderAndSelectItems(raw, 0, nullptr, 0));
+}
+} // namespace
+
 void AppController::copyClipboardText(const QString& text, quint64 request, quint32 sequence, int attempts) {
     if (shuttingDown_ || request != clipboardRequestRevision_ || GetClipboardSequenceNumber() != sequence) return;
     if (OpenClipboard(nullptr)) {
@@ -117,10 +137,20 @@ QVariant AppController::handleWorkflow(Action action, const QVariantList& args) 
             loadSelected();
         }
         return {};
-    case Action::showSelectedInExplorer: {
-        const auto path = context().queue->selectedPath();
-        if (!path.isEmpty())
-            QProcess::startDetached("explorer.exe", {"/select," + QDir::toNativeSeparators(path)});
+    case Action::showSelectedInExplorer:
+    case Action::showInExplorer: {
+        const auto path = localPath(action == Action::showSelectedInExplorer
+                                        ? context().queue->selectedPath() : args[0].toString());
+        if (!path.isEmpty()) {
+            // Shell parsing can wait for network locations; keep it off the UI thread.
+            auto future = QtConcurrent::run(&pool_, [this, path] {
+                if (!selectFileInExplorer(path))
+                    QMetaObject::invokeMethod(this, [this, path] {
+                        if (!shuttingDown_) log(QString("Could not show %1 in File Explorer.").arg(path), "error");
+                    }, Qt::QueuedConnection);
+            });
+            (void)future;
+        }
         return {};
     }
     case Action::clearCompletedQueueItems:
@@ -576,6 +606,7 @@ void AppController::preview(double positionMs, bool still) {
     const auto info = current.source;
     const auto settings = info.video ? videoPreviewSettings(settings_) : settings_;
     const bool vfxGenerated=info.video&&settings.stages(true).contains("vfx_frame_generation");
+    const bool nativeRrAfterFi=info.video&&rrNeedsGeneratedHistory(settings.stages(true));
     const auto requestedPosition=quantizePlayhead(positionMs>=0?positionMs:current.playheadSeconds*1000,
         vfxGenerated?vfxFrameRate(info.fps,vfxSettingsForStages(settings,settings.stages(true))):info.fps,info.duration);
     const auto position=quantizePlayhead(requestedPosition.seconds*1000,info.fps,info.duration);
@@ -603,7 +634,7 @@ void AppController::preview(double positionMs, bool still) {
     auto future = QtConcurrent::run(&previewPool_, [this, index, path, settings, info, seconds, still,
                                                     workflowType, id, generation, settingsRevision,
                                                     previewRevision, posterGeneration, position, control,
-                                                    fastColor, previewElapsed, vfxGenerated, requestedPosition] {
+                                                    fastColor, previewElapsed, vfxGenerated, nativeRrAfterFi, requestedPosition] {
         QJsonObject profile{{"queue_ms", double(previewElapsed.nsecsElapsed()) / 1e6},
                             {"frame", qint64(position.number)}};
         QElapsedTimer phase;
@@ -646,12 +677,13 @@ void AppController::preview(double positionMs, bool still) {
                     (void)sourceDirectory.filePath("source-preview.mkv");
                     if (!sourceDirectory.isValid())
                         throw std::runtime_error("Cannot create the preview source directory.");
-                    const auto previewSource =
+                    const bool rrHistory=stages.contains("dlss_ray_reconstruction");
+                    const auto previewSource = rrHistory?path:
                         extractVideoPreviewSource(path, info, sourceDirectory.path(), seconds, clipSeconds,
                                                   false, *control, settings.ffmpeg_device);
                     Pipeline pipeline;
                     const auto result =
-                        pipeline.render({previewSource, clip, settings, workflowType, true, 0, clipSeconds},
+                        pipeline.render({previewSource, clip, settings, workflowType, true, rrHistory?seconds:0, clipSeconds},
                                         *control, [this, id](const Progress &progress) {
                                             QMetaObject::invokeMethod(
                                                 this,
@@ -675,7 +707,7 @@ void AppController::preview(double positionMs, bool still) {
                 auto effective = workflowSettings(settings, workflowType, info.video);
                 const auto estimate = estimatePipeline(info, settings, workflowType);
                 auto stages = estimate.stages;
-                stages.removeAll("frame_generation");
+                if(!nativeRrAfterFi)stages.removeAll("frame_generation");
                 // Live auxiliary files can change independently of controls;
                 // retain pixel-based provider identity for those outputs.
                 const bool immutableOutput =
@@ -693,7 +725,7 @@ void AppController::preview(double positionMs, bool still) {
                     (!info.hdr || info.transfer == "smpte2084") &&
                     (stages == QStringList{"neural_model"} || stages == QStringList{"rtx_video_hdr"});
                 const bool directVideoStill =
-                    stages.size() == 1 && rotation % 360 == 0 && (!hdrPreview || fastHdr);
+                    stages.size() == 1 && !stages.contains("dlss_ray_reconstruction") && rotation % 360 == 0 && (!hdrPreview || fastHdr);
                 if(info.video&&hasVfxStages(stages)){
                     auto source=videoFrames_.frame(path,info,position,*control,false,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu");input=source.pixels;prefetchSource=true;
                     const auto identity=source.identity+QByteArray::number(requestedPosition.seconds,'g',17)+"/isolated-vfx/v1";
@@ -738,7 +770,7 @@ void AppController::preview(double positionMs, bool still) {
                         previewStages_.store(keys.back(), {output, false, false});
                     }
                 } else if (info.video && !directVideoStill) {
-                    if (!hdrPreview || hasVfxStages(stages)) {
+                    if (!hdrPreview || hasVfxStages(stages) || stages.contains("dlss_ray_reconstruction")) {
                         auto source = videoFrames_.frame(path, info, position, *control, false,
                                                          gpuOrdinal(settings.ai_gpu_uuid),
                                                          settings.ffmpeg_device == "auto");
@@ -752,13 +784,13 @@ void AppController::preview(double positionMs, bool still) {
                         if (!videoStill_)
                             videoStill_ = std::make_unique<VideoStillPreview>();
                         std::vector<TimedImage> temporal;
-                        if(stages.contains("dlss_super_resolution")||vfxGenerated) {
-                            const int count=stages.contains("dlss_super_resolution")?(effective.upscale_dlss_mode=="DLAA"?8:18):0;
+                        if(!stages.contains("dlss_ray_reconstruction")&&(stages.contains("dlss_super_resolution")||vfxGenerated)) {
+                            const int count=reconstructionHistoryFrames(effective,stages);
                             temporal=videoFrames_.temporalContext(path,info,position,source.absoluteSeconds,count,
-                                *control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device=="auto",vfxGenerated);
+                                *control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device=="auto",vfxGenerated||nativeRrAfterFi);
                         }
                         output = videoStill_->process(input, effective, info, stages, previewStages_,
-                                                      source.identity, *control,temporal,vfxGenerated?requestedPosition.seconds:-1);
+                                                      source.identity, *control,temporal,vfxGenerated?requestedPosition.seconds+info.presentationStartSeconds():stages.contains("dlss_ray_reconstruction")?source.absoluteSeconds:-1,path);
                         if(hdrPreview){auto colors=info;colors.hdr=true;if(stages.contains("rtx_video_hdr")){colors.primaries="bt2020";colors.transfer="smpte2084";}output=toneMapVideoPreview(output,colors,*control,settings.ffmpeg_device);}
                         profile["processing_ms"] = double(phase.nsecsElapsed()) / 1e6;
                         const auto keys = previewStageKeys(source.identity, effective, info, stages, true,

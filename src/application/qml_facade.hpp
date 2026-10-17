@@ -19,6 +19,7 @@ enum class Property {
     nrMode,
     workflowStages,
     vfxSettings,
+    rrSettings,
     vfxStatus,
     sharpeningMethodChoices,
     ffmpegDeviceChoices,
@@ -223,6 +224,7 @@ enum class Action {
     refreshProcessingCache,
     cleanProcessingCache,
     setVfxSetting,
+    setRrSetting,
     setLutFile,
     setLutAdjustment,
     resetLutAdjustments,
@@ -248,6 +250,7 @@ enum class Action {
     clearActiveQueue,
     clearSelectedPreviewItem,
     showSelectedInExplorer,
+    showInExplorer,
     clearCompletedQueueItems,
     retryFailedQueueItems,
     startActiveBatch,
@@ -282,6 +285,7 @@ class QmlFacade : public QObject {
     Q_PROPERTY(QString processingCacheStatus READ processingCacheStatus NOTIFY processingCacheChanged)
     Q_PROPERTY(QString processingCacheDetails READ processingCacheDetails NOTIFY processingCacheChanged)
     Q_PROPERTY(QVariantMap vfxSettings READ vfxSettings NOTIFY settingsUpdated)
+    Q_PROPERTY(QVariantMap rrSettings READ rrSettings NOTIFY settingsUpdated)
     Q_PROPERTY(QString vfxStatus READ vfxStatus NOTIFY vfxStatusChanged)
     Q_PROPERTY(QString activeTab READ activeTab WRITE write_activeTab NOTIFY activeTabChanged)
     Q_PROPERTY(QString nrMode READ nrMode WRITE write_nrMode NOTIFY nrModeChanged)
@@ -936,6 +940,8 @@ class QmlFacade : public QObject {
     QString currentLogPath() const { return read(Property::currentLogPath).toString(); }
     QString fullLog() const { return read(Property::fullLog).toString(); }
     QVariantMap vfxSettings() const { return read(Property::vfxSettings).toMap(); }
+    QVariantMap rrSettings() const { return read(Property::rrSettings).toMap(); }
+    Q_INVOKABLE void setRrSetting(QString key, QVariant value) { execute(Action::setRrSetting, {key,value}); }
     QString vfxStatus() const { return read(Property::vfxStatus).toString(); }
     Q_INVOKABLE void setVfxSetting(QString key, QVariant value) { execute(Action::setVfxSetting, {key,value}); }
     Q_INVOKABLE void setLutFile(QString a0) { execute(Action::setLutFile, {QVariant::fromValue(a0)}); }
@@ -988,6 +994,7 @@ class QmlFacade : public QObject {
     Q_INVOKABLE void clearActiveQueue() { execute(Action::clearActiveQueue, {}); }
     Q_INVOKABLE void clearSelectedPreviewItem() { execute(Action::clearSelectedPreviewItem, {}); }
     Q_INVOKABLE void showSelectedInExplorer() { execute(Action::showSelectedInExplorer, {}); }
+    Q_INVOKABLE void showInExplorer(QString path) { execute(Action::showInExplorer, {path}); }
     Q_INVOKABLE void clearCompletedQueueItems() { execute(Action::clearCompletedQueueItems, {}); }
     Q_INVOKABLE void retryFailedQueueItems() { execute(Action::retryFailedQueueItems, {}); }
     Q_INVOKABLE void startActiveBatch() { execute(Action::startActiveBatch, {}); }

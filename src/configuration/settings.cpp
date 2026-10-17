@@ -105,6 +105,8 @@ void migrateStages(Settings& settings, bool video) {
         if (!order.contains(stage)) {
             if (stage == "dlss_super_resolution")
                 order.insert(std::max<qsizetype>(0, order.indexOf("super_resolution")), stage);
+            else if (stage == "dlss_ray_reconstruction")
+                order.insert(order.indexOf("dlss_super_resolution") + 1, stage);
             else if (stage == "rtx_video_hdr")
                 order.insert(order.indexOf("super_resolution") + 1, stage);
             else
@@ -349,6 +351,8 @@ std::expected<void, QString> Settings::validate() const {
         for (const auto& stage : enabled)
             if (!seen.contains(stage))
                 return std::unexpected("Pipeline enabled stages contain an unavailable card.");
+        if (enabled.contains("dlss_ray_reconstruction") && enabled.contains("dlss_super_resolution"))
+            return std::unexpected("Select either DLSS Ray Reconstruction or DLSS Super Resolution in one workflow.");
     }
     const auto map = values();
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -382,7 +386,7 @@ std::expected<void, QString> Settings::validate() const {
             high = 4;
         } else if (key.endsWith("_width") || key.endsWith("_height")) {
             low = key.startsWith("upscale_image_") ? 1 : 2;
-            high = 16384;
+            high = 32768;
         } else if (key.endsWith("hdr_contrast") || key.endsWith("hdr_saturation") || key == "lut_mix")
             high = 200;
         else if (key == "upscale_hdr_middle_gray") {
@@ -453,8 +457,10 @@ std::expected<void, QString> Settings::validate() const {
     }
     if (!QStringList{"PNG", "JPEG", "WebP", "AVIF", "TIFF"}.contains(image_format))
         return std::unexpected("Unknown image format.");
-    if (!QList<double>{1, 2, 1.75, 1.5, 1.25, .75, .5, .25}.contains(upscaling_factor))
-        return std::unexpected("Unknown Neural Rendering scale factor.");
+    // Standard spatial scaling has no model-defined list of ratios. Actual
+    // dimensions are checked against the input at pipeline estimation time.
+    if (!std::isfinite(upscaling_factor) || upscaling_factor <= 0 || upscaling_factor > 32768)
+        return std::unexpected("Standard scale factor must be positive and at most 32768.");
     if (nr_scale_method != "Standard" && nr_scale_method != "DLSS")
         return std::unexpected("Unknown Neural Rendering scale method.");
     if (upscale_mode != "Image" && upscale_mode != "Video")
@@ -609,10 +615,10 @@ std::expected<void, QString> Settings::save(const QString& path) const {
     return {};
 }
 QJsonObject Settings::preset(const QString& name) const {
-    auto migrated=*this;migrateStages(migrated,true);auto map = migrated.values();
+    auto migrated=*this;migrateStages(migrated,false);migrateStages(migrated,true);auto map = migrated.values();
     map.remove("nr_mask");
     return {{"format", "dlss5-visual-enhancer-settings-preset"},
-            {"schema_version", 36},
+            {"schema_version", 38},
             {"name", name.trimmed()},
             {"settings", QJsonObject::fromVariantMap(map)}};
 }
@@ -646,7 +652,7 @@ std::expected<QString, QString> Settings::importPreset(const QString& path) {
         std::floor(object.value("schema_version").toDouble()) != object.value("schema_version").toDouble())
         return std::unexpected(QT_TRANSLATE_NOOP("App", "Preset schema_version must be an integer."));
     const int version = object.value("schema_version").toInt();
-    if (version < 1 || version > 36)
+    if (version < 1 || version > 38)
         return std::unexpected(QT_TRANSLATE_NOOP("App", "Unsupported preset schema version."));
     const auto name = object.value("name").toString().trimmed();
     if (!object.value("settings").isObject() || name.isEmpty() || name.size() > 120 ||
@@ -723,6 +729,24 @@ std::expected<QString, QString> Settings::importPreset(const QString& path) {
             return std::unexpected("Enable at least one effect in the legacy NVIDIA VFX preset.");
         for(const auto& stage:candidate.video_stage_order)if(!canonicalStages(true).contains(stage)&&stage!="nvidia_vfx")return std::unexpected("Pipeline contains an unavailable processing card.");
         migrateStages(candidate,true);
+    }
+    if (version < 37) {
+        // Old presets never enabled RR. Preserve all previous relative ordering.
+        const Settings defaults;
+        candidate.rr_optical_flow_quality=defaults.rr_optical_flow_quality;
+        for(bool video:{false,true}) {
+            auto& order=video?candidate.video_stage_order:candidate.image_stage_order;
+            auto& enabled=video?candidate.video_enabled_stages:candidate.image_enabled_stages;
+            const QSet<QString> seen(order.begin(),order.end()), active(enabled.begin(),enabled.end());
+            if(seen.size()!=order.size()||active.size()!=enabled.size())
+                return std::unexpected("Pipeline contains duplicate processing cards.");
+            for(const auto& stage:order)if(!canonicalStages(video).contains(stage))
+                return std::unexpected("Pipeline contains an unavailable processing card.");
+            for(const auto& stage:enabled)if(!order.contains(stage))
+                return std::unexpected("Pipeline enables an unavailable processing card.");
+            enabled.removeAll("dlss_ray_reconstruction");
+            migrateStages(candidate,video);
+        }
     }
     if (auto valid = candidate.validate(); !valid)
         return std::unexpected(valid.error());

@@ -1502,8 +1502,8 @@ Wyświetlono klatkę. Użyj &lt; &gt; lub otwórz plik zewnętrznie.</translatio
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="513" />
-      <source>Open source folder</source>
-      <translation>Otwórz folder źródłowy</translation>
+      <source>Show input in Explorer</source>
+      <translation>Pokaż plik wejściowy w Eksploratorze</translation>
     </message>
     <message>
       <source>Opened containing folder for %1.</source>
@@ -2645,5 +2645,13 @@ Wyświetlono klatkę. Użyj &lt; &gt; lub otwórz plik zewnętrznie.</translatio
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS i RTX są znakami towarowymi NVIDIA Corporation.</translation>
     </message>
-  </context>
+      <message>
+      <source>DLSS Ray Reconstruction</source>
+      <translation>DLSS Ray Reconstruction</translation>
+    </message>
+    <message>
+      <source>Imported images and videos use estimated material guides. Results depend on the source.</source>
+      <translation>Importowane obrazy i filmy korzystają z szacowanych danych materiałów. Wyniki zależą od źródła.</translation>
+    </message>
+</context>
 </TS>

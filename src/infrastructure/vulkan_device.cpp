@@ -65,6 +65,7 @@ std::vector<VulkanDevice> enumerate() {
             device.index = int(index);
             device.name = QString::fromUtf8(props.properties.deviceName);
             device.discrete = props.properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
+            device.maximumImageDimension2D = props.properties.limits.maxImageDimension2D;
             device.uuid = QUuid::fromRfc4122(
                               QByteArray(reinterpret_cast<const char*>(identity.deviceUUID), VK_UUID_SIZE))
                               .toString(QUuid::WithoutBraces);
@@ -105,10 +106,12 @@ std::vector<VulkanDevice> vulkanCandidates(const QString& selection, bool filter
 QStringList vulkanArguments(const VulkanDevice& device) {
     return {"-init_hw_device", "vulkan=ve_vk:" + QString::number(device.index), "-filter_hw_device", "ve_vk"};
 }
-QStringList vulkanFilterArguments(const QString& selection) {
+QStringList vulkanFilterArguments(const QString& selection, QSize largestFrame) {
     static std::mutex mutex;
     static std::unordered_map<int, bool> supported;
     for (const auto& device : vulkanCandidates(selection, true)) {
+        if (largestFrame.isValid() && (uint32_t(largestFrame.width()) > device.maximumImageDimension2D ||
+            uint32_t(largestFrame.height()) > device.maximumImageDimension2D)) continue;
         std::scoped_lock lock(mutex);
         auto found = supported.find(device.index);
         if (found == supported.end()) {
@@ -123,6 +126,9 @@ QStringList vulkanFilterArguments(const QString& selection) {
         if (found->second)
             return vulkanArguments(device);
     }
+    if (largestFrame.isValid())
+        throw std::runtime_error(QString("No selected Vulkan GPU supports filtering %1x%2 with its native 2D image limits.")
+            .arg(largestFrame.width()).arg(largestFrame.height()).toStdString());
     throw std::runtime_error(
         "Vulkan GPU filtering is unavailable. Install a current AMD, Intel or NVIDIA Vulkan driver.");
 }

@@ -1,4 +1,5 @@
 #include "paths.hpp"
+#include "media/resolution.hpp"
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
@@ -59,6 +60,7 @@ QString Paths::nativeDataDirectory() const {
     return writableDirectory(QStandardPaths::AppLocalDataLocation, "NVIDIA");
 }
 void Paths::prepare() const {
+    configureImageDecoding();
     for (const auto* relative : {"outputs", "logs"}) {
         if (!QDir().mkpath(at(relative)))
             throw std::runtime_error(("Cannot create application folder: " + at(relative)).toStdString());

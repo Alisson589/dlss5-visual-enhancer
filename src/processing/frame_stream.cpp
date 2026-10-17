@@ -1,4 +1,5 @@
 #include "frame_stream.hpp"
+#include "media/resolution.hpp"
 #include "infrastructure/paths.hpp"
 #include "pipeline.hpp"
 #include "preview_cache.hpp"
@@ -78,17 +79,22 @@ struct Stage {
                                                         control);
             return filter->read();
         }
+        const double seconds=frame->seconds();
+        if(name=="dlss_ray_reconstruction"&&(!std::isfinite(seconds)||
+           (previousSeconds&&seconds<=*previousSeconds)))
+            throw std::runtime_error("Ray Reconstruction requires finite, increasing presentation timestamps.");
         if (!native) {
             native = std::make_unique<FramePipeline>(settings, info, QStringList{name}, finalOutput,
                                                      bool(normalizer));
             if (cache)
                 native->reuseResetPreviewResources();
         }
-        const double seconds=frame->seconds();
         const double interval=previousSeconds && seconds>*previousSeconds ? seconds-*previousSeconds
             : frame->duration>0 ? frame->duration*double(frame->timeBase.numerator)/frame->timeBase.denominator
             : info.fps>0 ? 1./info.fps : 1./60;
-        frame->image = native->process(frame->image, control, index, index == 0, float(std::clamp(interval*1000.,.01,1000.)));
+        const bool gap=name=="dlss_ray_reconstruction"&&previousSeconds&&
+            interval>std::max(.25,info.fps>0?4./info.fps:.25);
+        frame->image = native->process(frame->image, control, index, index == 0 || gap, float(std::clamp(interval*1000.,.01,1000.)));
         previousSeconds=seconds;
         ++index;
         return frame;
@@ -134,7 +140,7 @@ FrameStreamPipeline::FrameStreamPipeline(Settings settings, MediaInfo info, cons
         if (cache)
             stage->cacheOutput = index + 1 < stages.size();
         source_ = [stage] { return stage->read(); };
-        if(name=="scale_method"){info.width=int(std::ceil(info.width*settings.upscaling_factor/2))*2;info.height=int(std::ceil(info.height*settings.upscaling_factor/2))*2;}
+        if(name=="scale_method"){info.width=checkedDimension(info.width*settings.upscaling_factor,DimensionRounding::EvenCeil);info.height=checkedDimension(info.height*settings.upscaling_factor,DimensionRounding::EvenCeil);}
         else if(name=="super_resolution"){auto size=rtxOutputSize({info.width,info.height},settings,true);info.width=size.width();info.height=size.height();}
         else if(name=="dlss_super_resolution"){auto size=dlssOutputSize({info.width,info.height},settings.upscale_dlss_mode,true);info.width=size.width();info.height=size.height();}
         if (name == "rtx_video_hdr") {
@@ -151,7 +157,9 @@ FrameStreamPipeline::FrameStreamPipeline(Settings settings, MediaInfo info, cons
                 .contains(name) ||
             name == "dlss_super_resolution" && !final)
             info.pixelFormat = "gbrp10le";
-        else if (name == "neural_model" || name == "dlss_super_resolution")
+        else if(name=="dlss_ray_reconstruction"){
+            info.pixelFormat="rgba64le";info.sourceBitDepth=16;
+        }else if (name == "neural_model" || name == "dlss_super_resolution")
             info.pixelFormat =
                 info.pixelFormat == "rgba" || info.pixelFormat.contains("8") || info.pixelFormat == "yuv420p"
                     ? "rgba"

@@ -1,4 +1,5 @@
 #include "image_alpha.hpp"
+#include "resolution.hpp"
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -52,6 +53,7 @@ void restoreImageAlpha(QImage& output,const QImage& input,JobControl& control) {
     if (!input.hasAlphaChannel()) return;
     const bool wide=input.depth()>32;
     const auto source=input.convertToFormat(QImage::Format_RGBA64);
+    requireImageAllocation(source, "Alpha input conversion");
     const int width=output.width(),height=output.height();
     std::vector<int> horizontal(size_t(width)*source.height());
     const auto xKernels=kernels(source.width(),width), yKernels=kernels(source.height(),height);
@@ -65,6 +67,7 @@ void restoreImageAlpha(QImage& output,const QImage& input,JobControl& control) {
     }
     const auto format=wide ? QImage::Format_RGBA64 : output.format();
     output=output.convertToFormat(QImage::Format_RGBA64);
+    requireImageAllocation(output, "Alpha output conversion");
     for (int y=0;y<height;++y) {
         control.checkpoint();
         auto* row=reinterpret_cast<QRgba64*>(output.scanLine(y));
@@ -76,5 +79,6 @@ void restoreImageAlpha(QImage& output,const QImage& input,JobControl& control) {
         }
     }
     output=output.convertToFormat(format);
+    requireImageAllocation(output, "Alpha output packing");
 }
 }

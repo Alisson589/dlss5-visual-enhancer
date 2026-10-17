@@ -4,6 +4,7 @@ function Get-VeOwnedBinaries([string]$PackageRoot) {
     foreach ($relative in @('Visual Enhancer.exe', 'VE_CLI.exe',
         'bin/runtime/dlssnr/neuroframe_engine_neural_rendering.dll',
         'bin/runtime/dlsssr/neuroframe_engine_super_resolution.dll',
+        'bin/runtime/dlssrr/neuroframe_engine_ray_reconstruction.dll',
         'bin/runtime/dlssg/neuroframe_engine_frame_interpolation.dll',
         'bin/runtime/rtx_video/neuroframe_engine_upscaling.dll',
         'bin/runtime/vfx/neuroframe_engine_video_effects.dll')) {

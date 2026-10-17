@@ -37,7 +37,7 @@ void json(const QJsonObject& value) {
 void help(const QString& command = {}) {
     output << "Visual Enhancer for images and videos, from your terminal.\n\n"
               "Usage: VE_CLI.exe COMMAND [INPUT ...] [OPTIONS]\n\n"
-              "Commands: render, upscale, interpolate, devices\n";
+              "Commands: render, reconstruct, upscale, interpolate, devices\n";
     if (command == "devices")
         output << "  --json                     Write GPU information as JSON\n";
     else if (!command.isEmpty()) {
@@ -56,6 +56,9 @@ void help(const QString& command = {}) {
             output << "  --format png|jpeg|webp|avif|tiff\n";
         if (command == "render")
             output << "  --style 0|1|2\n  --strength 0..2\n";
+        if (command == "reconstruct")
+            output << "  Native-resolution (1x) Ray Reconstruction\n"
+                      "  --flow-quality high|medium|low  Video NVOFA quality\n";
         if (command == "upscale")
             output << "  --engine rtx|dlss\n  --scale FACTOR             RTX scale factor, at least 1\n  "
                       "--size WIDTHxHEIGHT        Exact RTX dimensions\n  --mode "
@@ -76,7 +79,7 @@ struct Arguments {
 Arguments parse(QStringList values) {
     Arguments result;
     result.command = values.takeFirst();
-    if (!QStringList{"render", "upscale", "interpolate", "devices"}.contains(result.command))
+    if (!QStringList{"render", "reconstruct", "upscale", "interpolate", "devices"}.contains(result.command))
         throw UsageError("Unknown command: " + result.command);
     const QSet<QString> switches{"--json", "--quiet", "--dry-run", "--recursive"};
     QSet<QString> options{"--output", "--preset", "--gpu", "--codec", "--container", "--quality"};
@@ -84,6 +87,8 @@ Arguments parse(QStringList values) {
         options.insert("--format");
     if (result.command == "render")
         options.unite({"--style", "--strength"});
+    if (result.command == "reconstruct")
+        options.insert("--flow-quality");
     if (result.command == "upscale")
         options.unite({"--engine", "--scale", "--size", "--mode"});
     if (result.command == "interpolate")
@@ -157,6 +162,10 @@ Settings settingsFor(const Arguments& args, const QStringList& paths) {
                 choice(args, "--style", {{"0", "Style 0"}, {"1", "Style 1"}, {"2", "Style 2"}});
         if (args.options.contains("--strength"))
             settings.nr_intensity = number(args.options.value("--strength"), "--strength");
+    } else if (args.command == "reconstruct") {
+        settings.image_enabled_stages=settings.video_enabled_stages={"dlss_ray_reconstruction"};
+        if(args.options.contains("--flow-quality"))
+            settings.rr_optical_flow_quality=choice(args,"--flow-quality",{{"high","High"},{"medium","Medium"},{"low","Low"}});
     } else if (args.command == "upscale") {
         if (args.options.contains("--engine"))
             settings.upscale_image_engine = settings.upscale_engine =
@@ -191,10 +200,10 @@ Settings settingsFor(const Arguments& args, const QStringList& paths) {
         if (args.options.contains("--size")) {
             const auto match = QRegularExpression("^(\\d+)[xX](\\d+)$").match(args.options.value("--size"));
             if (!match.hasMatch())
-                throw UsageError("Use WIDTHxHEIGHT, with each dimension from 2 to 16384.");
+                throw UsageError("Use WIDTHxHEIGHT, with each dimension from 2 to 32768.");
             const int width = match.captured(1).toInt(), height = match.captured(2).toInt();
-            if (std::min(width, height) < 2 || std::max(width, height) > 16384)
-                throw UsageError("Use WIDTHxHEIGHT, with each dimension from 2 to 16384.");
+            if (std::min(width, height) < 2 || std::max(width, height) > 32768)
+                throw UsageError("Use WIDTHxHEIGHT, with each dimension from 2 to 32768.");
             settings.upscale_image_size_mode = settings.upscale_size_mode = "Custom dimensions";
             settings.upscale_image_width = settings.upscale_width = width;
             settings.upscale_image_height = settings.upscale_height = height;

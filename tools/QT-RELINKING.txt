@@ -1,0 +1,17 @@
+REPLACING AND REBUILDING QT IN VISUAL ENHANCER
+
+Visual Enhancer dynamically links the Qt libraries, plugins and QML modules.
+This build uses an MSVC x64 Qt 6.12.x kit; Qt is not embedded in the executable.
+
+Build application source against a compatible modified Qt kit:
+
+  ./Build/build.ps1 -QtRoot 'C:/path/to/modified/Qt/msvc_x64' -Deploy
+
+For an ABI-compatible replacement, deploy matching DLLs, plugins, QML modules
+and multimedia dependencies beside the application while it is closed.
+No signature or hash registration gate restricts replacement of Qt.
+
+The Merserk Source License does not restrict rights granted under applicable
+third-party Qt licenses, including replacement, relinking and debugging.
+License texts and Qt-provided SPDX inventories are under bin/licenses/.
+Qt sources: https://download.qt.io/archive/qt/6.12/

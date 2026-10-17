@@ -6,10 +6,13 @@
 #include "infrastructure/paths.hpp"
 #include "infrastructure/process.hpp"
 #include "media/frame_batch.hpp"
+#include "media/resolution.hpp"
 #include "media/frame_time.hpp"
 #include "media/av_api.hpp"
 #include "media/native_frame.hpp"
 #include "media/cuda_video.hpp"
+#include "media/native_rgb.hpp"
+#include "media/video_preview.hpp"
 #include "media/host_video.hpp"
 #include "media/video_delivery.hpp"
 #include "interpolation_video.hpp"
@@ -45,7 +48,7 @@
 namespace ve {
 namespace {
 int even(double value) {
-    return std::max(2, int(std::floor(value / 2 + .5)) * 2);
+    return checkedDimension(value, DimensionRounding::EvenNearest);
 }
 QString imageExtension(const QString& format) {
     return QMap<QString, QString>{
@@ -136,6 +139,91 @@ bool renderCudaVideo(const RenderRequest& request, const MediaInfo& source, cons
         request.preview ? std::nullopt : std::optional(sourceTimeOrigin));
     return true;
 }
+bool renderRayReconstructionVideo(const RenderRequest& request,const MediaInfo& source,const Settings& settings,
+                                  const PipelineEstimate& estimate,const QString& destination,JobControl& control,
+                                  const ProgressCallback& progress) {
+    if(request.preview || estimate.stages!=QStringList{"dlss_ray_reconstruction"} ||
+       (source.width|source.height|estimate.width|estimate.height)&1) return false;
+    const bool nvenc=settings.codec.contains("NVIDIA NVENC") || (settings.ffmpeg_device!="cpu" &&
+        QStringList{"H.264","H.265","AV1"}.contains(settings.codec));
+    // The device encoder signals 709 limited SDR or 2020 limited HDR. Other
+    // source color spaces retain their established host conversion boundary.
+    if(!nvenc || source.range=="pc" ||
+       (source.hdr ? source.primaries!="bt2020" || source.colorSpace!="bt2020nc"
+                   : !QStringList{"bt709","unknown","unspecified",""}.contains(source.primaries) ||
+                     !QStringList{"bt709","unknown","unspecified",""}.contains(source.colorSpace)))return false;
+    if(!source.hdr&&!QStringList{"bt709","gamma22","bt470m","unknown","unspecified",""}.contains(source.transfer))return false;
+    const int ordinal=gpuOrdinal(settings.ai_gpu_uuid);
+    const auto devices=detectGpus();
+    const auto selected=std::ranges::find_if(devices,[ordinal](const Gpu& gpu){return gpu.index==ordinal;});
+    if(selected==devices.end() || (settings.video_gpu_uuid!="auto"&&settings.video_gpu_uuid!=selected->uuid) ||
+       (settings.ffmpeg_device!="auto"&&settings.ffmpeg_device!="cpu"&&
+        settings.ffmpeg_device.mid(7).compare(selected->uuid.mid(4),Qt::CaseInsensitive)!=0))return false;
+    ScratchDirectory temporary(QStringLiteral("rr-cuda-render-XXXXXX"));
+    if(!temporary.isValid())throw std::runtime_error("Cannot create the Ray Reconstruction render directory.");
+    const auto video=temporary.filePath("video.mp4");
+    const auto codec=settings.codec.startsWith("H.264")?QString("h264_nvenc"):
+        settings.codec.startsWith("H.265")?QString("hevc_nvenc"):QString("av1_nvenc");
+    const double duration=request.seconds>0?std::min(request.seconds,source.duration-request.startSeconds):source.duration-request.startSeconds;
+    qint64 count=0;double actualDuration=0,origin=0;
+    QElapsedTimer timer;timer.start();
+    try {
+        CudaVideoDecoder decoder(request.input,ordinal,request.startSeconds,control);
+        auto frame=decoder.read();
+        if(!frame)throw std::runtime_error("Source contains no decodable video frames.");
+        origin=decoder.timeOrigin();
+        auto colors=source;colors.width=estimate.width;colors.height=estimate.height;colors.hdr=estimate.hdr;
+        // RR reconstruction retains FP16 internally and requests a 10-bit
+        // encoder surface for HEVC/AV1, including 8-bit source material.
+        colors.pixelFormat="p010le";
+        NativeEngines::instance().prepare(ordinal,estimate.stages);
+        const quint32 transfer=source.transfer=="smpte2084"?5u:source.transfer=="arib-std-b67"?6u:
+            source.transfer=="linear"?2u:QStringList{"iec61966-2-1","srgb"}.contains(source.transfer)?0u:
+            QStringList{"gamma22","bt470m"}.contains(source.transfer)?3u:
+            QStringList{"gamma28","bt470bg"}.contains(source.transfer)?4u:1u;
+        NativeEngines::RayReconstruction session({source.width,source.height},
+            settings.rr_optical_flow_quality,false,true,transfer);
+        // Construct encoder after the session; its delayed references flush
+        // and release before the session during normal and exceptional exits.
+        CudaVideoEncoder encoder(video,codec,settings,colors,decoder.timeBase(),decoder.device(),ordinal,control);
+        const bool p010=encoder.pixelFormat()==VideoPixelFormat::P010;
+        CudaFramePool pool(decoder.device(),{estimate.width,estimate.height},p010,source.hdr);
+        info("video","NVDEC -> DLSS Ray Reconstruction/NVOFA -> "+codec+" (owned device surfaces)");
+        qint64 previous=-1;
+        while(frame){
+            control.checkpoint();
+            const double seconds=frame->pts*double(frame->timeBase.numerator)/frame->timeBase.denominator;
+            if(request.seconds>0&&seconds>=duration-1e-9)break;
+            if(frame->pts<=previous)throw std::runtime_error("Video has non-increasing presentation timestamps.");
+            const float delta=previous>=0?float((frame->pts-previous)*1000.*frame->timeBase.numerator/frame->timeBase.denominator):
+                source.fps>0?float(1000./source.fps):0.f;
+            const bool gap=count>0&&delta>std::max(250.f,source.fps>0?float(4000./source.fps):250.f);
+            previous=frame->pts;frame->rotation=uint32_t(source.clockwiseRotation());
+            // Decoder metadata is authoritative when present. The transport
+            // uses the encoder's matching, explicitly selected output matrix.
+            if(frame->colorMatrix!=(source.hdr?2u:1u)||frame->colorRange!=0)
+                throw CudaUnavailable("RR device delivery requires matching 709/2020 limited-range planes.");
+            auto output=session.process(*frame,pool,p010,count==0||gap,quint32(count),std::clamp(delta,.01f,1000.f));
+            control.checkpoint();encoder.write(output);++count;
+            actualDuration=std::max(actualDuration,seconds+(frame->duration>0?
+                frame->duration*double(frame->timeBase.numerator)/frame->timeBase.denominator:1/source.fps));
+            if(progress)progress({std::min(.98,duration>0?seconds/duration:.1),QT_TRANSLATE_NOOP("App","Processing video"),
+                count,source.frames,timer.elapsed()>0?count*1000./timer.elapsed():0});
+            frame=decoder.read();
+        }
+        encoder.finish();
+        info("dlssrr","Device delivery counters: "+session.diagnostics());
+    }catch(const CudaUnavailable& error){
+        if(count)throw;
+        control.checkpoint();info("dlssrr","CUDA delivery unavailable; using host composition: "+QString::fromUtf8(error.what()));
+        return false;
+    }
+    if(count<=0)throw std::runtime_error("Ray Reconstruction produced no video frames.");
+    control.checkpoint();if(request.seconds>0)actualDuration=std::min(actualDuration,request.seconds);
+    muxDelivery(video,destination,request,source,settings,actualDuration,control,
+        request.preview?std::nullopt:std::optional(origin));
+    return true;
+}
 class OutputTransaction {
   public:
     explicit OutputTransaction(const QString& destination) : target_(destination) {
@@ -209,11 +297,14 @@ struct InterpolationGrid {
     std::unique_ptr<VideoFilterStage> hdrInput;
     MediaInfo hdrColors;
     std::deque<CudaVideoFrame> preparedHdr;
-    InterpolationGrid(const MediaInfo& source, const Settings& settings, double target, QSize size, bool inputRgb10) {
+    bool highPrecision=false;
+    quint32 mediaTransfer=1;
+    InterpolationGrid(const MediaInfo& source, const Settings& settings, double target, QSize size, bool inputRgb10,bool wideRgb=false) {
         hdr=source.hdr;
         rgb10=inputRgb10;
+        highPrecision=wideRgb;mediaTransfer=nativeMediaTransfer(source.transfer);
         if (rgb10 && !hdr) rgbBoundary=std::make_unique<HostRgb10Boundary>();
-        if (hdr) {
+        if (hdr&&!highPrecision) {
             hdrColors=source;
             hdrColors.colorSpace="bt2020nc"; hdrColors.range="tv";
             hdrColors.primaries="bt2020"; hdrColors.transfer="smpte2084";
@@ -232,7 +323,7 @@ struct InterpolationGrid {
             throw std::runtime_error("Target FPS is outside the native DLSSG grid. Choose Auto or Cascade.");
         if (exact && settings.frame_interpolation_engine != "Cascade") {
             stages.push_back({std::make_unique<NativeEngines::Interpolation>(size, integer-1, source.hdr,
-                settings.frame_interpolation_optical_flow_quality,false,64),{},integer-1});
+                settings.frame_interpolation_optical_flow_quality,highPrecision,64),{},integer-1});
         } else {
             const int levels = std::abs(ratio - 2) < 1e-7                                  ? 1
                                : std::abs(ratio - 4) < 1e-7                                ? 2
@@ -240,7 +331,7 @@ struct InterpolationGrid {
                                                                                            : 3;
             for (int level = 0; level < levels; ++level)
                 stages.push_back({std::make_unique<NativeEngines::Interpolation>(
-                    size,1,source.hdr,settings.frame_interpolation_optical_flow_quality,false,level==levels-1 ? 64 : 0),{},1});
+                    size,1,source.hdr,settings.frame_interpolation_optical_flow_quality,highPrecision,level==levels-1 ? 64 : 0),{},1});
         }
     }
     void prepare(std::span<const QImage> pixels, JobControl& control) {
@@ -250,15 +341,15 @@ struct InterpolationGrid {
         for (auto& frame : converted) preparedHdr.push_back(std::move(frame));
     }
     std::vector<Output> push(const QImage& pixels, FrameTime time, JobControl& control) {
-        const auto input=rgbBoundary ? rgbBoundary->decodeRgba8(pixels,control) : pixels;
-        if (stages.empty()) return {{input.convertToFormat(hdr ? QImage::Format_RGBA64 : QImage::Format_RGBA8888),{},time}};
+        const auto input=rgbBoundary ? highPrecision?decodedRgb10Rgba(pixels):rgbBoundary->decodeRgba8(pixels,control) : pixels;
+        if (stages.empty()) return {{input.convertToFormat(hdr||highPrecision ? QImage::Format_RGBA64 : QImage::Format_RGBA8888),{},time}};
         auto& first=stages.front();
         int segment=first.previous ? first.previous->segment : 0;
         if (first.previous && (time<=first.previous->time || time-first.previous->time>nominal.fraction(2,1))) ++segment;
         const bool reset=first.previous && segment!=first.previous->segment;
         if (hdrInput && preparedHdr.empty()) throw std::logic_error("Missing HDR interpolation input.");
         auto result=hdrInput ? first.session->evaluate(preparedHdr.front(),hdrColors,reset,true)
-            : first.session->evaluate(input,reset,true);
+            : first.session->evaluate(input,reset,true,mediaTransfer);
         if (hdrInput) preparedHdr.pop_front();
         auto frames=first.push(std::move(result),time,segment);
         for (size_t level=1; level<stages.size(); ++level) {
@@ -281,21 +372,25 @@ struct InterpolationGrid {
 };
 } // namespace
 QSize dlssOutputSize(QSize input, const QString& mode, bool video) {
+    requireResolution(input, "DLSS input texture", maximumDlssTextureDimension);
     const double factor =
         QMap<QString, double>{
             {"DLAA", 1}, {"Quality", 1.5}, {"Balanced", 1.724}, {"Performance", 2}, {"Ultra Performance", 3}}
             .value(mode, 0);
     if (!factor || input.width() < 32 || input.height() < 32)
         throw std::runtime_error("DLSS input must be at least 32 by 32 pixels and use a supported mode.");
+    if (input.width()*factor > maximumDlssTextureDimension || input.height()*factor > maximumDlssTextureDimension)
+        throw std::runtime_error("DLSS output exceeds the 16384-pixel texture limit.");
     const int width =
-        video ? int(std::ceil(input.width() * factor / 2)) * 2 : int(std::ceil(input.width() * factor));
+        checkedDimension(input.width() * factor, video ? DimensionRounding::EvenCeil : DimensionRounding::Ceil);
     const int height =
-        video ? int(std::ceil(input.height() * factor / 2)) * 2 : int(std::ceil(input.height() * factor));
+        checkedDimension(input.height() * factor, video ? DimensionRounding::EvenCeil : DimensionRounding::Ceil);
     if (std::max(width, height) > 16384)
         throw std::runtime_error("DLSS output exceeds the 16384-pixel texture limit.");
     return {width, height};
 }
 QSize rtxOutputSize(QSize input, const Settings& settings, bool video) {
+    requireResolution(input, "RTX input");
     const QString mode = video ? settings.upscale_size_mode : settings.upscale_image_size_mode;
     const double factor = video ? settings.upscale_scale_factor : settings.upscale_image_scale_factor;
     const bool locked = video ? settings.upscale_aspect_lock : settings.upscale_image_aspect_lock;
@@ -305,12 +400,11 @@ QSize rtxOutputSize(QSize input, const Settings& settings, bool video) {
     const double height = mode == "Scale factor" ? input.height() * factor
                           : locked ? width * input.height() / input.width()
                                    : double(video ? settings.upscale_height : settings.upscale_image_height);
-    QSize output(video ? int(std::ceil(width / 2)) * 2 : int(std::ceil(width)),
-                 video ? int(std::ceil(height / 2)) * 2 : int(std::ceil(height)));
-    if (output.width() < input.width() || output.height() < input.height() ||
-        std::max(output.width(), output.height()) > 16384)
+    const auto rounding = video ? DimensionRounding::EvenCeil : DimensionRounding::Ceil;
+    QSize output(checkedDimension(width, rounding), checkedDimension(height, rounding));
+    if (output.width() < input.width() || output.height() < input.height())
         throw std::runtime_error(
-            "RTX Super Resolution output must be at least the input size and at most 16384 pixels.");
+            "RTX Super Resolution output must be at least the input size.");
     return output;
 }
 Settings workflowSettings(Settings s, Workflow workflow, bool video) {
@@ -360,6 +454,7 @@ Settings videoPreviewSettings(Settings settings) {
     return settings;
 }
 PipelineEstimate estimatePipeline(const MediaInfo& info, const Settings& raw, Workflow workflow) {
+    requireResolution({info.width, info.height}, "Input media");
     if (auto valid = raw.validate(); !valid)
         throw std::runtime_error(valid.error().toStdString());
     const auto settings = workflowSettings(raw, workflow, info.video);
@@ -368,6 +463,9 @@ PipelineEstimate estimatePipeline(const MediaInfo& info, const Settings& raw, Wo
         throw std::runtime_error("Use one frame-generation engine per workflow. Disable DLSS Frame Generation or VFX Video Frame Generation.");
     for (const auto& stage : result.stages) {
         QSize size(result.width, result.height);
+        if (stage == "neural_model" || stage == "frame_generation")
+            requireResolution(size, stage == "neural_model" ? "DLSS Neural Rendering texture" : "DLSS Frame Generation texture",
+                              maximumDlssTextureDimension);
         if (stage == "neural_model" && std::min(size.width(), size.height()) < 64)
             throw std::runtime_error("DLSS Neural Rendering requires at least 64 by 64 input.");
         else if (stage == "scale_method") {
@@ -384,6 +482,9 @@ PipelineEstimate estimatePipeline(const MediaInfo& info, const Settings& raw, Wo
                                          "Move it before HDR conversion.");
             size = dlssOutputSize(
                 size, info.video ? settings.upscale_dlss_mode : settings.upscale_image_dlss_mode, info.video);
+        } else if (stage == "dlss_ray_reconstruction") {
+            if(info.video && result.hdr && !QStringList{"smpte2084","arib-std-b67"}.contains(info.transfer) && !result.stages.contains("rtx_video_hdr"))
+                throw std::runtime_error("Ray Reconstruction requires explicit PQ or HLG signaling for HDR video.");
         } else if (stage == "super_resolution") {
             if (info.video && result.hdr)
                 throw std::runtime_error("RTX Super Resolution cannot process HDR video at this position. "
@@ -416,11 +517,14 @@ PipelineEstimate estimatePipeline(const MediaInfo& info, const Settings& raw, Wo
             if (!settings.lut_path.isEmpty() && !QFileInfo(settings.lut_path).isFile())
                 throw std::runtime_error("The selected .cube LUT is unavailable.");
         }
+        requireResolution(size, "Processing stage output");
         result.width = size.width();
         result.height = size.height();
     }
     if (info.video && !containersForCodec(settings.codec).contains(settings.container))
         throw std::runtime_error("The selected codec does not support this container.");
+    if (!info.video && settings.image_format == "WebP")
+        requireResolution({result.width, result.height}, "WebP format", 16383);
     if (info.video && (result.width % 2 || result.height % 2) && !settings.codec.startsWith("FFV1"))
         throw std::runtime_error("Video export requires even output dimensions.");
     if (info.video && result.hdr && !settings.hdr_mode)
@@ -454,6 +558,8 @@ QString renderOutputPath(const QString& input, const QString& directory, const S
 }
 namespace {
 uint32_t dlssSourceTransfer(const MediaInfo& info) {
+    if(info.transfer=="smpte2084")return 5;
+    if(info.transfer=="arib-std-b67")return 6;
     if(!info.video || QStringList{"iec61966-2-1","srgb"}.contains(info.transfer))return 0;
     if(info.transfer=="linear")return 2;
     if(QStringList{"gamma22","bt470m"}.contains(info.transfer))return 3;
@@ -476,6 +582,7 @@ struct FramePipeline::Impl {
     QStringList stages;
     std::unique_ptr<NativeEngines::NeuralRendering> nr;
     std::vector<std::unique_ptr<NativeEngines::SuperResolution>> sr;
+    std::vector<std::unique_ptr<NativeEngines::RayReconstruction>> rr;
     std::vector<std::unique_ptr<NativeEngines::RtxVideo>> rtx;
     std::vector<std::unique_ptr<VideoEffects>> vfx;
     std::vector<TemporalGuide> guides;
@@ -489,6 +596,7 @@ struct FramePipeline::Impl {
     Impl(Settings s, MediaInfo media, QStringList active, bool final,bool normalized)
         : settings(std::move(s)), info(std::move(media)), stages(normalizeVfxStages(active,settings)), finalOutput(final),rtxInputNormalized(normalized) {
         sr.resize(size_t(stages.size()));
+        rr.resize(size_t(stages.size()));
         rtx.resize(size_t(stages.size()));
         vfx.resize(size_t(stages.size()));
         guides.resize(size_t(stages.size()));
@@ -589,7 +697,7 @@ std::vector<QImage> FramePipeline::processBatch(std::span<const QImage> input, J
         for (size_t frame = 0; frame < images.size(); ++frame) {
             control.checkpoint();
             auto& image = images[frame];
-            if (workingInfo.video && rgb10 && (stage == "neural_model" || stage == "dlss_super_resolution"))
+            if (workingInfo.video && rgb10 && (stage == "neural_model" || stage == "dlss_super_resolution" || stage == "dlss_ray_reconstruction"))
                 image = decodedRgb10Rgba(image);
             const bool resetFrame = reset && frame == 0;
             if (stage == "neural_model") {
@@ -616,6 +724,19 @@ std::vector<QImage> FramePipeline::processBatch(std::span<const QImage> input, J
                     ? state.guides[size_t(index)].resetMedia(image, resetFrame) : resetFrame;
                 const float delta=frameTimeMs>0 ? frameTimeMs : workingInfo.fps>0 ? float(1000./workingInfo.fps) : 0.f;
                 image = session->process(image, resetHistory, quint32(firstFrame + qint64(frame)), delta);
+            } else if(stage=="dlss_ray_reconstruction"){
+                auto& session=state.rr[size_t(index)];
+                const bool alpha=!workingInfo.video&&dlssNativeAlpha(image);
+                auto rrColors=workingInfo;
+                if(hdr&&!workingInfo.hdr){rrColors.hdr=true;rrColors.primaries="bt2020";rrColors.transfer="smpte2084";}
+                if(!session)session=std::make_unique<NativeEngines::RayReconstruction>(
+                    image.size(),
+                    s.rr_optical_flow_quality,!workingInfo.video,!workingInfo.video&&
+                        (s.image_bit_depth==16||index+1<state.stages.size()||!state.finalOutput),
+                    dlssSourceTransfer(rrColors),alpha);
+                const bool resetHistory=resetFrame;
+                const float delta=frameTimeMs>0?frameTimeMs:workingInfo.fps>0?float(1000./workingInfo.fps):0.f;
+                image=session->process(image,resetHistory,quint32(firstFrame+qint64(frame)),delta);
             } else if(isVfxStage(stage)){
                 auto colors=stageInputInfo;colors.width=image.width();colors.height=image.height();colors.hdr=hdr;
                 const auto selected=vfxSettingsForStages(s,{stage});
@@ -665,7 +786,7 @@ std::vector<QImage> FramePipeline::processBatch(std::span<const QImage> input, J
             if (!state.rgbBoundary) state.rgbBoundary = std::make_unique<HostRgb10Boundary>();
             for (auto& image : images) image = state.rgbBoundary->convert(image, control);
             rgb10 = true;
-        } else if (stage == "neural_model" || stage == "dlss_super_resolution") rgb10 = false;
+        } else if (stage == "neural_model" || stage == "dlss_super_resolution" || stage == "dlss_ray_reconstruction") rgb10 = false;
         remember();
     }
     if (!workingInfo.video)
@@ -700,9 +821,34 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     const auto requestedSettings = request.preview && input.video ? videoPreviewSettings(request.settings) : request.settings;
     auto settings = workflowSettings(requestedSettings, request.workflow, input.video);
     const auto estimate = estimatePipeline(input, requestedSettings, request.workflow);
+    if(request.preview&&input.video&&request.startSeconds>0&&!request.temporalContextIncluded&&
+       estimate.stages.contains("dlss_ray_reconstruction")) {
+        ScratchDirectory context(QStringLiteral("rr-preview-context-XXXXXX"));
+        if(!context.isValid())throw std::runtime_error("Cannot create Ray Reconstruction preview history.");
+        const double start=reconstructionContextStart(request.input,input,request.startSeconds,
+            reconstructionHistoryFrames(settings,estimate.stages),control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device=="auto");
+        const double prefix=request.startSeconds-start;
+        auto warmed=request;warmed.output=context.filePath("warmed.mkv");warmed.startSeconds=start;
+        warmed.seconds=request.seconds>0?prefix+request.seconds:0;warmed.temporalContextIncluded=true;
+        const auto result=render(warmed,control,progress);
+        const double origin=result.info.metadata.value("ve_source_time_origin").toDouble(start);
+        const double discard=std::max(0.,request.startSeconds+input.presentationStartSeconds()-origin);
+        OutputTransaction output(request.output);
+        QStringList trim{"-v","error","-y","-ss",QString::number(discard,'f',12),"-i",warmed.output,
+                         "-map","0:v:0","-an","-c:v","copy","-map_metadata","0"};
+        if(request.seconds>0)trim<<"-t"<<QString::number(request.seconds,'f',12);
+        trim<<"-avoid_negative_ts"<<"make_zero"<<output.path();
+        const auto trimmed=runProcess(Paths::instance().ffmpeg(),trim,&control,0);
+        if(trimmed.exitCode)throw std::runtime_error(trimmed.error.toStdString());
+        control.checkpoint();output.commit();
+        auto outputInfo=probeMedia(request.output,&control);
+        info("dlssrr",QString("Preview discarded %1 s of bounded RR context (maximum 32 source frames).").arg(discard,0,'g',12));
+        return {request.input,request.output,Log::instance().sessionPath(),outputInfo,activeElapsed()/1000.};
+    }
     if(input.video&&hasVfxStages(estimate.stages)&&!request.isolatedVfxWorker)return renderIsolatedVfx(request,control,progress);
     OutputTransaction output(request.output);
     if (input.video && (renderVfxVideo(request,input,settings,estimate,output.path(),control,progress) ||
+                       renderRayReconstructionVideo(request,input,settings,estimate,output.path(),control,progress) ||
                        renderCudaVideo(request, input, settings, estimate, output.path(), control, progress) ||
                        renderInterpolationVideo(request, input, settings, estimate, output.path(), control, progress))) {
         output.commit();
@@ -711,7 +857,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         info("render", request.input + " -> " + request.output);
         return {request.input, request.output, Log::instance().sessionPath(), result, activeElapsed() / 1000.};
     }
-    if (estimate.stages.contains("neural_model") || estimate.stages.contains("dlss_super_resolution") ||
+    if (estimate.stages.contains("neural_model") || estimate.stages.contains("dlss_super_resolution") || estimate.stages.contains("dlss_ray_reconstruction") ||
         estimate.stages.contains("super_resolution") || estimate.stages.contains("frame_generation") ||
         estimate.stages.contains("rtx_video_hdr"))
         NativeEngines::instance().prepare(gpuOrdinal(settings.ai_gpu_uuid), estimate.stages);
@@ -743,6 +889,9 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     intermediate.width = beforeEstimate.width;
     intermediate.height = beforeEstimate.height;
     intermediate.hdr = beforeEstimate.hdr;
+    if(before.contains("rtx_video_hdr")){intermediate.primaries="bt2020";intermediate.transfer="smpte2084";}
+    const bool rrInterpolationPrecision=fiPosition>=0&&
+        ((!before.isEmpty()&&before.back()=="dlss_ray_reconstruction")||(!after.isEmpty()&&after.front()=="dlss_ray_reconstruction"));
     const double sourceFps = input.fps > 0 ? input.fps : 30.,
                  targetFps =
                      fiPosition < 0 ? sourceFps : targetFrameRate(settings.frame_interpolation_target_fps);
@@ -752,14 +901,14 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     const qint64 total = static_cast<qint64>(std::ceil(duration * targetFps - 1e-8));
     double actualDuration = 0;
     const bool nativeStages = std::ranges::any_of(estimate.stages, [](const QString& stage) {
-        return QStringList{"neural_model", "dlss_super_resolution", "super_resolution", "rtx_video_hdr",
+        return QStringList{"neural_model", "dlss_super_resolution", "dlss_ray_reconstruction", "super_resolution", "rtx_video_hdr",
                            "frame_generation"}.contains(stage);
     });
     const auto codec = request.preview ? QString("FFV1 Lossless RGB 10-bit")
         : nativeStages ? nativeDeliveryCodec(settings) : settings.codec;
     const bool nativeNeuralDelivery = estimate.stages.size() > 1 && estimate.stages.back() == "neural_model" &&
         codec.contains("NVIDIA NVENC") && gpuOrdinal(settings.video_gpu_uuid) == gpuOrdinal(settings.ai_gpu_uuid);
-    const bool dlssMedia = before.contains("dlss_super_resolution");
+    const bool dlssMedia = before.contains("dlss_super_resolution")||before.contains("dlss_ray_reconstruction");
     const bool nativeDecoder = dlssMedia || !before.isEmpty() && QStringList{"neural_model", "super_resolution", "rtx_video_hdr"}.contains(before.front())
         || (before.isEmpty() && fiPosition == 0);
     const bool sourceWide = input.precisionBits() > 8;
@@ -803,7 +952,9 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
         preInfo.primaries=preInfo.hdr ? "bt2020" : "bt709"; preInfo.transfer=preInfo.hdr ? "smpte2084" : "bt709";
     }
     auto postInfo=intermediate;
-    if (fiPosition>=0) { postInfo.pixelFormat=postInfo.hdr ? "gbrp10le" : "rgba"; postInfo.colorSpace="gbr"; postInfo.range="pc"; }
+    if(fiPosition>=0)postInfo.fps=targetFps;
+    if (fiPosition>=0) { postInfo.pixelFormat=rrInterpolationPrecision?"rgba64le":postInfo.hdr ? "gbrp10le" : "rgba";
+        if(rrInterpolationPrecision)postInfo.sourceBitDepth=16;postInfo.colorSpace="gbr"; postInfo.range="pc"; }
     if (nativeNeuralDelivery) {
         if (fiPosition < 0) preStages.removeLast();
         else after.removeLast();
@@ -892,14 +1043,20 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     encodedInfo.primaries = primaries; encodedInfo.transfer = transfer;
     if(hasVfxStages(estimate.stages))retainVfxPixelAspect(encodedInfo,input);
     if (!estimate.stages.isEmpty() && estimate.stages.back() != "neural_model" && estimate.stages.back() != "frame_generation"
-        && estimate.stages.back() != "dlss_super_resolution")
+        && estimate.stages.back() != "dlss_super_resolution" && estimate.stages.back() != "dlss_ray_reconstruction")
         encodedInfo.pixelFormat = "gbrp10le";
     else if (encodedInfo.pixelFormat == "gbrp10le" && !estimate.stages.isEmpty() &&
-             QStringList{"neural_model","dlss_super_resolution"}.contains(estimate.stages.back()))
+             QStringList{"neural_model","dlss_super_resolution","dlss_ray_reconstruction"}.contains(estimate.stages.back()))
         // The input cache was planar RGB10; the native result is packed
         // RGBA16 and needs the encoder's genuine swscale packing boundary.
         encodedInfo.pixelFormat = "rgba64le";
-    if (fiPosition>=0 && after.isEmpty()) encodedInfo.pixelFormat=intermediate.hdr ? "gbrp10le" : "rgba";
+    if(!estimate.stages.isEmpty()&&estimate.stages.back()=="dlss_ray_reconstruction"){
+        encodedInfo.pixelFormat="rgba64le";encodedInfo.sourceBitDepth=16;
+    }
+    if (fiPosition>=0 && after.isEmpty()) {
+        encodedInfo.pixelFormat=rrInterpolationPrecision?"rgba64le":intermediate.hdr ? "gbrp10le" : "rgba";
+        if(rrInterpolationPrecision)encodedInfo.sourceBitDepth=16;
+    }
     const auto timeBase = fiPosition < 0 ? decodedTimeBase
                           : settings.frame_interpolation_target_fps.contains('.')
                               ? TimeBase{1001, int(std::lround(targetFps * 1001))}
@@ -939,7 +1096,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     if (fiPosition >= 0)
         interpolation = std::make_unique<InterpolationGrid>(intermediate, settings, targetFps,
             QSize(intermediate.width, intermediate.height), !before.isEmpty()
-                && before.back() != "neural_model");
+                && before.back() != "neural_model"&&before.back()!="dlss_ray_reconstruction",rrInterpolationPrecision);
     const auto batchSize =
         videoBatchCapacity({std::max(input.width, estimate.width), std::max(input.height, estimate.height)});
     struct CachedPacket {
@@ -1032,7 +1189,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
             report(total>0 ? std::min(.98,written/double(total)) : .1,QT_TRANSLATE_NOOP("App", "Processing video"),written,total);
         } else {
             const auto pixels = selected.surface
-                ? interpolation->hdr ? selected.surface.toHostRgb10() : selected.surface.toHost()
+                ? interpolation->hdr&&!interpolation->highPrecision ? selected.surface.toHostRgb10() : selected.surface.toHost()
                 : selected.pixels;
             writeFrame(pixels,index,1);
         }
@@ -1071,6 +1228,7 @@ RenderResult Pipeline::render(const RenderRequest& request, JobControl& control,
     output.commit();
     report(1, QT_TRANSLATE_NOOP("App", "Video complete"), outputIndex, total);
     auto outputInfo = probeMedia(request.output, &control);
+    if(sourceTimeOrigin)outputInfo.metadata.insert("ve_source_time_origin",*sourceTimeOrigin);
     info("render", request.input + " -> " + request.output);
     return {request.input, request.output, Log::instance().sessionPath(), outputInfo,
             activeElapsed() / 1000.};

@@ -21,6 +21,23 @@ foreach ($required in @('resources/desktop/qml/Main.qml', 'resources/desktop/app
 $owned = @(Get-VeOwnedBinaries $root)
 $ownedPaths = @($owned.FullName)
 $releaseVersion = $owned[0].VersionInfo.ProductVersion
+$contracts = @{
+    neural_rendering = 'dlssnr/neuroframe_engine_neural_rendering.dll'
+    super_resolution = 'dlsssr/neuroframe_engine_super_resolution.dll'
+    ray_reconstruction = 'dlssrr/neuroframe_engine_ray_reconstruction.dll'
+    frame_interpolation = 'dlssg/neuroframe_engine_frame_interpolation.dll'
+    rtx_video = 'rtx_video/neuroframe_engine_upscaling.dll'
+    video_effects = 'vfx/neuroframe_engine_video_effects.dll'
+}
+foreach ($module in $contracts.Keys) {
+    $contractPath = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) "native (dev)/modules/$module/contract.json"
+    $contract = Get-Content -LiteralPath $contractPath -Raw | ConvertFrom-Json
+    if ($module -ne 'video_effects' -and $contract.initialization_abi -ne 2) { throw "Outdated initialization contract: $module" }
+    $exports = @(Get-VePeExports (Join-Path $root ('bin/runtime/' + $contracts[$module])))
+    foreach ($export in $contract.exports) {
+        if ($export -notin $exports) { throw "Missing $module export: $export" }
+    }
+}
 $inventory = foreach ($file in (Get-ChildItem -LiteralPath $root -Recurse -File |
     Where-Object { $_.Extension -in @('.exe', '.dll') -and -not $_.FullName.StartsWith((Join-Path $root 'outputs') + '\', [StringComparison]::OrdinalIgnoreCase) -and -not $_.FullName.StartsWith((Join-Path $root 'logs') + '\', [StringComparison]::OrdinalIgnoreCase) } | Sort-Object FullName)) {
     $isOwned = $file.FullName -in $ownedPaths

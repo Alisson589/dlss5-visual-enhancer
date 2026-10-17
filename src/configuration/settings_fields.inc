@@ -1,12 +1,12 @@
 // Persisted processing settings. Shared by the GUI, CLI, and rendering services.
 VE_SETTING(QStringList, image_stage_order,
            (QStringList{QStringLiteral("neural_model"), QStringLiteral("scale_method"),
-                        QStringLiteral("dlss_super_resolution"), QStringLiteral("super_resolution"),
+                        QStringLiteral("dlss_super_resolution"), QStringLiteral("dlss_ray_reconstruction"), QStringLiteral("super_resolution"),
                         QStringLiteral("coloring"), QStringLiteral("cas_sharpening"),
                         QStringLiteral("grain")}))
 VE_SETTING(QStringList, video_stage_order,
            (QStringList{QStringLiteral("neural_model"), QStringLiteral("scale_method"),
-                        QStringLiteral("dlss_super_resolution"), QStringLiteral("super_resolution"),
+                        QStringLiteral("dlss_super_resolution"), QStringLiteral("dlss_ray_reconstruction"), QStringLiteral("super_resolution"),
                         QStringLiteral("rtx_video_hdr"), QStringLiteral("frame_generation"),
                         QStringLiteral("coloring"), QStringLiteral("cas_sharpening"),
                         QStringLiteral("grain"), QStringLiteral("vfx_vsr"),
@@ -44,6 +44,7 @@ VE_SETTING(QString, nr_style, (QStringLiteral("Style 0")))
 VE_SETTING(double, nr_intensity, (1.0))
 VE_SETTING(int, nr_passes, (1))
 VE_SETTING(QString, nr_optical_flow_quality, (QStringLiteral("High")))
+VE_SETTING(QString, rr_optical_flow_quality, (QStringLiteral("High")))
 VE_SETTING(double, local_tone_strength, (1.0))
 VE_SETTING(double, local_structure_strength, (1.0))
 VE_SETTING(double, skin_structure_strength, (1.0))

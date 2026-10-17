@@ -1,4 +1,5 @@
 #include "effects.hpp"
+#include "media/resolution.hpp"
 #include "color_analysis.hpp"
 #include "infrastructure/paths.hpp"
 #include "infrastructure/process.hpp"
@@ -58,7 +59,9 @@ QRgba64 pixel(Rgb rgb, quint16 alpha) {
 }
 QImage transform(const QImage& input, JobControl& control, const auto& operation) {
     const auto source = input.convertToFormat(QImage::Format_RGBA64);
+    requireImageAllocation(source, "Effect input conversion");
     QImage output(source.size(), QImage::Format_RGBA64);
+    requireImageAllocation(output, "Effect output allocation");
     for (int y = 0; y < source.height(); ++y) {
         control.checkpoint();
         const auto* from = reinterpret_cast<const QRgba64*>(source.constScanLine(y));
@@ -99,6 +102,8 @@ std::vector<QImage> filterFrames(std::span<const QImage> frames, const QString& 
     if (frames.empty())
         return {};
     const auto size = frames.front().size();
+    requireResolution(size, "Filter input");
+    requireResolution(output, "Filter output");
     const bool wide=frames.front().depth()>32;
     const QString format=wide ? "rgba64le" : "rgba";
     QByteArray data;
@@ -113,7 +118,7 @@ std::vector<QImage> filterFrames(std::span<const QImage> frames, const QString& 
                            libplacebo("format="+format) + ",hwdownload,format="+format;
     const auto result =
         runProcess(Paths::instance().ffmpeg(),
-                   QStringList{"-v", "error"} + vulkanFilterArguments(device) +
+                   QStringList{"-v", "error"} + vulkanFilterArguments(device, size.expandedTo(output)) +
                        QStringList{"-f",
                                    "rawvideo",
                                    "-pixel_format",
@@ -524,8 +529,8 @@ struct VideoFilterStage::Impl {
         QStringList graph;
         for (const auto& stage : stages) {
             if (stage == "scale_method") {
-                const QSize scaled(int(std::ceil(output.width()*settings.upscaling_factor/2))*2,
-                                   int(std::ceil(output.height()*settings.upscaling_factor/2))*2);
+                const QSize scaled(checkedDimension(output.width()*settings.upscaling_factor,DimensionRounding::EvenCeil),
+                                   checkedDimension(output.height()*settings.upscaling_factor,DimensionRounding::EvenCeil));
                 graph.append(resizingGraph(output, scaled, settings.video_scaling_filter, false)); output = scaled;
             } else if (stage == "cas_sharpening" && settings.cas_sharpness) {
                 graph.append(sharpeningGraph(settings, transfer == "iec61966-2-1" ? "srgb" : transfer == "linear" ? "linear" : "bt709"));
@@ -584,7 +589,9 @@ struct VideoFilterStage::Impl {
                 libplacebo("format=p010le:range=tv:color_primaries=bt2020:color_trc=smpte2084:colorspace=bt2020nc")+
                 ",hwdownload,format=p010le";
         }
-        const auto args = QStringList{"-v", "error"} + vulkanFilterArguments(settings.ffmpeg_device) +
+        requireResolution(input, "Video filter input");
+        requireResolution(output, "Video filter output");
+        const auto args = QStringList{"-v", "error"} + vulkanFilterArguments(settings.ffmpeg_device,input.expandedTo(output)) +
             QStringList{"-nofind_stream_info", "-f", "rawvideo", "-pixel_format", "rgba64le",
                 "-video_size", QString::number(input.width())+'x'+QString::number(input.height()), "-framerate",
                 QString::number(colors.fps > 0 ? colors.fps : 30., 'g', 15), "-threads:v", "1", "-i", "pipe:0", "-vf", filter,

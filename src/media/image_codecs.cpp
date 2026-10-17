@@ -1,4 +1,5 @@
 #include "image_codecs.hpp"
+#include "resolution.hpp"
 #include "infrastructure/paths.hpp"
 #include <QColorSpace>
 #include <QDir>
@@ -65,6 +66,7 @@ void heifCheck(const heif_error& error) {
 }
 } // namespace
 QImage decodeControlMask(const QString& path, JobControl& control) {
+    configureImageDecoding();
     control.checkpoint();
     QImage image;
     if (isRawImage(path))
@@ -73,6 +75,7 @@ QImage decodeControlMask(const QString& path, JobControl& control) {
         image = decodeHeifImage(path, control);
     else {
         QImageReader reader(path);
+        if (reader.size().isValid()) requireResolution(reader.size(), "Control mask");
         reader.setAutoTransform(true);
         image = reader.read();
         if (image.isNull())
@@ -82,7 +85,10 @@ QImage decodeControlMask(const QString& path, JobControl& control) {
                            image.format() == QImage::Format_Grayscale16 ||
                            image.format() == QImage::Format_Mono || image.format() == QImage::Format_MonoLSB;
     const auto rgba = image.convertToFormat(QImage::Format_RGBA64);
+    requireResolution(image.size(), "Control mask");
+    requireImageAllocation(rgba, "Control mask conversion");
     QImage result(image.size(), QImage::Format_RGBA32FPx4);
+    requireImageAllocation(result, "Control mask allocation");
     // Read the unassociated 16-bit channels directly to avoid rounding through
     // Qt's premultiplied float conversion. Grayscale broadcasts to all four.
     for (int y = 0; y < result.height(); ++y) {
@@ -100,7 +106,9 @@ QImage decodeControlMask(const QString& path, JobControl& control) {
 }
 QImage jpegOverWhite(const QImage& image) {
     const auto source=image.convertToFormat(QImage::Format_RGBA8888);
+    requireImageAllocation(source, "JPEG input conversion");
     QImage result(image.size(), QImage::Format_RGB888);
+    requireImageAllocation(result, "JPEG image allocation");
     for (int y=0;y<source.height();++y) {
         const auto* from=source.constScanLine(y);
         auto* to=result.scanLine(y);
@@ -180,31 +188,34 @@ QSize rawImageSize(const QString& path) {
 QImage decodeRawImage(const QString& path, JobControl& control) {
     control.checkpoint();
     LibRaw decoder;
+    decoder.imgdata.rawparams.max_raw_memory_mb = imageDecoderBudgetMiB;
     decoder.set_progress_handler(rawProgress, &control);
     decoder.imgdata.params.use_camera_wb = 1;
     decoder.imgdata.params.output_color = 1;
     decoder.imgdata.params.output_bps = 16;
     openRaw(decoder, path);
+    requireResolution({decoder.imgdata.sizes.width, decoder.imgdata.sizes.height}, "RAW image");
     const auto unpacked = decoder.unpack();
     control.checkpoint();
     rawCheck(unpacked);
     const auto processed = decoder.dcraw_process();
     control.checkpoint();
     rawCheck(processed);
-    int status = 0;
-    const auto release = [](libraw_processed_image_t* image) { LibRaw::dcraw_clear_mem(image); };
-    std::unique_ptr<libraw_processed_image_t, decltype(release)> pixels(decoder.dcraw_make_mem_image(&status),
-                                                                        release);
-    rawCheck(status);
-    if (!pixels || pixels->type != LIBRAW_IMAGE_BITMAP || pixels->bits != 16 || pixels->colors < 3)
+    int width=0,height=0,colors=0,bits=0;
+    decoder.get_mem_image_format(&width,&height,&colors,&bits);
+    if (bits != 16 || (colors != 3 && colors != 4))
         throw std::runtime_error("LibRaw did not return a supported RGB image.");
-    QImage result(pixels->width, pixels->height, QImage::Format_RGBA64);
-    const auto* rgb = reinterpret_cast<const quint16*>(pixels->data);
+    requireResolution({width,height}, "Decoded RAW image");
+    QImage result(width,height,QImage::Format_RGBA64);
+    requireImageAllocation(result, "RAW image allocation");
+    // Export directly into owned rows, avoiding a second full RGB image and
+    // the legacy processed-image record's 32-bit data_size field.
+    rawCheck(decoder.copy_mem_image(result.bits(),int(result.bytesPerLine()),0));
     for (int y = 0; y < result.height(); ++y) {
         control.checkpoint();
         auto* row = reinterpret_cast<QRgba64*>(result.scanLine(y));
-        for (int x = 0; x < result.width(); ++x) {
-            const auto* source = rgb + (qsizetype(y) * result.width() + x) * pixels->colors;
+        for (int x = result.width()-1; x >= 0; --x) {
+            const auto* source = reinterpret_cast<const quint16*>(result.constScanLine(y)) + x*colors;
             row[x] = QRgba64::fromRgba64(source[0], source[1], source[2], 65535);
         }
     }
@@ -216,10 +227,13 @@ QImage decodeHeifImage(const QString& path, JobControl& control) {
     auto& library = HeifLibrary::instance();
 #define HEIF_FUNCTION(name) const auto name = library.resolve<decltype(&::name)>(#name)
     HEIF_FUNCTION(heif_context_alloc);
+    HEIF_FUNCTION(heif_context_get_security_limits);
     HEIF_FUNCTION(heif_context_free);
     HEIF_FUNCTION(heif_context_read_from_memory_without_copy);
     HEIF_FUNCTION(heif_context_get_primary_image_handle);
     HEIF_FUNCTION(heif_image_handle_release);
+    HEIF_FUNCTION(heif_image_handle_get_width);
+    HEIF_FUNCTION(heif_image_handle_get_height);
     HEIF_FUNCTION(heif_decode_image);
     HEIF_FUNCTION(heif_image_release);
     HEIF_FUNCTION(heif_image_get_width);
@@ -237,24 +251,30 @@ QImage decodeHeifImage(const QString& path, JobControl& control) {
                                                                        heif_context_free);
     if (!context)
         throw std::bad_alloc{};
+    auto* limits = heif_context_get_security_limits(context.get());
+    limits->max_image_size_pixels = maximumImagePixels;
+    limits->max_memory_block_size = quint64(imageDecoderBudgetMiB) * 1024 * 1024;
     heifCheck(heif_context_read_from_memory_without_copy(context.get(), bytes.constData(),
                                                          size_t(bytes.size()), nullptr));
     heif_image_handle* rawHandle = nullptr;
     heifCheck(heif_context_get_primary_image_handle(context.get(), &rawHandle));
     std::unique_ptr<heif_image_handle, decltype(heif_image_handle_release)> handle(rawHandle,
                                                                                    heif_image_handle_release);
+    requireResolution({heif_image_handle_get_width(handle.get()),heif_image_handle_get_height(handle.get())}, "HEIF image");
     heif_image* rawImage = nullptr;
     heifCheck(heif_decode_image(handle.get(), &rawImage, heif_colorspace_RGB,
                                 heif_chroma_interleaved_RRGGBBAA_LE, nullptr));
     std::unique_ptr<heif_image, decltype(heif_image_release)> image(rawImage, heif_image_release);
     const int width = heif_image_get_width(image.get(), heif_channel_interleaved),
               height = heif_image_get_height(image.get(), heif_channel_interleaved);
+    requireResolution({width,height}, "Decoded HEIF image");
     int stride = 0;
     const auto* data = heif_image_get_plane_readonly(image.get(), heif_channel_interleaved, &stride);
     const int depth = heif_image_get_bits_per_pixel_range(image.get(), heif_channel_interleaved);
     if (!data || width < 1 || height < 1 || depth < 1 || depth > 16 || stride < width * 8)
         throw std::runtime_error("HEIF decoder returned invalid image dimensions or precision.");
     QImage result(width, height, QImage::Format_RGBA64);
+    requireImageAllocation(result, "HEIF image allocation");
     const auto maximum = double((1u << depth) - 1);
     for (int y = 0; y < height; ++y) {
         control.checkpoint();
@@ -275,6 +295,8 @@ QImage decodeHeifImage(const QString& path, JobControl& control) {
     }
     if (!result.colorSpace().isValid())
         result.setColorSpace(QColorSpace::SRgb);
-    return result.convertedToColorSpace(QColorSpace::SRgb);
+    auto converted=result.convertedToColorSpace(QColorSpace::SRgb);
+    requireImageAllocation(converted, "HEIF color conversion");
+    return converted;
 }
 } // namespace ve

@@ -116,7 +116,7 @@ std::vector<TimedImage> VideoFrameReader::temporalContext(const QString& path, c
         if(int(frames.size())>count+1)frames.pop_front();
         if(seconds>=absoluteSeconds-1e-6) {
             if(std::abs(seconds-absoluteSeconds)>1e-5)
-                throw std::runtime_error("Native SR preview could not match the selected frame timestamp.");
+                throw std::runtime_error("Native reconstruction preview could not match the selected frame timestamp.");
             if(includeFollowing){
                 if(auto following=decoder.read())frames.push_back(std::move(*following));
                 const double origin=decoder.timeOrigin();
@@ -137,6 +137,27 @@ void VideoFrameReader::prefetch(const QString &path, const MediaInfo &info, Fram
         if (info.duration > 0 && next.seconds >= info.duration - .002)
             break;
         (void)frame(path, info, next, control, timeline, ordinal, cuda);
+    }
+}
+double reconstructionContextStart(const QString& path,const MediaInfo& info,double selectedSeconds,
+    int precedingFrames,JobControl& control,int ordinal,bool preferCuda){
+    const double selected=std::max(0.,selectedSeconds),fps=info.fps>0?info.fps:30.;
+    const int count=std::clamp(precedingFrames,0,4096);
+    if(!info.variableFrameRate||!count)return std::max(0.,selected-count/fps);
+    double window=std::max(1.,2.*count/fps);
+    for(;;){
+        control.checkpoint();const double start=std::max(0.,selected-window);
+        HostVideoDecoder decoder(path,info,ordinal,start,preferCuda,control);
+        std::deque<double> times;
+        while(auto frame=decoder.read()){
+            control.checkpoint();const double time=frame->seconds()+decoder.timeOrigin()-info.presentationStartSeconds();
+            if(time>selected+1e-6)break;
+            if(!times.empty()&&time<=times.back())throw std::runtime_error("RR preview history has non-increasing timestamps.");
+            times.push_back(time);if(int(times.size())>count+1)times.pop_front();
+            if(time>=selected-1e-6)break;
+        }
+        if(int(times.size())>=count+1||start<=0)return times.empty()?0.:std::max(0.,times.front());
+        window*=2;
     }
 }
 QImage decodeTimelineFrame(const QString &path, const MediaInfo &source, double seconds, JobControl &control,

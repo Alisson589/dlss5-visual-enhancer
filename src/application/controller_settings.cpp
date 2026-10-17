@@ -22,6 +22,12 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
         settingsChanged();
     };
     switch (action) {
+    case Action::setRrSetting: {
+        const auto key=args.value(0).toString();
+        if(!key.startsWith("rr_")||!settings_.values().contains(key))throw std::runtime_error("Unknown Ray Reconstruction setting.");
+        auto result=settings_.set(key,args.value(1));if(!result)throw std::runtime_error(result.error().toStdString());
+        settingsChanged();return {};
+    }
     case Action::setVfxSetting: {
         const auto key=args.value(0).toString();
         if(!key.startsWith("vfx_")||!settings_.values().contains(key))throw std::runtime_error("Unknown NVIDIA VFX setting.");
@@ -116,6 +122,8 @@ QVariant AppController::handleSettings(Action action, const QVariantList& args) 
         if (!order.contains(stage))
             throw std::runtime_error("Unknown processing card.");
         if (args[1].toBool()) {
+            if(stage=="dlss_ray_reconstruction")active.removeAll("dlss_super_resolution");
+            else if(stage=="dlss_super_resolution")active.removeAll("dlss_ray_reconstruction");
             if (!active.contains(stage))
                 active.append(stage);
         } else

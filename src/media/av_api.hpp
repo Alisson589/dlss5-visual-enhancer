@@ -26,6 +26,7 @@ struct Api {
     AV_FN(avcodec_flush_buffers); AV_FN(avformat_flush);
     AV_FN(avcodec_send_frame); AV_FN(avcodec_receive_packet);
     AV_FN(av_frame_alloc); AV_FN(av_frame_free); AV_FN(av_frame_copy_props);
+    AV_FN(av_frame_new_side_data); AV_FN(av_frame_get_side_data);
     AV_FN(av_frame_get_buffer); AV_FN(av_frame_make_writable);
     AV_FN(av_image_get_buffer_size); AV_FN(av_image_copy_to_buffer);
     AV_FN(av_buffer_create);

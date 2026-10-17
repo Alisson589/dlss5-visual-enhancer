@@ -1,4 +1,5 @@
 #include "image_providers.hpp"
+#include "media/resolution.hpp"
 #include "infrastructure/log.hpp"
 #include <QElapsedTimer>
 #include "infrastructure/paths.hpp"
@@ -133,6 +134,8 @@ QString PreviewProvider::storeFrame(const QImage& source, const QString& key, bo
         }
     }
     const auto image = source.convertToFormat(source.depth() > 32 ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
+    requireResolution(image.size(), "Preview image");
+    requireImageAllocation(image, "Preview image conversion");
     quint64 epoch = 0;
     {
         QMutexLocker lock(&mutex_);
@@ -275,14 +278,24 @@ QImage PreviewProvider::requestImage(const QString& urlId, QSize* size, const QS
                 qint32 format = 0;
                 QDataStream header(&file);
                 header >> magic >> dimensions >> format >> profile >> dpr >> dx >> dy;
-                if (magic == 0x56454933 && dimensions.isValid() && dimensions.width() <= 16384 &&
-                    dimensions.height() <= 16384 && (format == QImage::Format_RGBA64 || format == QImage::Format_RGBA8888)) {
+                if (header.status() == QDataStream::Ok && magic == 0x56454933 && dimensions.isValid() &&
+                    dimensions.width() <= maximumImageDimension && dimensions.height() <= maximumImageDimension &&
+                    (format == QImage::Format_RGBA64 || format == QImage::Format_RGBA8888) &&
+                    file.size()-file.pos() == imageByteCount(dimensions, format == QImage::Format_RGBA64 ? 8 : 4)) {
                     image = QImage(dimensions, QImage::Format(format));
-                    const auto data = file.readAll();
-                    if (data.size() != image.sizeInBytes())
-                        image = {};
-                    else {
-                        std::memcpy(image.bits(), data.constData(), size_t(data.size()));
+                    if (!image.isNull()) {
+                        // Read into the final allocation in bounded chunks. A
+                        // 32K image must not require a second 4-8 GiB byte array.
+                        const auto bytes = image.sizeInBytes();
+                        qint64 offset=0;
+                        while (offset < bytes) {
+                            const auto received=file.read(reinterpret_cast<char*>(image.bits())+offset,
+                                std::min<qint64>(8ll*1024*1024,bytes-offset));
+                            if (received<=0) { image={}; break; }
+                            offset+=received;
+                        }
+                    }
+                    if (!image.isNull()) {
                         if (!profile.isEmpty()) image.setColorSpace(QColorSpace::fromIccProfile(profile));
                         image.setDevicePixelRatio(dpr);
                         image.setDotsPerMeterX(dx);
@@ -293,7 +306,10 @@ QImage PreviewProvider::requestImage(const QString& urlId, QSize* size, const QS
     }
     if (size)
         *size = image.size();
-    return requested.isValid() ? image.scaled(requested, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-                               : image;
+    // Qt Quick still uses a GPU texture for display. Cap that copy, while
+    // preserving the full frame and its dimensions for processing/export.
+    QSize display=requested.isValid() ? requested : image.size();
+    if (display.width()>8192 || display.height()>8192) display.scale(8192,8192,Qt::KeepAspectRatio);
+    return !image.isNull() && display != image.size() ? image.scaled(display, Qt::KeepAspectRatio, Qt::SmoothTransformation) : image;
 }
 } // namespace ve

@@ -55,6 +55,7 @@ RenderResult renderIsolatedVfx(const RenderRequest& request,JobControl& control,
     const auto rendered=directory.filePath("processed."+QFileInfo(request.output).suffix());
     auto job=base("render",request.input,rendered,request.settings,directory.filePath("preset.json"));
     job.insert("workflow",int(request.workflow));job.insert("preview",request.preview);job.insert("start",request.startSeconds);job.insert("seconds",request.seconds);
+    job.insert("temporal_context",request.temporalContextIncluded);
     const auto path=directory.filePath("job.json");save(path,job);directory.cacheRoot()->registerFile(path+".state");call(path,control,[&](const Progress& p){if(progress){auto delivery=p;delivery.fraction=std::min(.98,p.fraction);progress(delivery);}});
     QDir().mkpath(QFileInfo(request.output).absolutePath());
     QFile source(rendered);QTemporaryFile destination(QFileInfo(request.output).absolutePath()+"/.vfx-delivery-XXXXXX");
@@ -88,14 +89,16 @@ int runVfxWorker(const QString& path){
         if(job.value("kind")=="render"){
             RenderRequest request{input,output,settings,Workflow(job.value("workflow").toInt()),job.value("preview").toBool(),job.value("start").toDouble(),job.value("seconds").toDouble()};
             request.isolatedVfxWorker=true;
+            request.temporalContextIncluded=job.value("temporal_context").toBool();
             const auto rendered=Pipeline{}.render(request,control,[](const Progress& p){send({{"kind","progress"},{"fraction",p.fraction},{"message",p.message},{"frames",p.frames},{"total",p.totalFrames},{"fps",p.fps}});});(void)rendered;
         }else if(job.value("kind")=="still"){
             auto info=probeMedia(input,&control);const double seconds=job.value("seconds").toDouble();
             const auto position=quantizePlayhead(seconds*1000,info.fps,info.duration);const auto stages=settings.stages(true);
             VideoFrameReader reader;auto source=reader.frame(input,info,position,control,false,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu");
-            const bool generated=settings.vfx_frame_generation_enabled;const bool history=stages.contains("dlss_super_resolution");
-            std::vector<TimedImage> temporal;if(history||generated)temporal=reader.temporalContext(input,info,position,source.absoluteSeconds,history?(settings.upscale_dlss_mode=="DLAA"?8:18):0,control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu",generated);
-            PreviewFrameCache cache;VideoStillPreview preview;auto pixels=preview.process(source.pixels,settings,info,stages,cache,source.identity,control,temporal,generated?seconds:-1);
+            const bool generated=settings.vfx_frame_generation_enabled;const bool history=stages.contains("dlss_super_resolution")||stages.contains("dlss_ray_reconstruction");
+            const bool nativeAfter=rrNeedsGeneratedHistory(stages);
+            std::vector<TimedImage> temporal;if(!stages.contains("dlss_ray_reconstruction")&&(history||generated))temporal=reader.temporalContext(input,info,position,source.absoluteSeconds,reconstructionHistoryFrames(settings,stages),control,gpuOrdinal(settings.ai_gpu_uuid),settings.ffmpeg_device!="cpu",generated||nativeAfter);
+            PreviewFrameCache cache;VideoStillPreview preview;auto pixels=preview.process(source.pixels,settings,info,stages,cache,source.identity,control,temporal,generated?seconds+info.presentationStartSeconds():stages.contains("dlss_ray_reconstruction")?source.absoluteSeconds:-1,input);
             if(info.hdr||stages.contains("rtx_video_hdr")){auto colors=info;colors.hdr=true;if(stages.contains("rtx_video_hdr")){colors.primaries="bt2020";colors.transfer="smpte2084";}pixels=toneMapVideoPreview(pixels,colors,control,settings.ffmpeg_device);}
             pixels=vfxDisplayAspect(pixels,info);if(!pixels.save(output,"PNG"))throw std::runtime_error("Cannot save VFX worker preview.");
         }else throw std::runtime_error("Unknown VFX worker operation.");

@@ -3,6 +3,8 @@
 #include "packet_stream.hpp"
 #include <memory>
 #include <optional>
+struct AVCodecParameters;
+struct AVFrame;
 
 namespace ve {
 struct Settings;
@@ -10,6 +12,8 @@ struct CudaVideoFrame;
 enum class HostDecodePrecision { Source, Unorm8, Unorm16 };
 enum class HostEncodePurpose { Delivery, NativePreview };
 [[nodiscard]] QString ffv1PreviewPixelFormat(const MediaInfo& info);
+void retainStaticHdrMetadata(AVCodecParameters* parameters,const MediaInfo& info);
+void copyStaticHdrMetadata(AVFrame* frame,const AVCodecParameters* parameters);
 class HostRgb10Boundary {
   public:
     HostRgb10Boundary();

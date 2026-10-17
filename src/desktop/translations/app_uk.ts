@@ -1502,8 +1502,8 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
     </message>
     <message>
       <location filename="../qml/components/BatchQueueDrawer.qml" line="513" />
-      <source>Open source folder</source>
-      <translation>Відкрити папку джерела</translation>
+      <source>Show input in Explorer</source>
+      <translation>Показати вхідний файл у Провіднику</translation>
     </message>
     <message>
       <source>Opened containing folder for %1.</source>
@@ -2645,5 +2645,13 @@ Poster frame shown. Scrub with &lt; &gt; or open the file externally.</source>
       <source>© 2026 Merserk. NVIDIA, DLSS, and RTX are trademarks of NVIDIA Corporation.</source>
       <translation>© 2026 Merserk. NVIDIA, DLSS і RTX є торговельними марками NVIDIA Corporation.</translation>
     </message>
-  </context>
+      <message>
+      <source>DLSS Ray Reconstruction</source>
+      <translation>DLSS Ray Reconstruction</translation>
+    </message>
+    <message>
+      <source>Imported images and videos use estimated material guides. Results depend on the source.</source>
+      <translation>Для імпортованих зображень і відео використовуються оцінені дані матеріалів. Результати залежать від джерела.</translation>
+    </message>
+</context>
 </TS>
